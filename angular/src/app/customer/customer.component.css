@@ -1,0 +1,44 @@
+h2 {
+    font-size: 25px;
+}
+
+.info {
+    overflow-x: auto;
+    margin-top: 20px;
+}
+
+.info::-webkit-scrollbar {
+    width: 10px;
+}
+
+
+.info::-webkit-scrollbar-track {
+    background: var(--color-body);
+    border-radius: 5px;
+}
+
+
+.info::-webkit-scrollbar-thumb {
+    background: var(--color-text);
+    border-radius: 5px;
+}
+
+table {
+    width: 100%;
+    font-size: 12px;
+    margin: 0;
+}
+
+table td {
+    vertical-align: middle;
+    text-align: center;
+}
+
+table img {
+    width: 30px;
+}
+
+table i {
+    color: var(--color-button-close);
+    cursor: pointer;
+}

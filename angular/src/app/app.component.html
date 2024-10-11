@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+  </head>
+  <body>
+    <header *ngIf="showMenu">
+      <h1>Abogados Valbuena</h1>
+      <section class="header-extra">
+        <section class="extra-color left">
+          <i class="fa-solid fa-sun"></i>
+        </section>
+        <label id="switch">
+          <input type="checkbox" id="dark-mode" (click)="toggleDarkMode()" [(ngModel)]="isDarkMode">
+          <span class="slider round"></span>
+        </label>
+        <div class="extra-color right">
+          <i class="fa-solid fa-moon"></i>
+        </div>
+        <span id="date-actual">{{ date_actual | date : 'dd-MM-yyyy HH:mm:ss' }}</span>
+        <a class="sign-out" href="#" data-toggle="tooltip"
+          data-placement="right" title="Cerrar Sesión">
+          <i class="fa-solid fa-right-from-bracket"></i>
+        </a>
+      </section>
+    </header>
+    <div class="container" *ngIf="showMenu">
+      <nav class="open">
+        <div class="btn-menu"><i class="fa-solid fa-chevron-left"
+            id="collapse-menu" (click)="collapseMenu()"></i></div>
+        <p class="user">
+          <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png">
+          Abogado 1
+        </p>
+        <ul class="menu">
+          <li class="menu-item menu-item--show">
+            <a class="menu-link menu-close"><span
+                class="fa-solid fa-user-shield menu-icon"></span><span
+                class="menu-name">Cliente</span><i
+                class="fa-solid fa-chevron-right menu-arrow"></i></a>
+            <ul class="menu-nesting">
+              <li class="menu-inside menu-hide">
+                <p class="menu-title">Cliente</p>
+              </li>
+              <li class="menu-inside">
+                <a [routerLink]="['../list-customers']"
+                  class="menu-link menu-link--inside"><i
+                    class="fa-solid fa-user-shield"
+                    style="margin-right: 8px;"></i>Administrar</a>
+              </li>
+              <li class="menu-inside">
+                <a [routerLink]="['../new-customer']"
+                  class="menu-link menu-link--inside"><i
+                    class="fa-solid fa-plus"
+                    style="margin-right: 8px;"></i>Nuevo</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="operations" id="operations"><router-outlet></router-outlet></article>
+    </div>
+    <div *ngIf="!showMenu"><router-outlet></router-outlet></div>
+  </body>
+</html>

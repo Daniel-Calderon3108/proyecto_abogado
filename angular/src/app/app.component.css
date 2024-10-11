@@ -1,0 +1,323 @@
+/* Estilos header (Encabezado) */
+
+header {
+    font-family: var(--letter);
+    padding: 10px 20px;
+    position: fixed;
+    height: 50px;
+    width: 100%;
+    z-index: 30;
+    color: var(--color-white);
+    background: var(--color-one);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header h1 {
+    font-size: var(--size-paragraph);
+    color: var(--color-white);
+}
+
+.header-extra {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 5px 10px;
+    border-radius: 3px;
+}
+
+.header-extra .extra-color {
+    font-size: var(--size-text1);
+}
+
+.header-extra .extra-color .right {
+    margin-left: -5px;
+}
+
+/* Estilos switch (Claro / Oscuro) */
+
+#switch {
+    position: relative;
+    display: inline-block;
+    width: 35px;
+    height: 15px;
+}
+
+#switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+#switch .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--color-switch);
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+#switch .slider::before {
+    position: absolute;
+    content: "";
+    height: 8px;
+    width: 8px;
+    left: 4px;
+    bottom: 4px;
+    background-color: var(--color-body);
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+input:checked+.slider {
+    background-color: var(--color-switch);
+}
+
+input:focus+.slider {
+    box-shadow: 0 0 1px var(--color-switch);
+}
+
+input:checked+.slider:before {
+    -webkit-transform: translateX(20px);
+    -ms-transform: translateX(20px);
+    transform: translateX(20px);
+}
+
+#switch .slider.round {
+    border-radius: 34px;
+}
+
+#switch .slider.round:before {
+    border-radius: 50%;
+}
+
+#date-actual {
+    padding: 4px 0;
+    padding-left: 10px;
+    border-left: 1px solid var(--color-white);
+    font-size: var(--size-text1);
+    min-width: 135px;
+    text-align: center;
+}
+
+.sign-out {
+    padding-left: 10px;
+    border-left: 1px solid var(--color-white);
+    color: var(--color-red);
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.sign-out i {
+    color: var(--color-red);
+    text-decoration: none;
+}
+
+/* Estilos contenedor (Nav y Article) */
+
+.container {
+    margin: 0;
+    padding: 0;
+    padding-top: 54px;
+    max-width: none;
+}
+
+/* Estilos barra de navegación */
+
+.container nav {
+    height: -webkit-fill-available;
+    position: fixed;
+    background: var(--color-six);
+    border-top: 1px solid var(--color-body);
+    transition: all .5s;
+    z-index: 2;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    margin-bottom: 5px;
+}
+
+.container nav.open {
+    width: 200px;
+}
+
+.container nav.close {
+    width: 30px;
+}
+
+.container nav .btn-menu {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.container nav .btn-menu i {
+    padding: 8px;
+    background: var(--color-six);
+    border-top-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+    cursor: pointer;
+    color: var(--color-white);
+}
+
+.container .user {
+    color: var(--color-white);
+    padding: 15px 0px;
+    border-radius: 5px;
+    font-weight: var(--weight-text);
+    font-family: var(--letter);
+    margin: 0 20px;
+    font-size: 13px;
+    text-align: center;
+    transition: all .5s;
+    cursor: pointer;
+}
+
+.container nav.close .user,
+.container nav .menu-icon,
+.container nav.close .menu-name,
+.container nav.close .menu-arrow,
+.container nav .menu-hide {
+    display: none;
+}
+
+.container .user img {
+    width: 65px;
+    height: 65px;
+    border-radius: 50%;
+    display: block;
+    margin: auto;
+    margin-bottom: 10px;
+}
+
+ul.menu,
+ul.menu-nesting {
+    padding-left: 0;
+    font-weight: var(--weight-text);
+}
+
+.menu {
+    margin-top: 40px;
+    transition: all .5s;
+}
+
+.menu-item {
+    list-style: none;
+    position: relative;
+    height: 100%;
+    --transform: rotate(0);
+    overflow: hidden;
+}
+
+.menu-item:hover {
+    --clip: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+    --transform: rotate(90deg);
+}
+
+.menu-item--active {
+    --transform: rotate(90deg);
+    --background: var(--color-one);
+}
+
+.menu-item--show {
+    background: var(--background);
+}
+
+.menu-link {
+    color: var(--color-white);
+    text-decoration: none;
+    padding: 15px 0;
+    padding-left: 20px;
+    display: flex;
+    height: auto;
+    align-items: center;
+    font-size: var(--size-text1);
+    font-family: var(--letter);
+}
+
+.container nav.close .menu-item {
+    --clip: polygon(0 0, 0 1%, 0 100%, 0% 100%);
+    position: relative;
+    width: 100%;
+    overflow: visible;
+}
+
+.container nav.close .menu-item:hover {
+    --clip: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+}
+
+.menu-title {
+    background: var(--color-one);
+    font-size: var(--size-text);
+    padding: 10px;
+    margin: 0;
+    font-weight: 500;
+    border-top-right-radius: 5px;
+    color: var(--color-white);
+}
+
+.container nav.close .menu-nesting {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100px;
+    transition: clip-path .3s;
+    clip-path: var(--clip);
+    transform: translateX(100%);
+    height: max-content !important;
+    background: var(--color-one);
+    border-top-right-radius: 5px;
+    z-index: 99;
+}
+
+.container nav.close .menu-icon,
+.container nav.close .menu-hide {
+    display: block;
+}
+
+.container nav.close .menu-link {
+    padding-left: 9px;
+}
+
+.menu-link--inside {
+    background: var(--color-six);
+}
+
+.menu-link:hover {
+    background: var(--color-one);
+}
+
+.menu-nesting {
+    height: 0;
+    transition: height .3s;
+}
+
+.menu-arrow {
+    transform: var(--transform);
+    transition: transform .3s;
+    display: block;
+    margin-left: auto;
+    margin-right: 20px;
+}
+
+.operations {
+    margin-left: 205px;
+    margin-right: 5px;
+    font-family: var(--letter);
+    transition: all .5s;
+    border-radius: 5px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid;
+}
+
+/* Colapsar Menu */
+
+.operations.collapse {
+    margin-left: 35px;
+}
