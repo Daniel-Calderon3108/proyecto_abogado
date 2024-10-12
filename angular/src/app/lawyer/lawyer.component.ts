@@ -1,28 +1,24 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { LawyersService } from '../services/lawyers.service';
+import { DataService } from '../services/shared/data.service';
 
 @Component({
   selector: 'app-lawyer',
   templateUrl: './lawyer.component.html',
   styleUrls: ['./lawyer.component.css']
 })
-export class LawyerComponent implements OnInit, OnDestroy {
+export class LawyerComponent implements OnInit {
 
   data : any = [];
   isDarkMode: boolean = localStorage.getItem("darkMode") === "true";
-  private interval_id: any;
 
-  constructor(private lawyerServices : LawyersService) { }
+  constructor(private lawyerServices : LawyersService, private dataService : DataService) { }
 
   ngOnInit(): void {
     this.list();
     this.heightInfo();
 
-    this.interval_id = setInterval(() => { this.isDarkMode = localStorage.getItem("darkMode") === "true"; }, 1);
-  }
-
-  ngOnDestroy(): void {
-    if (this.interval_id) clearInterval(this.interval_id);
+    this.dataService.currentDarKMode.subscribe( value => { this.isDarkMode = value; });
   }
 
   list() {

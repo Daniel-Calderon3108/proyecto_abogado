@@ -11,6 +11,7 @@ export interface Customers {
     fecha_actualiza?: string;
     tipo_documento?: string;
     documento?: string;
+    estado?: string;
     usuario: {
         usuario_id? : string;
         nombre: string;
@@ -20,6 +21,7 @@ export interface Customers {
         usuario_actualiza: string;
         fecha_actualiza: string;
         avatar: string;
+        estado: string;
     }
 }
 
@@ -35,6 +37,7 @@ export interface Lawyers {
     fecha_actualiza?: string;
     tipo_documento?: string;
     documento?: string;
+    estado?: string;
     usuario: {
         usuario_id?: string;
         nombre: string;
@@ -44,5 +47,6 @@ export interface Lawyers {
         usuario_actualiza: string;
         fecha_actualiza: string;
         avatar: string;
+        estado: string;
     }
 }

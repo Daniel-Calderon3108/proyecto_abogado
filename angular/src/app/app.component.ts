@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
+import { DataService } from './services/shared/data.service';
 
 @Component({
   selector: 'app-root',
@@ -15,7 +16,7 @@ export class AppComponent implements OnInit, OnDestroy {
   showMenu: boolean = true;
   isDarkMode : boolean = false;
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private dataService : DataService) { }
 
   ngOnInit(): void {
     // Obtener la URL completa de la ruta actual
@@ -56,7 +57,7 @@ export class AppComponent implements OnInit, OnDestroy {
     const savedTheme = localStorage.getItem("darkMode");
     this.isDarkMode = savedTheme === "true";
 
-    this.applyTheme();
+    this.toggleDarkMode(true);
   }
 
   ngOnDestroy(): void {
@@ -96,9 +97,10 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   // Guardar preferencia
-  toggleDarkMode(): void {
-    this.isDarkMode = !this.isDarkMode;
+  toggleDarkMode(first : boolean): void {
+    if(!first) this.isDarkMode = !this.isDarkMode;
     localStorage.setItem('darkMode', this.isDarkMode.toString()); // Guardar la preferencia en localStorage
+    this.dataService.changeDarkMode(this.isDarkMode);
     this.applyTheme();
   }
 

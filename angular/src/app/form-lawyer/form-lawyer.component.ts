@@ -23,6 +23,7 @@ export class FormLawyerComponent implements OnInit {
     fecha_actualiza: "",
     tipo_documento: "Cedula Ciudadania",
     documento: "",
+    estado: "",
     usuario: {
       usuario_id: "",
       nombre: "",
@@ -31,7 +32,8 @@ export class FormLawyerComponent implements OnInit {
       fecha_registra: "",
       usuario_actualiza: "",
       fecha_actualiza: "",
-      avatar: ""
+      avatar: "",
+      estado: ""
     }
   };
 
@@ -68,6 +70,7 @@ export class FormLawyerComponent implements OnInit {
     this.data.fecha_registra = time;
     this.data.usuario_actualiza = "1"; // Se debe cambiar por el usuario que este logeado (Administrador)
     this.data.fecha_actualiza = time;
+    this.data.estado = "1";
 
     delete this.data.usuario.usuario_id;
     this.data.usuario.usuario_registra = "1";
@@ -75,6 +78,7 @@ export class FormLawyerComponent implements OnInit {
     this.data.usuario.usuario_actualiza = "1";
     this.data.usuario.fecha_actualiza = time;
     this.data.usuario.avatar = "1"; // Revisar si se pueden cargar imagenes
+    this.data.usuario.estado = "1";
 
     this.lawyerService.saveLawyer(this.data)
     .subscribe(

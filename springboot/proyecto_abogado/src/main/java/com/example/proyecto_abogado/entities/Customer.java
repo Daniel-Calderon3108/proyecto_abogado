@@ -26,6 +26,7 @@ public class Customer {
     private String fecha_actualiza;
     private String tipo_documento;
     private String documento;
+    private String estado;
 
     // Manera correcta de hacer una relacion 1 a 1
     @OneToOne(cascade = CascadeType.ALL)

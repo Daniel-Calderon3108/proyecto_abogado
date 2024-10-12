@@ -25,4 +25,5 @@ public class User {
     private String usuario_actualiza;
     private String fecha_actualiza;
     private String avatar;
+    private String estado;
 }
