@@ -1,7 +1,5 @@
 package com.example.proyecto_abogado.entities;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
 import javax.persistence.*;
@@ -26,10 +24,11 @@ public class Customer {
     private String fecha_registra;
     private String usuario_actualiza;
     private String fecha_actualiza;
+    private String tipo_documento;
+    private String documento;
 
-    @OneToOne
+    // Manera correcta de hacer una relacion 1 a 1
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "usuario_id", referencedColumnName = "usuario_id")
-    @JsonManagedReference // Indica que este es el lado "manejado" de la relación
     private User usuario;
-
 }

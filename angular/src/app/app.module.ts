@@ -8,6 +8,8 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { CustomerComponent } from './customer/customer.component';
 import { FormCustomersComponent } from './form-customers/form-customers.component';
+import { LawyerComponent } from './lawyer/lawyer.component';
+import { FormLawyerComponent } from './form-lawyer/form-lawyer.component';
 
 @NgModule({
   declarations: [
@@ -15,6 +17,8 @@ import { FormCustomersComponent } from './form-customers/form-customers.componen
     LoginComponent,
     CustomerComponent,
     FormCustomersComponent,
+    LawyerComponent,
+    FormLawyerComponent,
   ],
   imports: [
     BrowserModule,

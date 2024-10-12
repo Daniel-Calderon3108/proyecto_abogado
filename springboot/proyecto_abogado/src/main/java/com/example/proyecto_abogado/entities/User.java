@@ -1,7 +1,5 @@
 package com.example.proyecto_abogado.entities;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -27,9 +25,4 @@ public class User {
     private String usuario_actualiza;
     private String fecha_actualiza;
     private String avatar;
-
-    @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonBackReference // Indica que este es el lado "de vuelta" de la relación
-    private Customer cliente;
-
 }

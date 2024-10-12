@@ -35,6 +35,35 @@ header h1 {
     margin-left: -5px;
 }
 
+/* Estilos Input Busqueda */
+
+.search {
+    position: relative;
+    width: 33%;
+}
+
+.search input {
+    width: 100%;
+    border-radius: var(--border);
+    border: none;
+    padding: 0 23px;
+    font-size: var(--size-text);
+    font-family: var(--letter);
+}
+
+.search input::placeholder {
+    font-family: var(--letter);
+    font-size: var(--size-text);
+}
+
+.search i {
+    position: absolute;
+    top: 4px;
+    right: 6px;
+    color: var(--color-black);
+}
+
+
 /* Estilos switch (Claro / Oscuro) */
 
 #switch {

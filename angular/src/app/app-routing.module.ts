@@ -3,6 +3,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { CustomerComponent } from './customer/customer.component';
 import { FormCustomersComponent } from './form-customers/form-customers.component';
+import { LawyerComponent } from './lawyer/lawyer.component';
+import { FormLawyerComponent } from './form-lawyer/form-lawyer.component';
 
 const routes: Routes = [
   {
@@ -21,6 +23,14 @@ const routes: Routes = [
   {
     path : "new-customer",
     component : FormCustomersComponent
+  },
+  {
+    path : "list-lawyers",
+    component : LawyerComponent
+  },
+  {
+    path : "new-lawyer",
+    component : FormLawyerComponent
   }
 ];
 

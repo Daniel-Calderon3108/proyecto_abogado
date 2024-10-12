@@ -1,17 +1,48 @@
 export interface Customers {
-    cliente_id? : any;
+    cliente_id?: any;
     nombre?: string;
     direccion?: string;
     telefono?: string;
     correo?: string;
     tipo_cliente?: string;
-    usuario_id?: string;
     usuario_registra?: string;
     fecha_registra?: string;
     usuario_actualiza?: string;
     fecha_actualiza?: string;
+    tipo_documento?: string;
+    documento?: string;
+    usuario: {
+        usuario_id? : string;
+        nombre: string;
+        clave: string;
+        usuario_registra: string;
+        fecha_registra: string;
+        usuario_actualiza: string;
+        fecha_actualiza: string;
+        avatar: string;
+    }
 }
 
 export interface Lawyers {
-    abogado_id? : string;
+    abogado_id?: string;
+    nombre?: string;
+    telefono?: string;
+    correo?: string;
+    especialidad?: string;
+    usuario_registra?: string;
+    fecha_registra?: string;
+    usuario_actualiza?: string;
+    fecha_actualiza?: string;
+    tipo_documento?: string;
+    documento?: string;
+    usuario: {
+        usuario_id?: string;
+        nombre: string;
+        clave: string;
+        usuario_registra: string;
+        fecha_registra: string;
+        usuario_actualiza: string;
+        fecha_actualiza: string;
+        avatar: string;
+    }
 }

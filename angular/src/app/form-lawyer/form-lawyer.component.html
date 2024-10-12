@@ -1,10 +1,7 @@
-
-<h2>Nuevo Cliente</h2>
-
+<h2>Nuevo Abogado</h2>
 <div class="info" id="info">
-
     <form>
-        <p>Datos Cliente</p>
+        <p>Datos Abogado</p>
         <div class="form-items">
             <div class="form-item">
                 <label for="nombre">Nombre</label>
@@ -35,22 +32,25 @@
         </div>
         <div class="form-items">
             <div class="form-item">
-                <label for="direccion">Direccion</label>
-                <input type="text" name="direccion" id="direccion"
-                    [(ngModel)]="data.direccion">
-            </div>
-        </div>
-        <div class="form-items">
-            <div class="form-item">
                 <label for="telefono">Telefono</label>
                 <input type="text" name="telefono" id="telefono"
                     [(ngModel)]="data.telefono">
             </div>
             <div class="form-item">
-                <label for="tipo">Tipo</label>
-                <select name="tipo" id="tipo" [(ngModel)]="data.tipo_cliente">
-                    <option value="Natural">Natural</option>
-                    <option value="Empresa">Empresa</option>
+                <label for="especialidad">Especialidad</label>
+                <select name="especialidad" id="especialidad" [(ngModel)]="data.especialidad">
+                    <option value="Penal">Penal</option>
+                    <option value="Civil">Civil</option>
+                    <option value="Familiar">Familiar</option>
+                    <option value="Laboral">Laboral</option>
+                    <option value="Corporativo o Mercantil">Corporativo o Mercantil</option>
+                    <option value="Fiscal o Tributario">Fiscal o Tributario</option>
+                    <option value="Inmobiliario">Inmobiliario</option>
+                    <option value="Internacional">Internacional</option>
+                    <option value="Ambiental">Ambiental</option>
+                    <option value="Intelectual">Intelectual</option>
+                    <option value="Seguros">Seguros</option>
+                    <option value="Administrativo">Administrativo</option>
                 </select>
 
             </div>
@@ -74,5 +74,4 @@
             </div>
         </div>
     </form>
-
 </div>
