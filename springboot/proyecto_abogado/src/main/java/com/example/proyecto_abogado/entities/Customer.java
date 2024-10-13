@@ -5,7 +5,7 @@ import lombok.*;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "cliente")
+@Table(name = "client")
 @Getter
 @Setter
 @ToString
@@ -14,22 +14,22 @@ import javax.persistence.*;
 public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long cliente_id;
-    private String nombre;
-    private String direccion;
-    private String telefono;
-    private String correo;
-    private String tipo_cliente;
-    private String usuario_registra;
-    private String fecha_registra;
-    private String usuario_actualiza;
-    private String fecha_actualiza;
-    private String tipo_documento;
-    private String documento;
-    private String estado;
+    private Long id_client;
+    private String name_client;
+    private String address_client;
+    private String phone_client;
+    private String email_client;
+    private String type_client;
+    private String user_register_client;
+    private String date_register_client;
+    private String update_user_client;
+    private String date_update_client;
+    private String type_document_client;
+    private String document_client;
+    private boolean status_client;
 
     // Manera correcta de hacer una relacion 1 a 1
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "usuario_id", referencedColumnName = "usuario_id")
-    private User usuario;
+    @JoinColumn(name = "id_user_client", referencedColumnName = "id_user")
+    private User user;
 }
