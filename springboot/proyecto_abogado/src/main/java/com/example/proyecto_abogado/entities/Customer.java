@@ -23,8 +23,8 @@ public class Customer {
     private String phoneClient;
     @Column(name = "email_client")
     private String emailClient;
-    @Column(name = "typeClient")
-    private String type_client;
+    @Column(name = "type_client")
+    private String typeClient;
     @Column(name = "user_register_client")
     private String userRegisterClient;
     @Column(name = "date_register_client")
