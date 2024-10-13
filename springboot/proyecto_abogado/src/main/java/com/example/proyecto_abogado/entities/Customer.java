@@ -15,18 +15,30 @@ public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id_client;
-    private String name_client;
-    private String address_client;
-    private String phone_client;
-    private String email_client;
+    @Column(name = "name_client")
+    private String nameClient;
+    @Column(name = "address_client")
+    private String addressClient;
+    @Column(name = "phone_client")
+    private String phoneClient;
+    @Column(name = "email_client")
+    private String emailClient;
+    @Column(name = "typeClient")
     private String type_client;
-    private String user_register_client;
-    private String date_register_client;
-    private String update_user_client;
-    private String date_update_client;
-    private String type_document_client;
-    private String document_client;
-    private boolean status_client;
+    @Column(name = "user_register_client")
+    private String userRegisterClient;
+    @Column(name = "date_register_client")
+    private String dateRegisterClient;
+    @Column(name = "update_user_client")
+    private String updateUserClient;
+    @Column(name = "date_update_client")
+    private String dateUpdateClient;
+    @Column(name = "type_document_client")
+    private String typeDocumentClient;
+    @Column(name = "document_client")
+    private String documentClient;
+    @Column(name = "status_client")
+    private boolean statusClient;
 
     // Manera correcta de hacer una relacion 1 a 1
     @OneToOne(cascade = CascadeType.ALL)

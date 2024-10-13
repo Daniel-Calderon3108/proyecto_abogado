@@ -1,10 +1,8 @@
 package com.example.proyecto_abogado.services;
 
 import com.example.proyecto_abogado.entities.Customer;
-import com.example.proyecto_abogado.entities.User;
 import com.example.proyecto_abogado.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,7 +14,7 @@ public class CustomerService implements  ICustomerService {
     private CustomerRepository repository;
 
     @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
+    private EncriptPassword encriptPassword;
 
 
     @Override
@@ -24,23 +22,7 @@ public class CustomerService implements  ICustomerService {
 
     @Override
     public void save(Customer customer) {
-        // Verificar si la contraseña ya está cifrada
-        if (!customer.getUser().getPassword_user().startsWith("$2a$")) { // BCrypt hashes start with $2a$
-            // Cifrar la contraseña antes de guardarla
-            String contrasenaCifrada = passwordEncoder.encode(customer.getUser().getPassword_user());
-            customer.getUser().setPassword_user(contrasenaCifrada);
-        }
+        customer.getUser().setPasswordUser(encriptPassword.encryptExistingPasswords(customer.getUser().getPasswordUser()));
         repository.save(customer);
-    }
-
-    public void encryptExistingPasswords() {
-        List<Customer> customerList = (List<Customer>) repository.findAll();
-        for (Customer customer : customerList) {
-            if (!customer.getUser().getPassword_user().startsWith("$2a$")) {
-                String encryptedPassword = passwordEncoder.encode(customer.getUser().getPassword_user());
-                customer.getUser().setPassword_user(encryptedPassword);
-                repository.save(customer);
-            }
-        }
     }
 }
