@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface ILawyerService {
     List<Lawyer> getAll();
-    Lawyer save(Lawyer lawyer);
+    void save(Lawyer lawyer);
 }

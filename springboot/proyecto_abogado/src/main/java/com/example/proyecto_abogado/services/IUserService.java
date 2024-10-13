@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface IUserService {
     List<User> getAll();
-    User save(User user);
+    void save(User user);
 }
