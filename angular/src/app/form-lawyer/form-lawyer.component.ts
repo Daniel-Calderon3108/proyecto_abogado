@@ -12,28 +12,29 @@ export class FormLawyerComponent implements OnInit {
 
   // Inicializar variable
   data: Lawyers = {
-    abogado_id: "",
-    nombre: "",
-    telefono: "",
-    correo: "",
-    especialidad: "Penal",
-    usuario_registra: "",
-    fecha_registra: "",
-    usuario_actualiza: "",
-    fecha_actualiza: "",
-    tipo_documento: "Cedula Ciudadania",
-    documento: "",
-    estado: "",
-    usuario: {
-      usuario_id: "",
-      nombre: "",
-      clave: "",
-      usuario_registra: "",
-      fecha_registra: "",
-      usuario_actualiza: "",
-      fecha_actualiza: "",
-      avatar: "",
-      estado: ""
+    id_lawyer: "",
+    nameLawyer: "",
+    phoneLawyer: "",
+    emailLawyer: "",
+    typeLawyer: "Penal",
+    userRegisterLawyer: "",
+    dateRegisterLawyer: "",
+    userUpdateLawyer: "",
+    dateUpdateLawyer: "",
+    typeDocumentLawyer: "Cedula Ciudadania",
+    documentLawyer: "",
+    statusLawyer: true,
+    user: {
+        id_user : "",
+        nameUser: "",
+        passwordUser: "",
+        userRegister: "",
+        dateRegister: "",
+        userUpdate: "",
+        lastUpdate: "",
+        photoUser: "",
+        statusUser: true,
+        rolUser: "Abogado",
     }
   };
 
@@ -65,20 +66,18 @@ export class FormLawyerComponent implements OnInit {
     // Construir formato fecha para poder enviar a API
     let time: string = `${year}-${month}-${day} ${hour}:${minute}:${seconds}`;
 
-    delete this.data.abogado_id;
-    this.data.usuario_registra = "1"; // Se debe cambiar por el usuario que este logeado (Administrador)
-    this.data.fecha_registra = time;
-    this.data.usuario_actualiza = "1"; // Se debe cambiar por el usuario que este logeado (Administrador)
-    this.data.fecha_actualiza = time;
-    this.data.estado = "1";
+    delete this.data.id_lawyer;
+    this.data.userRegisterLawyer = "1"; // Se debe cambiar por el usuario que este logeado (Administrador)
+    this.data.dateRegisterLawyer = time;
+    this.data.userUpdateLawyer = "1"; // Se debe cambiar por el usuario que este logeado (Administrador)
+    this.data.dateUpdateLawyer = time;
 
-    delete this.data.usuario.usuario_id;
-    this.data.usuario.usuario_registra = "1";
-    this.data.usuario.fecha_registra = time;
-    this.data.usuario.usuario_actualiza = "1";
-    this.data.usuario.fecha_actualiza = time;
-    this.data.usuario.avatar = "1"; // Revisar si se pueden cargar imagenes
-    this.data.usuario.estado = "1";
+    delete this.data.user.id_user;
+    this.data.user.userRegister = "1";
+    this.data.user.dateRegister = time;
+    this.data.user.userUpdate = "1";
+    this.data.user.lastUpdate = time;
+    this.data.user.photoUser = "1"; // Revisar si se pueden cargar imagenes
 
     this.lawyerService.saveLawyer(this.data)
     .subscribe(

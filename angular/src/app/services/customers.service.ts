@@ -7,15 +7,15 @@ import { Customers } from './model';
 })
 export class CustomersService {
 
-  private API_URI : string  = "http://localhost:8080/";
+  private API_URI : string  = "http://localhost:8080/api/customer";
 
   constructor(private http : HttpClient) { }
 
   getCustomers() {
-    return this.http.get(`${this.API_URI}Customers`);
+    return this.http.get(`${this.API_URI}`);
   }
 
   saveCustomer(customer : Customers) {
-    return this.http.post(`${this.API_URI}newCustomer`, customer);
+    return this.http.post(`${this.API_URI}/register`, customer);
   }
 }

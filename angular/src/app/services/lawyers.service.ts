@@ -7,15 +7,15 @@ import { Lawyers } from './model';
 })
 export class LawyersService {
 
-  private API_URI : string  = "http://localhost:8080/";
+  private API_URI : string  = "http://localhost:8080/api/lawyer";
 
   constructor(private http : HttpClient) { }
 
   getLawyers() {
-    return this.http.get(`${this.API_URI}Lawyers`);
+    return this.http.get(`${this.API_URI}`);
   }
 
   saveLawyer(lawyer : Lawyers) {
-    return this.http.post(`${this.API_URI}newLawyer`,lawyer);
+    return this.http.post(`${this.API_URI}/register`,lawyer);
   }
 }

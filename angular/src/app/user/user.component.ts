@@ -1,18 +1,18 @@
 import { Component, OnInit } from '@angular/core';
-import { CustomersService } from '../services/customers.service';
+import { UserService } from '../services/user.service';
 import { DataService } from '../services/shared/data.service';
 
 @Component({
-  selector: 'app-customer',
-  templateUrl: './customer.component.html',
-  styleUrls: ['./customer.component.css']
+  selector: 'app-user',
+  templateUrl: './user.component.html',
+  styleUrls: ['./user.component.css']
 })
-export class CustomerComponent implements OnInit {
+export class UserComponent implements OnInit {
 
-  data: any = [];
-  isDarkMode: boolean = localStorage.getItem("darkMode") === "true";
+  data : any = [];
+  isDarkMode : boolean = localStorage.getItem("darkMode") == "true";
 
-  constructor(private customerServices: CustomersService, private dataService : DataService) { }
+  constructor(private userService : UserService, private dataService : DataService) { }
 
   ngOnInit(): void {
     this.list();
@@ -22,7 +22,7 @@ export class CustomerComponent implements OnInit {
   }
 
   list() {
-    this.customerServices.getCustomers().subscribe(
+    this.userService.getUsers().subscribe(
       rs => {
         this.data = rs;
       },
@@ -37,4 +37,5 @@ export class CustomerComponent implements OnInit {
 
     if (operationsElement) operationsElement.style.maxHeight = `${height - 140}px`;
   }
+
 }

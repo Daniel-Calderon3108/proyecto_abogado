@@ -12,29 +12,29 @@ export class FormCustomersComponent implements OnInit {
 
   // Inicializar variable
   data: Customers = {
-    cliente_id: 0,
-    nombre: "",
-    direccion: "",
-    telefono: "",
-    correo: "",
-    tipo_cliente: "Natural",
-    usuario_registra: "",
-    fecha_registra: "",
-    usuario_actualiza: "",
-    fecha_actualiza: "",
-    tipo_documento: "Cedula Ciudadania",
-    documento: "",
-    estado: "",
-    usuario: {
-      usuario_id: "",
-      nombre: "",
-      clave: "",
-      usuario_registra: "",
-      fecha_registra: "",
-      usuario_actualiza: "",
-      fecha_actualiza: "",
-      avatar: "",
-      estado: ""
+    nameClient: "",
+    addressClient: "",
+    phoneClient: "",
+    emailClient: "",
+    typeClient: "Natural",
+    userRegisterClient: "",
+    dateRegisterClient: "",
+    updateUserClient: "",
+    dateUpdateClient: "",
+    typeDocumentClient: "Cedula Ciudadania",
+    documentClient: "",
+    statusClient: true,
+    user: {
+        id_user: "",
+        nameUser: "",
+        passwordUser: "",
+        userRegister: "",
+        dateRegister: "",
+        userUpdate: "",
+        lastUpdate: "",
+        photoUser: "",
+        statusUser: true,
+        rolUser: "Usuario"
     }
   };
 
@@ -67,20 +67,18 @@ export class FormCustomersComponent implements OnInit {
     // Construir formato fecha para poder enviar a API
     let time: string = `${year}-${month}-${day} ${hour}:${minute}:${seconds}`;
 
-    delete this.data.cliente_id;
-    this.data.usuario_registra = "1"; // Se debe cambiar por el usuario que este logeado (Administrador)
-    this.data.fecha_registra = time;
-    this.data.usuario_actualiza = "1"; // Se debe cambiar por el usuario que este logeado (Administrador)
-    this.data.fecha_actualiza = time;
-    this.data.estado = "1";
+    delete this.data.id_client;
+    this.data.userRegisterClient = "1"; // Se debe cambiar por el usuario que este logeado (Administrador)
+    this.data.dateRegisterClient = time;
+    this.data.updateUserClient = "1"; // Se debe cambiar por el usuario que este logeado (Administrador)
+    this.data.dateUpdateClient = time;
 
-    delete this.data.usuario.usuario_id;
-    this.data.usuario.usuario_registra = "1"; // Se debe cambiar por el usuario que este logeado (Administrador)
-    this.data.usuario.fecha_registra = time;
-    this.data.usuario.usuario_actualiza = "1"; // Se debe cambiar por el usuario que este logeado (Administrador)
-    this.data.usuario.fecha_actualiza = time; 
-    this.data.usuario.avatar = "1"; // Revisar si se pueden cargar imagenes
-    this.data.usuario.estado = "1";
+    delete this.data.user.id_user;
+    this.data.user.userRegister = "1"; // Se debe cambiar por el usuario que este logeado (Administrador)
+    this.data.user.dateRegister = time;
+    this.data.user.userUpdate = "1"; // Se debe cambiar por el usuario que este logeado (Administrador)
+    this.data.user.lastUpdate = time; 
+    this.data.user.photoUser = "Ninguna"; // Revisar si se pueden cargar imagenes
 
     this.customerService.saveCustomer(this.data)
       .subscribe(

@@ -5,12 +5,19 @@ import { CustomerComponent } from './customer/customer.component';
 import { FormCustomersComponent } from './form-customers/form-customers.component';
 import { LawyerComponent } from './lawyer/lawyer.component';
 import { FormLawyerComponent } from './form-lawyer/form-lawyer.component';
+import { UserComponent } from './user/user.component';
+import { FormUserComponent } from './form-user/form-user.component';
+import { HomeComponent } from './home/home.component';
 
 const routes: Routes = [
   {
     path : "",
     redirectTo : "/login",
     pathMatch : "full"
+  },
+  {
+    path : "home",
+    component : HomeComponent
   },
   {
     path : "login",
@@ -31,6 +38,14 @@ const routes: Routes = [
   {
     path : "new-lawyer",
     component : FormLawyerComponent
+  },
+  {
+    path : "list-users",
+    component : UserComponent
+  },
+  {
+    path : "new-user",
+    component : FormUserComponent
   }
 ];
 

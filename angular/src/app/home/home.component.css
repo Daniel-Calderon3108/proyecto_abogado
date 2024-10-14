@@ -1,0 +1,25 @@
+.container-home {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-four);
+    padding: 30px;
+    gap: 30px;
+    border-radius: var(--border);
+}
+
+.container-home img {
+    width: 30%;
+}
+
+.container-home h2 {
+    color: var(--color-white);
+}
+
+.container-services {
+    margin: 30px 0;
+}
+
+.container-services li {
+    color: var(--color-letter);
+}

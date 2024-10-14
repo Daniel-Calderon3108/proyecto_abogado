@@ -15,14 +15,14 @@
         </thead>
         <tbody>
             <tr *ngFor="let model of data">
-                <td>{{model.nombre}}</td>
-                <td>{{model.tipo_documento}}</td>
-                <td>{{model.documento}}</td>
-                <td>{{model.telefono}}</td>
-                <td>{{model.correo}}</td>
-                <td>{{model.especialidad}}</td>
-                <td>{{model.estado}}</td>
-                <td>{{model.usuario.nombre}}</td>
+                <td>{{model.nameLawyer}}</td>
+                <td>{{model.typeDocumentLawyer}}</td>
+                <td>{{model.documentLawyer}}</td>
+                <td>{{model.phoneLawyer}}</td>
+                <td>{{model.emailLawyer}}</td>
+                <td>{{model.typeLawyer}}</td>
+                <td>{{model.statusLawyer == 1 ? "Activo" : "Inactivo"}}</td>
+                <td>{{model.user.nameUser}}</td>
             </tr>
         </tbody>
     </table>

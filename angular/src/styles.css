@@ -34,6 +34,7 @@
 [theme="dark-mode"] {
     --color-one: #273746;
     --color-six: #212529;
+    --color-four: var(--color-six);
 
     --color-switch: #FFFF;
     --color-body: #000000;
@@ -76,7 +77,7 @@ h2 {
 
 
 .info::-webkit-scrollbar-thumb {
-    background: var(--color-text);
+    background: var(--color-one);
     border-radius: 5px;
 }
 

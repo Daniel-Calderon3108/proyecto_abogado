@@ -6,18 +6,18 @@
             <div class="form-item">
                 <label for="nombre">Nombre</label>
                 <input type="text" name="nombre" id="nombre"
-                    [(ngModel)]="data.nombre">
+                    [(ngModel)]="data.nameLawyer">
             </div>
             <div class="form-item">
                 <label for="correo">Correo</label>
                 <input type="text" name="correo" id="correo"
-                    [(ngModel)]="data.correo">
+                    [(ngModel)]="data.emailLawyer">
             </div>
         </div>
         <div class="form-items">
             <div class="form-item">
                 <label for="tipo_documento">Tipo Documento</label>
-                <select name="tipo_documento" id="tipo_documento" [(ngModel)]="data.tipo_documento">
+                <select name="tipo_documento" id="tipo_documento" [(ngModel)]="data.typeDocumentLawyer">
                     <option value="Cedula Ciudadania">Cedula Ciudadania</option>
                     <option value="Cedula Extranjera">Cedula Extranjera</option>
                     <option value="Tarjeta Identidad">Tarjeta Identidad</option>
@@ -27,18 +27,18 @@
             <div class="form-item">
                 <label for="documento">Documento</label>
                 <input type="text" name="documento" id="documento"
-                    [(ngModel)]="data.documento">
+                    [(ngModel)]="data.documentLawyer">
             </div>
         </div>
         <div class="form-items">
             <div class="form-item">
                 <label for="telefono">Telefono</label>
                 <input type="text" name="telefono" id="telefono"
-                    [(ngModel)]="data.telefono">
+                    [(ngModel)]="data.phoneLawyer">
             </div>
             <div class="form-item">
                 <label for="especialidad">Especialidad</label>
-                <select name="especialidad" id="especialidad" [(ngModel)]="data.especialidad">
+                <select name="especialidad" id="especialidad" [(ngModel)]="data.typeLawyer">
                     <option value="Penal">Penal</option>
                     <option value="Civil">Civil</option>
                     <option value="Familiar">Familiar</option>
@@ -60,12 +60,12 @@
             <div class="form-item">
                 <label for="usuario">Usuario</label>
                 <input type="text" name="usuario" id="usuario"
-                    [(ngModel)]="data.usuario.nombre">
+                    [(ngModel)]="data.user.nameUser">
             </div>
             <div class="form-item">
                 <label for="clave">Clave</label>
                 <input type="password" name="clave" id="clave"
-                    [(ngModel)]="data.usuario.clave">
+                    [(ngModel)]="data.user.passwordUser">
             </div>
         </div>
         <div class="form-items" style="justify-content: center;">

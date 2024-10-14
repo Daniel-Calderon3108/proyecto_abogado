@@ -44,6 +44,46 @@
         <ul class="menu">
           <li class="menu-item menu-item--show">
             <a class="menu-link menu-close"><span
+                class="fa-solid fa-house menu-icon"></span><span
+                class="menu-name">Inicio</span><i
+                class="fa-solid fa-chevron-right menu-arrow"></i></a>
+            <ul class="menu-nesting">
+              <li class="menu-inside menu-hide">
+                <p class="menu-title">Inicio</p>
+              </li>
+              <li class="menu-inside">
+                <a [routerLink]="['../home']"
+                  class="menu-link menu-link--inside"><i
+                    class="fa-solid fa-house"
+                    style="margin-right: 8px;"></i>Inicio</a>
+              </li>
+            </ul>
+          </li>
+          <li class="menu-item menu-item--show">
+            <a class="menu-link menu-close"><span
+                class="fa-solid fa-user menu-icon"></span><span
+                class="menu-name">Usuario</span><i
+                class="fa-solid fa-chevron-right menu-arrow"></i></a>
+            <ul class="menu-nesting">
+              <li class="menu-inside menu-hide">
+                <p class="menu-title">Usuario</p>
+              </li>
+              <li class="menu-inside">
+                <a [routerLink]="['../list-users']"
+                  class="menu-link menu-link--inside"><i
+                    class="fa-solid fa-user"
+                    style="margin-right: 8px;"></i>Administrar</a>
+              </li>
+              <li class="menu-inside">
+                <a [routerLink]="['../new-user']"
+                  class="menu-link menu-link--inside"><i
+                    class="fa-solid fa-plus"
+                    style="margin-right: 8px;"></i>Nuevo</a>
+              </li>
+            </ul>
+          </li>
+          <li class="menu-item menu-item--show">
+            <a class="menu-link menu-close"><span
                 class="fa-solid fa-briefcase menu-icon"></span><span
                 class="menu-name">Abogado</span><i
                 class="fa-solid fa-chevron-right menu-arrow"></i></a>

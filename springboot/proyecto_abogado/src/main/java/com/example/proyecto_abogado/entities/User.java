@@ -34,4 +34,6 @@ public class User {
     private String photoUser;
     @Column(name = "status_user")
     private boolean statusUser;
+    @Column(name = "rol_user")
+    private String rolUser;
 }
