@@ -1,4 +1,7 @@
 .login {
+    --color-one: #446ADB;
+    --color-four: #449ADB;
+    --color-six: #05061A;
     background-size: cover;
     background-repeat: no-repeat;
     height: 100vh;
