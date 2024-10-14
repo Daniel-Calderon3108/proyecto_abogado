@@ -1,13 +1,15 @@
 package com.example.proyecto_abogado.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "case_process")
@@ -43,6 +45,16 @@ public class CaseProcess {
     // Relacion muchos a uno
     @ManyToOne(fetch = FetchType.LAZY) // Cargo bajo demanda
     @JoinColumn(name = "id_client_case", referencedColumnName = "id_client")
-    @JsonBackReference
+    @JsonBackReference // Evitar crear bucle
     private Customer customer;
+
+    // Relacion uno a muchos
+    @OneToMany(mappedBy = "caseProcess", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonBackReference // Evitar bucle
+    private List<CaseLawyer> caseLawyer = new ArrayList<>();
+
+    /*
+    @OneToMany(mappedBy = "idCase", cascade = CascadeType.ALL)
+    private List<Document> documents;
+     */
 }

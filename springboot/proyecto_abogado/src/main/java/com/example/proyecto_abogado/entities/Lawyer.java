@@ -1,11 +1,14 @@
 package com.example.proyecto_abogado.entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "lawyer")
@@ -46,4 +49,9 @@ public class Lawyer {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id_lawyer", referencedColumnName = "id_user")
     private User user;
+
+    // Relacion uno a muchos
+    @OneToMany(mappedBy = "lawyer", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference // Evitar bucle, lado principal
+    private List<CaseLawyer> caseLawyer = new ArrayList<>();
 }

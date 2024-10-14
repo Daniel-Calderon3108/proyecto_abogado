@@ -50,6 +50,6 @@ public class Customer {
 
     // Realizar relación uno a muchos
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference // Evitar crear bucle
+    @JsonManagedReference // Evitar crear bucle, lado principal
     private List<CaseProcess> caseProcess = new ArrayList<>();
 }

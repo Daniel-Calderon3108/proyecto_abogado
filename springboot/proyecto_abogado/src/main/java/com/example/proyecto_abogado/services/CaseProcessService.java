@@ -42,7 +42,6 @@ public class CaseProcessService implements ICaseProcessService{
                 .orElseThrow(() -> new RuntimeException("Cliente no encontrado"));
 
         newCaseProcess.setCustomer(customer);
-        System.out.println("Datos para salvar" + newCaseProcess);
 
         return caseProcessRepository.save(newCaseProcess);
     }
