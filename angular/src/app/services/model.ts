@@ -43,17 +43,6 @@ export interface Lawyers {
     statusLawyer?: boolean;
     user: User
 }
-export interface user{
-    id_user?: string;
-    nameUser: string;
-    passwordUser: string;
-    userRegister: string;
-    dateRegister: string;
-    userUpdate: string;
-    lastUpdate: string;
-    photoUser: string;
-    statusUser: boolean;
-}
 export interface session{
     name: string;
     password: string

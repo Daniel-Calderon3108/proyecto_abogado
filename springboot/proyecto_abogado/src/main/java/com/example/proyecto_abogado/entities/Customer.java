@@ -1,8 +1,11 @@
 package com.example.proyecto_abogado.entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "client")
@@ -44,4 +47,9 @@ public class Customer {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_user_client", referencedColumnName = "id_user")
     private User user;
+
+    // Realizar relación uno a muchos
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference // Evitar crear bucle
+    private List<CaseProcess> caseProcess = new ArrayList<>();
 }
