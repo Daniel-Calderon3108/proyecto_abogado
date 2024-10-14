@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { session } from './model';
+import { User } from './model';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +15,9 @@ export class UserService {
 
   getUsers() {
     return this.http.get(`${this.userUrl}`);
+  }
+  saveUser(user : User) {
+    return this.http.post(`${this.userUrl}register`,user);
   }
 
   login(session:{ name: string; password: string}): Observable<any> {
