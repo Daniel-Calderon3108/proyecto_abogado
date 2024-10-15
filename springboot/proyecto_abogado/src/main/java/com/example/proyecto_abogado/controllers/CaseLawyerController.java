@@ -38,4 +38,12 @@ public class CaseLawyerController {
                     + e.getMessage()));
         }
     }
+
+    // EndPoint Buscar Por Id Caso
+    @GetMapping("search/case/{id}")
+    public List<CaseLawyerRequest> getCaseLawyersByCaseProcessId(@PathVariable Long id) {
+        List<CaseLawyer> caseLawyers = service.getCaseLawyersByCaseProcessId(id);
+        // Crear JSON personalizado
+        return caseLawyers.stream().map(CaseLawyerRequest::new).collect(Collectors.toList());
+    }
 }

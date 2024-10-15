@@ -33,6 +33,11 @@ public class CustomerController {
         }
     }
 
+    // EndPoint Buscar Por Nombre
     @GetMapping("search/{name}")
     public List<Customer> findByName(@PathVariable String name) { return service.findByName(name); }
+
+    // EndPoint Buscar Por ID
+    @GetMapping("searchById/{id}")
+    public Customer findById(@PathVariable Long id) { return service.findById(id);  }
 }

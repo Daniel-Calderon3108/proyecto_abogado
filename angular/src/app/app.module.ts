@@ -17,6 +17,9 @@ import { CaseProcessComponent } from './case-process/case-process.component';
 import { FormCaseProcessComponent } from './form-case-process/form-case-process.component';
 import { FormDocumentComponent } from './DocumentApi/form-document/form-document.component';
 import { ListDocumentComponent } from './DocumentApi/list-document/list-document.component';
+import { ViewCustomerComponent } from './view-customer/view-customer.component';
+import { ViewLawyerComponent } from './view-lawyer/view-lawyer.component';
+import { ViewCaseComponent } from './view-case/view-case.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +35,10 @@ import { ListDocumentComponent } from './DocumentApi/list-document/list-document
     CaseProcessComponent,
     FormCaseProcessComponent,
     FormDocumentComponent,
-    ListDocumentComponent
+    ListDocumentComponent,
+    ViewCustomerComponent,
+    ViewLawyerComponent,
+    ViewCaseComponent,
   ],
   imports: [
     BrowserModule,

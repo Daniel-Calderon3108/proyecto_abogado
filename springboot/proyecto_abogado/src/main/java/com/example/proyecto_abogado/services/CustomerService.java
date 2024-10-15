@@ -28,4 +28,10 @@ public class CustomerService implements  ICustomerService {
 
     @Override
     public List<Customer> findByName(String name) { return repository.findByNameClientContainingIgnoreCase(name); }
+
+    @Override
+    public Customer findById(Long id) {
+        return repository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Cliente No Encontrado"));
+    }
 }

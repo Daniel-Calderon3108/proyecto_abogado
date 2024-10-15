@@ -9,4 +9,5 @@ public interface ICaseProcessService {
     List<CaseProcess> getAll();
     CaseProcess save(CaseProcessRequest caseProcess);
     List<CaseProcess> findByName(String search);
+    CaseProcess findById(Long id);
 }

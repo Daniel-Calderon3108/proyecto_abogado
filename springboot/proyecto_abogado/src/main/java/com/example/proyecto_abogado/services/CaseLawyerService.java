@@ -48,4 +48,9 @@ public class CaseLawyerService implements ICaseLawyerService {
 
         return caseLawyerRepository.save(newCaseLawyer);
     }
+
+    @Override
+    public List<CaseLawyer> getCaseLawyersByCaseProcessId(Long idCaseProcess) {
+        return caseLawyerRepository.findByCaseProcess_IdCase(idCaseProcess);
+    }
 }

@@ -51,6 +51,12 @@ public class CaseProcessService implements ICaseProcessService{
         return caseProcessRepository.findByidCaseOrNameCaseContainingIgnoreCase(convertStringToLongOrDefault(search),search);
     }
 
+    @Override
+    public CaseProcess findById(Long id) {
+        return caseProcessRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Caso No Encontrado"));
+    }
+
     // Convertir String a Long
     public static Long convertStringToLongOrDefault(String str) {
         try {

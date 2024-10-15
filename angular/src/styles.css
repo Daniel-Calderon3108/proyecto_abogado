@@ -112,6 +112,10 @@ table i {
     cursor: pointer;
 }
 
+table a {
+    color: var(--color-letter);
+}
+
 /* Estilos formulario */
 form p {
     margin-left: 30px;

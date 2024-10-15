@@ -17,7 +17,7 @@
         </thead>
         <tbody>
             <tr *ngFor="let model of data">
-                <td>{{model.nameClient}}</td>
+                <td><a [routerLink]="['/customer', model.id_client]">{{model.nameClient}}</a></td>
                 <td>{{model.typeDocumentClient}}</td>
                 <td>{{model.documentClient}}</td>
                 <td>{{model.addressClient}}</td>

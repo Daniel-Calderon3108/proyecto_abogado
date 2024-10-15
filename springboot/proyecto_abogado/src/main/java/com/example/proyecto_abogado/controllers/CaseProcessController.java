@@ -46,10 +46,19 @@ public class CaseProcessController {
         }
     }
 
+    // EndPoint Buscar Por Nombre
     @GetMapping("search/{search}")
     public List<CaseProcessRequest> getByName(@PathVariable String search) {
         List<CaseProcess> caseProcesses = service.findByName(search);
         // Crear JSON personalizado
         return caseProcesses.stream().map(CaseProcessRequest::new).collect(Collectors.toList());
+    }
+
+    // EndPoint Buscar Por ID
+    @GetMapping("searchById/{id}")
+    public CaseProcessRequest findById(@PathVariable Long id) {
+        CaseProcess caseProcess = service.findById(id);
+        // Crear JSON personalizado
+        return new CaseProcessRequest(caseProcess);
     }
 }

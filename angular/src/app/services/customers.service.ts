@@ -22,4 +22,8 @@ export class CustomersService {
   getCustomerByName(name : string) {
     return this.http.get<any[]>(`${this.API_URI}/search/${name}`);
   }
+
+  getCustomerByID(id : number) {
+    return this.http.get<any[]>(`${this.API_URI}/searchById/${id}`);
+  }
 }

@@ -8,4 +8,5 @@ import java.util.List;
 public interface ICaseLawyerService {
     List<CaseLawyer> getAll();
     CaseLawyer save(CaseLawyerRequest caseLawyerRequest);
+    List<CaseLawyer> getCaseLawyersByCaseProcessId(Long idCaseProcess);
 }
