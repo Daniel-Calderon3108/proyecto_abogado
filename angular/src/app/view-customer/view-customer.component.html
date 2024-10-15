@@ -1,1 +1,92 @@
-<p>Nombre</p>
+<div class="info" id="info">
+    <section class="view">
+        <article class="name">
+            <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" alt="{{data.nameClient}}">
+            <p>{{data.nameClient}}</p>
+        </article>
+        <article class="info-view-container">
+            <div class="info-view">
+                <div>
+                    <h2>Correo</h2>
+                    <p>{{data.emailClient}}</p>
+                </div>
+                <div>
+                    <h2>Tipo</h2>
+                    <p>{{data.typeClient}}</p>
+                </div>
+                <div>
+                    <h2>Usuario</h2>
+                    <p>{{data.user.nameUser}}</p>
+                </div>
+                <div>
+                    <h2>Fecha Registro</h2>
+                    <p>{{data.dateRegisterClient}}</p>
+                </div>
+            </div>
+            <div class="info-view">
+                <div>
+                    <h2>Teléfono</h2>
+                    <p>{{data.phoneClient}}</p>
+                </div>
+                <div>
+                    <h2>Tipo Documento</h2>
+                    <p>{{data.typeDocumentClient}}</p>
+                </div>
+                <div>
+                    <h2>Estado</h2>
+                    <p>{{data.statusClient ? "Activo" : "Inactivo" }}</p>
+                </div>
+                <div>
+                    <h2>Última Vez Actualizado Por</h2>
+                    <p>{{data.updateUserClient}}</p>
+                </div>
+            </div>
+            <div class="info-view">
+                <div>
+                    <h2>Dirección</h2>
+                    <p>{{data.addressClient}}</p>    
+                </div>
+                <div>
+                    <h2>Documento</h2>
+                    <p>{{data.documentClient}}</p>
+                </div>
+                <div>
+                    <h2>Registrado Por</h2>
+                    <p>{{data.userRegisterClient}}</p>
+                </div>
+                <div>
+                    <h2>Fecha Última Actualización</h2>
+                    <p>{{data.dateUpdateClient}}</p>
+                </div>
+            </div>
+        </article>
+    </section>
+    <section class="info-extra">
+        <h2>Casos</h2>
+        <table class="table table-striped table-bordered" [ngClass]="{'table-dark' : isDarkMode}">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Fecha Inicio</th>
+                    <th>Fecha Fin</th>
+                    <th>Estado</th>
+                    <th>Tipo</th>
+                </tr>
+            </thead>
+            <tbody *ngIf="data.caseProcess.length > 0" >
+                <tr *ngFor="let case of data.caseProcess"> 
+                    <td>{{case.nameCase}}</td>
+                    <td>{{case.dateInitCase}}</td>
+                    <td>{{case.dateEndCase ? case.dateEndCase : "Sin definir"}}</td>
+                    <td>{{case.statusCase}}</td>
+                    <td>{{case.typeCase}}</td>
+                </tr>
+            </tbody>
+            <tbody *ngIf="data.caseProcess.length <= 0" >
+                <tr>
+                    <td colspan="5">No se encontraron Casos</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+</div>

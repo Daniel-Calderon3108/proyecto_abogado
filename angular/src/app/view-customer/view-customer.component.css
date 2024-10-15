@@ -1,0 +1,48 @@
+.view {
+    display: flex;
+    gap: 120px;
+}
+
+.view .name {
+    text-align: center;
+    width: 20%;
+    margin: 10px;
+}
+
+.view .name img {
+    width: 100%;
+    aspect-ratio: 8 / 9;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.view .name p {
+    margin-top: 30px;
+    font-size: var(--size-text1);
+}
+
+.info-view-container {
+    display: flex;
+    width: 80%;
+}
+
+.info-view {
+    width: 33%;
+}
+
+.info-view div {
+    margin-bottom: 50px;
+}
+
+.info-view h2 {
+    font-size: var(--size-text);
+}
+
+.info-view p {
+    font-size: var(--size-text1);
+}
+
+.info-extra {
+    padding: 20px 0;
+    border-top: 1px solid;
+}
