@@ -1,5 +1,6 @@
 package com.example.proyecto_abogado.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -33,6 +34,10 @@ public class Document {
     private String userUpdateDocument;
     @Column(name = "date_update_document")
     private String dateUpdateDocument;
-    @Column(name = "idCase") // Revisar como se hace relacion de un caso tiene varios documentos
-    private String id_case;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_case", referencedColumnName = "id_case")
+    @JsonBackReference
+    private CaseProcess caseProcess;
+
 }
