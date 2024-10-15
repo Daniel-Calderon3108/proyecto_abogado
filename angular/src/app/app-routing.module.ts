@@ -10,6 +10,8 @@ import { FormUserComponent } from './form-user/form-user.component';
 import { HomeComponent } from './home/home.component';
 import { CaseProcessComponent } from './case-process/case-process.component';
 import { FormCaseProcessComponent } from './form-case-process/form-case-process.component';
+import { FormDocumentComponent } from './DocumentApi/form-document/form-document.component';
+import { ListDocumentComponent } from './DocumentApi/list-document/list-document.component';
 
 const routes: Routes = [
   {
@@ -56,6 +58,14 @@ const routes: Routes = [
   {
     path : "new-case",
     component : FormCaseProcessComponent
+  },
+  {
+    path : "list-document",
+    component : ListDocumentComponent
+  },
+  {
+    path : "new-document",
+    component : FormDocumentComponent
   }
 ];
 

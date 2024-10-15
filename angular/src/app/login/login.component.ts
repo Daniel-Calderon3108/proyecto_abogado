@@ -40,7 +40,7 @@ export class LoginComponent {
         if (res.success) {
           this.resMessage = res.message || 'Inicio de sesión exitoso';
           // Redirigir a la página de lista de clientes
-          this.router.navigateByUrl('list-customers');
+          this.router.navigateByUrl('home');
         } else {
           this.resMessage = res.message || 'Error de autenticación';
         }

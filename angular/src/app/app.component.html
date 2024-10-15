@@ -39,7 +39,7 @@
         <p class="user">
           <img
             src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png">
-          Abogado 1
+          Usuario
         </p>
         <ul class="menu">
           <li class="menu-item menu-item--show">
@@ -136,6 +136,29 @@
             <ul class="menu-nesting">
               <li class="menu-inside menu-hide">
                 <p class="menu-title">Casos</p>
+              </li>
+              <li class="menu-inside">
+                <a [routerLink]="['../list-cases']"
+                  class="menu-link menu-link--inside"><i
+                    class="fa-solid fa-suitcase"
+                    style="margin-right: 8px;"></i>Administrar</a>
+              </li>
+              <li class="menu-inside">
+                <a [routerLink]="['../new-case']"
+                  class="menu-link menu-link--inside"><i
+                    class="fa-solid fa-plus"
+                    style="margin-right: 8px;"></i>Nuevo</a>
+              </li>
+            </ul>
+          </li>
+          <li class="menu-item menu-item--show">
+            <a class="menu-link menu-close"><span
+                class="fa-solid fa-file-contract menu-icon"></span><span
+                class="menu-name">Documento</span><i
+                class="fa-solid fa-chevron-right menu-arrow"></i></a>
+            <ul class="menu-nesting">
+              <li class="menu-inside menu-hide">
+                <p class="menu-title">Documento</p>
               </li>
               <li class="menu-inside">
                 <a [routerLink]="['../list-cases']"

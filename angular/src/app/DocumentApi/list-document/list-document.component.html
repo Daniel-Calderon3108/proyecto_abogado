@@ -1,0 +1,27 @@
+<h2>Listado De Documentos</h2>
+<div class="info" id="info">
+    <table class="table table-striped table-bordered" [ngClass]="{'table-dark' : isDarkMode}">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Url</th>
+                <th>Tipo</th>
+                <th>Fecha Inicio</th>
+                <th>Estado</th>
+                <th>Nombre del caso</th>
+                <th>Id caso</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let model of data">
+                <td>{{model.nameDocument}}</td>
+                <td>{{model.urlDocument}}</td>
+                <td>{{model.typeDocument}}</td>
+                <td>{{model.dateDocument}}</td>
+                <td>{{model.statusDocument}}</td>
+                <td>{{model.nameIdCase.nameCase}}</td>
+                <td>{{model.nameIdCase.idCase}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

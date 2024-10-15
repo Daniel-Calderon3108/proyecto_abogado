@@ -84,4 +84,18 @@ export interface ApiResponse<T> {
     success: boolean;
     message: string;
     data: T;
-  }
+}
+export interface Document {
+    id_document: string;
+    urlDocument: string;
+    nameDocument: string;
+    typeDocument: string;
+    statusDocument: string;
+    userRegisterDocument: string;
+    dateDocument: string;
+    userUpdateDocument?: string;
+    dateUpdateDocument?: string;
+    nameIdCase: {
+        idCase: number;
+    }
+}

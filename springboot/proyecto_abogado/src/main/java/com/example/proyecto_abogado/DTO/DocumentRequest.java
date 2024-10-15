@@ -18,7 +18,7 @@ public class DocumentRequest {
     private String dateDocument;
     private String userUpdateDocument;
     private String dateUpdateDocument;
-    private Long idCase; // id del caso relacionado
+    private nameCase nameIdCase;
 
     public DocumentRequest() {
     }
@@ -33,6 +33,6 @@ public class DocumentRequest {
         this.dateDocument = document.getDateDocument();
         this.userUpdateDocument = document.getUserUpdateDocument();
         this.dateUpdateDocument = document.getDateUpdateDocument();
-        this.idCase = document.getCaseProcess().getIdCase();
+        this.nameIdCase = new nameCase(document.getCaseProcess());
     }
 }

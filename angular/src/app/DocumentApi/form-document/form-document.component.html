@@ -1,0 +1,78 @@
+<h2>Nuevo Documento</h2>
+<div class="info" id="info">
+    <form [formGroup]="documentForm" (ngSubmit)="submitForm()">
+        <p>Datos Del Caso</p>
+        <div class="form-items">
+            <div class="form-item">
+                <label for="nameDocument">Nombre</label>
+                <input type="text" name="nameDocument" id="nameDocument"
+                    formControlName="nameDocument" required>
+            </div>
+            <div class="form-item">
+                <label for="typeDocument">Tipo</label>
+                <select name="typeDocument" id="typeDocument" formControlName="typeDocument">
+                    <option value="Penal">Penal</option>
+                    <option value="Civil">Civil</option>
+                    <option value="Familiar">Familiar</option>
+                    <option value="Laboral">Laboral</option>
+                    <option value="Corporativo o Mercantil">Corporativo o Mercantil</option>
+                    <option value="Fiscal o Tributario">Fiscal o Tributario</option>
+                    <option value="Inmobiliario">Inmobiliario</option>
+                    <option value="Internacional">Internacional</option>
+                    <option value="Ambiental">Ambiental</option>
+                    <option value="Intelectual">Intelectual</option>
+                    <option value="Seguros">Seguros</option>
+                    <option value="Administrativo">Administrativo</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-items">
+            <div class="form-item">
+                <label for="urlDocument">URL del documento</label>
+                <input type="text" name="urlDocument" id="urlDocument" formControlName="urlDocument" (input)="updatePreview()" required>
+            </div>
+        </div>
+        <div *ngIf="pdfPreviewUrl" class="pdf-preview">
+            <label for="urlDocument">Vista previa del Documento (PDF)</label>
+            <iframe [src]="pdfPreviewUrl" width="100%" height="300px"></iframe>
+        </div>
+        <div class="form-items" style="justify-content: left;">
+            <div class="form-item" style="width: 4%;">
+                <button type="button" (click)="viewFullDocument()">Vista</button>
+            </div>
+        </div>
+        <div class="form-items">
+            <div class="form-item">
+                <label for="dateInitCase">Fecha Inicio</label>
+                <input type="date" name="dateInitCase" id="dateInitCase" formControlName="dateDocument" required>
+            </div>
+            <div class="form-item">
+                <label for="statusCase">Estado</label>
+                <select name="statusCase" id="statusCase" formControlName="statusDocument">
+                    <option value="Abierto">Abierto</option>
+                    <option value="Re Abierto">Re Abierto</option>
+                    <option value="Cerrado">Cerrado</option>
+                    <option value="Cancelado">Cancelado</option>
+                </select>
+            </div>
+            <!-- ID del Caso -->
+           <div class="form-item">
+                <label for="idCase">ID del Caso</label>
+                <!-- Aquí usamos la propiedad 'formGroupName' -->
+                <div [formGroupName]="'nameIdCase'">
+                    <input type="number" id="idCase" formControlName="idCase" required>
+                </div>
+            </div>
+        </div>
+        <!-- Campos ocultos -->
+        <input type="hidden" formControlName="userRegisterDocument" [value]="'tu_usuario'" />
+        <input type="hidden" formControlName="userUpdateDocument" [value]="'tu_usuario'" />
+        <input type="hidden" formControlName="dateUpdateDocument" [value]="currentDate()" />
+        
+        <div class="form-items" style="justify-content: center;">
+            <div class="form-item" style="width: 50%;">
+                <button type="submit">Guardar</button>
+            </div>
+        </div>
+    </form>
+</div>

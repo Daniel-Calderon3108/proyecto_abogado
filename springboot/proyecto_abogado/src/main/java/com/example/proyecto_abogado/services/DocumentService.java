@@ -44,7 +44,7 @@ public class DocumentService implements IDocumentService {
         document.setDateUpdateDocument(documentRequest.getDateUpdateDocument());
 
         // Relación con CaseProcess
-        CaseProcess caseProcess = caseProcessRepository.findById(documentRequest.getIdCase())
+        CaseProcess caseProcess = caseProcessRepository.findById(documentRequest.getNameIdCase().getIdCase())
                 .orElseThrow(() -> new RuntimeException("Caso no encontrado"));
         document.setCaseProcess(caseProcess);
 

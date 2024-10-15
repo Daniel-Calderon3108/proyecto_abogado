@@ -15,6 +15,8 @@ import { FormUserComponent } from './form-user/form-user.component';
 import { HomeComponent } from './home/home.component';
 import { CaseProcessComponent } from './case-process/case-process.component';
 import { FormCaseProcessComponent } from './form-case-process/form-case-process.component';
+import { FormDocumentComponent } from './DocumentApi/form-document/form-document.component';
+import { ListDocumentComponent } from './DocumentApi/list-document/list-document.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +31,8 @@ import { FormCaseProcessComponent } from './form-case-process/form-case-process.
     HomeComponent,
     CaseProcessComponent,
     FormCaseProcessComponent,
+    FormDocumentComponent,
+    ListDocumentComponent
   ],
   imports: [
     BrowserModule,
