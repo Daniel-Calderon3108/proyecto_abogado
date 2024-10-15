@@ -1,0 +1,29 @@
+<h2>Nuevo Caso</h2>
+<div class="info" id="info">
+
+    <form>
+        <p>Datos Del Caso</p>
+        <div class="form-items">
+            <div class="form-item">
+                <label for="nameCase">Nombre</label>
+                <input type="text" name="nameCase" id="nameCase" [(ngModel)]="dataCase.nameCase">
+            </div>
+            <div class="form-item">
+                <label for="statusCase">Estado</label>
+                <select name="statusCase" id="statusCase" [(ngModel)]="dataCase.statusCase">
+                    <option value="Abierto">Abierto</option>
+                    <option value="Re Abierto">Re Abierto</option>
+                    <option value="Cerrado">Cerrado</option>
+                    <option value="Cancelado">Cancelado</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-items">
+            <div class="form-item">
+                <label for="descriptionCase">Descripción</label>
+                <textarea name="" id="" rows="3"></textarea>
+            </div>
+        </div>
+    </form>
+
+</div>

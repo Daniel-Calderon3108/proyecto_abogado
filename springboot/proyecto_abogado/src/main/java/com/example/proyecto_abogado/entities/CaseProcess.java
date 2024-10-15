@@ -1,7 +1,6 @@
 package com.example.proyecto_abogado.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,7 +19,8 @@ import java.util.List;
 public class CaseProcess {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id_case;
+    @Column(name = "id_case")
+    private Long idCase;
     @Column(name = "name_case")
     private String nameCase;
     @Column(name = "description_case")
@@ -52,9 +52,4 @@ public class CaseProcess {
     @OneToMany(mappedBy = "caseProcess", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonBackReference // Evitar bucle
     private List<CaseLawyer> caseLawyer = new ArrayList<>();
-
-    /*
-    @OneToMany(mappedBy = "idCase", cascade = CascadeType.ALL)
-    private List<Document> documents;
-     */
 }

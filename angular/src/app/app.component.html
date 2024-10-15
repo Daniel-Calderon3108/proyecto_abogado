@@ -128,6 +128,29 @@
               </li>
             </ul>
           </li>
+          <li class="menu-item menu-item--show">
+            <a class="menu-link menu-close"><span
+                class="fa-solid fa-suitcase menu-icon"></span><span
+                class="menu-name">Casos</span><i
+                class="fa-solid fa-chevron-right menu-arrow"></i></a>
+            <ul class="menu-nesting">
+              <li class="menu-inside menu-hide">
+                <p class="menu-title">Casos</p>
+              </li>
+              <li class="menu-inside">
+                <a [routerLink]="['../list-cases']"
+                  class="menu-link menu-link--inside"><i
+                    class="fa-solid fa-suitcase"
+                    style="margin-right: 8px;"></i>Administrar</a>
+              </li>
+              <li class="menu-inside">
+                <a [routerLink]="['../new-case']"
+                  class="menu-link menu-link--inside"><i
+                    class="fa-solid fa-plus"
+                    style="margin-right: 8px;"></i>Nuevo</a>
+              </li>
+            </ul>
+          </li>
         </ul>
       </nav>
       <article class="operations"

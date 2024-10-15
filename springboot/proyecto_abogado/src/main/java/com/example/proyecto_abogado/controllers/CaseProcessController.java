@@ -43,4 +43,11 @@ public class CaseProcessController {
                     + e.getMessage()));
         }
     }
+
+    @GetMapping("search/{search}")
+    public List<CaseProcessRequest> getByName(@PathVariable String search) {
+        List<CaseProcess> caseProcesses = service.findByName(search);
+        // Crear JSON personalizado
+        return caseProcesses.stream().map(CaseProcessRequest::new).collect(Collectors.toList());
+    }
 }

@@ -45,4 +45,18 @@ public class CaseProcessService implements ICaseProcessService{
 
         return caseProcessRepository.save(newCaseProcess);
     }
+
+    @Override
+    public List<CaseProcess> findByName(String search) {
+        return caseProcessRepository.findByidCaseOrNameCaseContainingIgnoreCase(convertStringToLongOrDefault(search),search);
+    }
+    
+    // Convertir String a Long
+    public static Long convertStringToLongOrDefault(String str) {
+        try {
+            return Long.parseLong(str);
+        } catch (NumberFormatException e) {
+            return 0L;
+        }
+    }
 }

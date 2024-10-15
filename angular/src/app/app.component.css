@@ -173,6 +173,7 @@ input:checked+.slider:before {
 
 .container nav.open {
     width: 200px;
+    overflow-y: auto;
 }
 
 .container nav.close {

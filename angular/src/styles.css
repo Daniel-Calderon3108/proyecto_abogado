@@ -69,14 +69,23 @@ h2 {
     width: 10px;
 }
 
+.container nav::-webkit-scrollbar {
+    width: 5px;
+}
 
-.info::-webkit-scrollbar-track {
+
+.info::-webkit-scrollbar-track,
+.container nav::-webkit-scrollbar-track {
     background: var(--color-body);
     border-radius: 5px;
 }
 
+.container nav::-webkit-scrollbar-track {
+    background: var(--color-six);
+}
 
-.info::-webkit-scrollbar-thumb {
+.info::-webkit-scrollbar-thumb,
+.container nav::-webkit-scrollbar-thumb {
     background: var(--color-one);
     border-radius: 5px;
 }
@@ -128,7 +137,8 @@ form p {
 
 .form-item input,
 .form-item button,
-.form-item select {
+.form-item select,
+.form-item textarea {
     width: 100%;
     height: 30px;
     background: var(--color-body);
@@ -137,6 +147,12 @@ form p {
     border-radius: 10px;
     font-size: var(--size-text1);
     color: var(--color-letter);
+}
+
+.form-item textarea {
+    resize: none;
+    overflow: hidden;
+    height: auto;
 }
 
 .form-item  button {

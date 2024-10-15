@@ -28,7 +28,7 @@ public class CaseProcessRequest {
     }
 
     public CaseProcessRequest (CaseProcess caseProcess) {
-        this.idCase = caseProcess.getId_case();
+        this.idCase = caseProcess.getIdCase();
         this.nameCase = caseProcess.getNameCase();
         this.descriptionCase = caseProcess.getDescriptionCase();
         this.dateInitCase = caseProcess.getDateInitCase();

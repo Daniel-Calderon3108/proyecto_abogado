@@ -43,7 +43,39 @@ export interface Lawyers {
     statusLawyer?: boolean;
     user: User
 }
-export interface session{
+export interface session {
     name: string;
     password: string
+}
+
+export interface Case {
+    idCase?: string;
+    nameCase?: string;
+    descriptionCase?: string;
+    dateInitCase?: string;
+    dateEndCase?: string,
+    statusCase?: string;
+    userRegisterCase?: string;
+    dateRegisterCase?: string;
+    updateUserCase?: string;
+    updateDateCase?: string;
+    typeCase?: string;
+    customer: {
+        idClient?: string;
+        nameClient?: string;
+    }
+}
+
+export interface CaseLawyer {
+    idCaseLawyer?: string;
+    dateRegisterLawyer?: string;
+    userRegisterLawyer?: string;
+    statusLawyerCase?: boolean;
+    idLawyer?: string;
+    nameLawyer?: string;
+    phoneLawyer?: string;
+    emailLawyer?: string;
+    idCase?: string;
+    nameCase?: string;
+    descriptionCase?: string;
 }

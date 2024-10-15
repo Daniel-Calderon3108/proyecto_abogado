@@ -34,7 +34,7 @@ public class CaseLawyerRequest {
         this.nameLawyer = caseLawyer.getLawyer().getNameLawyer();
         this.phoneLawyer = caseLawyer.getLawyer().getPhoneLawyer();
         this.emailLawyer = caseLawyer.getLawyer().getEmailLawyer();
-        this.idCase = caseLawyer.getCaseProcess().getId_case();
+        this.idCase = caseLawyer.getCaseProcess().getIdCase();
         this.nameCase = caseLawyer.getCaseProcess().getNameCase();
         this.descriptionCase = caseLawyer.getCaseProcess().getDescriptionCase();
     }
