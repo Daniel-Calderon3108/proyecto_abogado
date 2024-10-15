@@ -153,6 +153,7 @@ form p {
     resize: none;
     overflow: hidden;
     height: auto;
+    padding: 10px;
 }
 
 .form-item  button {

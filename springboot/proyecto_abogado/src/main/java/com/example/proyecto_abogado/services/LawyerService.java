@@ -24,4 +24,7 @@ public class LawyerService implements ILawyerService{
         lawyer.getUser().setPasswordUser(encriptPassword.encryptExistingPasswords(lawyer.getUser().getPasswordUser()));
         repository.save(lawyer);
     }
+
+    @Override
+    public List<Lawyer> findByName(String name) { return repository.findByNameLawyerContainingIgnoreCase(name); }
 }

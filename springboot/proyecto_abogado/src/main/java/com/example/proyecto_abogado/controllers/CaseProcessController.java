@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,8 +36,9 @@ public class CaseProcessController {
     public ResponseEntity<?> save(@RequestBody CaseProcessRequest caseProcess) {
         System.out.println("Caso recibido:" + caseProcess);
         try {
-            service.save(caseProcess);
-            return ResponseEntity.ok(new Response(true, "Caso registrado exitosamente."));
+            CaseProcess caseProcessSave = service.save(caseProcess);
+            return ResponseEntity.ok(new Response(true, "Caso registrado exitosamente.",
+                    Collections.singletonList(caseProcessSave.getIdCase())));
 
         } catch (Exception e) {
             return ResponseEntity.status(500).body(new Response(false, "Error al registrar el caso "

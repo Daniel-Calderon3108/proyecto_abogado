@@ -18,4 +18,8 @@ export class CustomersService {
   saveCustomer(customer : Customers) {
     return this.http.post(`${this.API_URI}/register`, customer);
   }
+
+  getCustomerByName(name : string) {
+    return this.http.get<any[]>(`${this.API_URI}/search/${name}`);
+  }
 }

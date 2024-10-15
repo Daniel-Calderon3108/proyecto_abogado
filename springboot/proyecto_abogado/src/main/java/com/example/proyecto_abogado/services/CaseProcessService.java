@@ -50,7 +50,7 @@ public class CaseProcessService implements ICaseProcessService{
     public List<CaseProcess> findByName(String search) {
         return caseProcessRepository.findByidCaseOrNameCaseContainingIgnoreCase(convertStringToLongOrDefault(search),search);
     }
-    
+
     // Convertir String a Long
     public static Long convertStringToLongOrDefault(String str) {
         try {

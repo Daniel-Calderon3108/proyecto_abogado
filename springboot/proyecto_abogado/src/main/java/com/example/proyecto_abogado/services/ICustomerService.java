@@ -7,4 +7,5 @@ import java.util.List;
 public interface ICustomerService {
     List<Customer> getAll();
     void save(Customer customer);
+    List<Customer> findByName(String name);
 }

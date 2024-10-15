@@ -32,4 +32,8 @@ public class LawyerController {
                     + e.getMessage()));
         }
     }
+
+    // EndPoint Buscar Por Nombre
+    @GetMapping("search/{name}")
+    public List<Lawyer> getByName(@PathVariable String name) { return service.findByName(name); }
 }

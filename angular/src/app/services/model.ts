@@ -70,7 +70,7 @@ export interface CaseLawyer {
     idCaseLawyer?: string;
     dateRegisterLawyer?: string;
     userRegisterLawyer?: string;
-    statusLawyerCase?: boolean;
+    statusLawyerCase?: string;
     idLawyer?: string;
     nameLawyer?: string;
     phoneLawyer?: string;
@@ -79,3 +79,9 @@ export interface CaseLawyer {
     nameCase?: string;
     descriptionCase?: string;
 }
+
+export interface ApiResponse<T> {
+    success: boolean;
+    message: string;
+    data: T;
+  }

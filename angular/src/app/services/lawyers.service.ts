@@ -18,4 +18,8 @@ export class LawyersService {
   saveLawyer(lawyer : Lawyers) {
     return this.http.post(`${this.API_URI}/register`,lawyer);
   }
+
+  getLawyerByName(name : string) {
+    return this.http.get<any[]>(`${this.API_URI}/search/${name}`);
+  }
 }

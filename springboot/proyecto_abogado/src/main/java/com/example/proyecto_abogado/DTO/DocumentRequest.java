@@ -33,6 +33,6 @@ public class DocumentRequest {
         this.dateDocument = document.getDateDocument();
         this.userUpdateDocument = document.getUserUpdateDocument();
         this.dateUpdateDocument = document.getDateUpdateDocument();
-        this.idCase = document.getCaseProcess().getId_case();
+        this.idCase = document.getCaseProcess().getIdCase();
     }
 }

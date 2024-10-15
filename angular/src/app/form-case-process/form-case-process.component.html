@@ -1,16 +1,57 @@
 <h2>Nuevo Caso</h2>
 <div class="info" id="info">
-
-    <form>
+    <form [formGroup]="form">
         <p>Datos Del Caso</p>
         <div class="form-items">
             <div class="form-item">
                 <label for="nameCase">Nombre</label>
-                <input type="text" name="nameCase" id="nameCase" [(ngModel)]="dataCase.nameCase">
+                <input type="text" name="nameCase" id="nameCase"
+                    formControlName="nameCase">
+            </div>
+            <div class="form-item">
+                <label for="typeCase">Tipo</label>
+                <select name="typeCase" id="typeCase"
+                    formControlName="typeCase">
+                    <option value="Penal">Penal</option>
+                    <option value="Civil">Civil</option>
+                    <option value="Familiar">Familiar</option>
+                    <option value="Laboral">Laboral</option>
+                    <option value="Corporativo o Mercantil">Corporativo o
+                        Mercantil</option>
+                    <option value="Fiscal o Tributario">Fiscal o
+                        Tributario</option>
+                    <option value="Inmobiliario">Inmobiliario</option>
+                    <option value="Internacional">Internacional</option>
+                    <option value="Ambiental">Ambiental</option>
+                    <option value="Intelectual">Intelectual</option>
+                    <option value="Seguros">Seguros</option>
+                    <option value="Administrativo">Administrativo</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-items">
+            <div class="form-item">
+                <label for="descriptionCase">Descripción</label>
+                <textarea name="descriptionCase" id="descriptionCase"
+                    rows="3" formControlName="descriptionCase"></textarea>
+            </div>
+        </div>
+        <div class="form-items">
+            <div class="form-item">
+                <label for="dateInitCase">Fecha Inicio</label>
+                <input type="date" name="dateInitCase" id="dateInitCase"
+                    formControlName="dateInitCase">
+            </div>
+            <div class="form-item">
+                <label for="dateEndCase">Fecha Cierre</label>
+                <input [type]="inputType" name="dateEndCase" id="dateEndCase"
+                    formControlName="dateEndCase" [value]="inputValue"
+                    [readOnly]="readonly">
             </div>
             <div class="form-item">
                 <label for="statusCase">Estado</label>
-                <select name="statusCase" id="statusCase" [(ngModel)]="dataCase.statusCase">
+                <select name="statusCase" id="statusCase"
+                    formControlName="statusCase">
                     <option value="Abierto">Abierto</option>
                     <option value="Re Abierto">Re Abierto</option>
                     <option value="Cerrado">Cerrado</option>
@@ -18,10 +59,60 @@
                 </select>
             </div>
         </div>
+        <p>Cliente</p>
         <div class="form-items">
             <div class="form-item">
-                <label for="descriptionCase">Descripción</label>
-                <textarea name="" id="" rows="3"></textarea>
+                <label for="nameCli">Nombre</label>
+                <div class="search-bar">
+                    <input type="text" name="nameCli" id="nameCli" [formControl]="nameClientControl">
+                    <ul *ngIf="showSearchClient">
+                        <li *ngFor="let customer of dataClient" (click)="selectClient(customer.id_client)">
+                            {{customer.nameClient}}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="form-item">
+                <label>ID</label>
+                <input type="text" formControlName="idClient"
+                    readonly>
+            </div>
+        </div>
+        <div class="lawyer-add">
+            <p>Asignar Abogados</p>
+            <div>
+                <button (click)="addLawyer()" data-toggle="tooltip"
+                data-placement="left" title="Agregar Abogado">+</button>
+                <button (click)="removeLawyer()" data-toggle="tooltip"
+                data-placement="left" title="Eliminar Ultimo Abogado">-</button>
+            </div>
+        </div>
+        <div formArrayName="lawyers">
+            <div *ngFor="let lawyer of lawyers.controls; let i = index"
+                [formGroupName]="i">
+                <p>Abogado {{i + 1}}</p>
+                <div class="form-items">
+                    <div class="form-item">
+                        <label for="">Nombre</label>
+                        <div class="search-bar">
+                            <input type="text" id="nameLawyer-{{i}}" formControlName="nameLawyer" (focus)="onNameChange(i)">
+                            <ul *ngIf="showSearchLawyer && openLawyer == i">
+                                <li *ngFor="let lawyer of dataLawyerList" (click)="selectLawyer(lawyer.id_lawyer,i)">
+                                    {{lawyer.nameLawyer}}
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="form-item">
+                        <label>ID</label>
+                        <input type="text" id="idLawyer-{{i}}" formControlName="idLawyer" readonly>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-items" style="justify-content: center;">
+            <div class="form-item" style="width: 50%;">
+                <button (click)="save()">Guardar</button>
             </div>
         </div>
     </form>

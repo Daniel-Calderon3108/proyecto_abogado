@@ -32,4 +32,7 @@ public class CustomerController {
                     + e.getMessage()));
         }
     }
+
+    @GetMapping("search/{name}")
+    public List<Customer> findByName(@PathVariable String name) { return service.findByName(name); }
 }

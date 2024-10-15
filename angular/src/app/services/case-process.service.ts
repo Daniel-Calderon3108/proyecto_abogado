@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Case, CaseLawyer } from './model';
+import { ApiResponse, Case, CaseLawyer } from './model';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +16,7 @@ export class CaseProcessService {
   }
 
   saveCases(caseProcess : Case) {
-    return this.http.post(`${this.API_URI}/register`, caseProcess);
+    return this.http.post<ApiResponse<number[]>>(`${this.API_URI}/register`, caseProcess);
   }
 
   getCaseByIdOrName(search : string) {

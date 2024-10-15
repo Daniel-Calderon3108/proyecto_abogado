@@ -25,4 +25,7 @@ public class CustomerService implements  ICustomerService {
         customer.getUser().setPasswordUser(encriptPassword.encryptExistingPasswords(customer.getUser().getPasswordUser()));
         repository.save(customer);
     }
+
+    @Override
+    public List<Customer> findByName(String name) { return repository.findByNameClientContainingIgnoreCase(name); }
 }
