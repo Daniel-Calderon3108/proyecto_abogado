@@ -20,7 +20,7 @@
                 <td>{{model.dateInitCase}}</td>
                 <td>{{model.dateEndCase == null ? "Sin definir" : model.dateEndCase}}</td>
                 <td>{{model.statusCase}}</td>
-                <td>{{model.customer.nameClient}}</td>
+                <td><a [routerLink]="['/customer', model.customer.idClient]">{{model.customer.nameClient}}</a></td>
             </tr>
         </tbody>
     </table>

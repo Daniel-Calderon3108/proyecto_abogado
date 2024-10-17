@@ -27,7 +27,9 @@ public class CustomerService implements  ICustomerService {
     }
 
     @Override
-    public List<Customer> findByName(String name) { return repository.findByNameClientContainingIgnoreCase(name); }
+    public List<Customer> findByNameOrDocument(String search) {
+        return repository.findByNameClientContainingIgnoreCaseOrDocumentClientContaining(search, search);
+    }
 
     @Override
     public Customer findById(Long id) {

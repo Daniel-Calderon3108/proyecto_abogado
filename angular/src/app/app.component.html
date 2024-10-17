@@ -22,13 +22,13 @@
           <ul *ngIf="showCustomer">
             <p>Clientes</p>
             <li *ngFor="let customer of dataCustomer" (click)="redirectResult('customer', customer.id_client)">
-              {{customer.nameClient}}
+              {{customer.documentClient}} - {{customer.nameClient}}
             </li>
           </ul>
           <ul *ngIf="showLawyer">
             <p>Abogados</p>
             <li *ngFor="let lawyer of dataLawyer" (click)="redirectResult('lawyer', lawyer.id_lawyer)">
-              {{lawyer.nameLawyer}}
+              {{lawyer.documentLawyer}} - {{lawyer.nameLawyer}}
             </li>
           </ul>
         </div>

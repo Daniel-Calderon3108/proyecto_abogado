@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface LawyerRepository extends CrudRepository<Lawyer, Long> {
-    List<Lawyer> findByNameLawyerContainingIgnoreCase(String name);
+    List<Lawyer> findByNameLawyerContainingIgnoreCaseOrDocumentLawyerContaining(String name, String document);
 }

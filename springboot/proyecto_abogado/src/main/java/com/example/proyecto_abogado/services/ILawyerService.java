@@ -7,6 +7,6 @@ import java.util.List;
 public interface ILawyerService {
     List<Lawyer> getAll();
     void save(Lawyer lawyer);
-    List<Lawyer> findByName(String name);
+    List<Lawyer> findByNameOrDocument(String search);
     Lawyer findById(Long id);
 }

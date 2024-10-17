@@ -66,16 +66,18 @@
                 <div class="search-bar">
                     <input type="text" name="nameCli" id="nameCli" [formControl]="nameClientControl">
                     <ul *ngIf="showSearchClient">
-                        <li *ngFor="let customer of dataClient" (click)="selectClient(customer.id_client)">
-                            {{customer.nameClient}}
+                        <li *ngFor="let customer of dataClient" 
+                        (click)="selectClient(customer.id_client, customer.documentClient, customer.nameClient)">
+                            {{customer.documentClient}} - {{customer.nameClient}}
                         </li>
                     </ul>
                 </div>
             </div>
             <div class="form-item">
-                <label>ID</label>
-                <input type="text" formControlName="idClient"
+                <label>Cliente Seleccionado</label>
+                <input type="text" formControlName="nameClientSelect"
                     readonly>
+                <input type="hidden" formControlName="idClient">
             </div>
         </div>
         <div class="lawyer-add">
@@ -97,15 +99,16 @@
                         <div class="search-bar">
                             <input type="text" id="nameLawyer-{{i}}" formControlName="nameLawyer" (focus)="onNameChange(i)">
                             <ul *ngIf="showSearchLawyer && openLawyer == i">
-                                <li *ngFor="let lawyer of dataLawyerList" (click)="selectLawyer(lawyer.id_lawyer,i)">
-                                    {{lawyer.nameLawyer}}
+                                <li *ngFor="let lawyer of dataLawyerList" (click)="selectLawyer(lawyer.id_lawyer, lawyer.documentLawyer, lawyer.nameLawyer, i)">
+                                    {{lawyer.documentLawyer}} - {{lawyer.nameLawyer}}
                                 </li>
                             </ul>
                         </div>
                     </div>
                     <div class="form-item">
-                        <label>ID</label>
-                        <input type="text" id="idLawyer-{{i}}" formControlName="idLawyer" readonly>
+                        <label>Abogado Seleccionado</label>
+                        <input type="text" id="selectLawyer-{{i}}" formControlName="selectLawyer" readonly>
+                        <input type="hidden" id="idLawyer-{{i}}" formControlName="idLawyer">
                     </div>
                 </div>
             </div>

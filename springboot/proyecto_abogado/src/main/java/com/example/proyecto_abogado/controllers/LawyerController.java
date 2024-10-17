@@ -33,9 +33,9 @@ public class LawyerController {
         }
     }
 
-    // EndPoint Buscar Por Nombre
-    @GetMapping("search/{name}")
-    public List<Lawyer> getByName(@PathVariable String name) { return service.findByName(name); }
+    // EndPoint Buscar Por Nombre O Documento
+    @GetMapping("search/{search}")
+    public List<Lawyer> getByName(@PathVariable String search) { return service.findByNameOrDocument(search); }
 
     // EndPoint Buscar Por ID
     @GetMapping("searchById/{id}")

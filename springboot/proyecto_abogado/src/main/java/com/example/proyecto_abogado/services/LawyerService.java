@@ -26,7 +26,9 @@ public class LawyerService implements ILawyerService{
     }
 
     @Override
-    public List<Lawyer> findByName(String name) { return repository.findByNameLawyerContainingIgnoreCase(name); }
+    public List<Lawyer> findByNameOrDocument(String search) {
+        return repository.findByNameLawyerContainingIgnoreCaseOrDocumentLawyerContaining(search, search);
+    }
 
     @Override
     public Lawyer findById(Long id) {

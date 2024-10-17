@@ -26,6 +26,7 @@ export class FormCaseProcessComponent implements OnInit {
     updateUserCase: new FormControl(""),
     updateDateCase: new FormControl(""),
     typeCase: new FormControl("Penal"),
+    nameClientSelect : new FormControl(""),
     idClient: new FormControl(""),
     lawyers: new FormArray([])
   });
@@ -142,8 +143,9 @@ export class FormCaseProcessComponent implements OnInit {
     ); // Retornar el observable del servicio
   }
 
-  selectClient(clientId: string) {
+  selectClient(clientId: string, documentClient : string, nameClient : string) {
     this.form.get("idClient")?.setValue(clientId); // Establecer el ID del cliente seleccionado
+    this.form.get("nameClientSelect")?.setValue(`${documentClient} - ${nameClient}`);
     this.showSearchClient = false; // Ocultar la lista de sugerencias
     this.nameClientControl.setValue(''); // Limpiar el campo de búsqueda
   }
@@ -151,6 +153,7 @@ export class FormCaseProcessComponent implements OnInit {
   addLawyer() {
     const lawyerGroup = new FormGroup({
       nameLawyer: new FormControl(''),
+      selectLawyer : new FormControl(''),
       idLawyer: new FormControl('')
     });
 
@@ -193,8 +196,9 @@ export class FormCaseProcessComponent implements OnInit {
     );
   }
 
-  selectLawyer(lawyerId : string, i : number) {
+  selectLawyer(lawyerId : string, lawyerDocument : string, lawyerName : string,  i : number) {
     const lawyersArray = this.form.get("lawyers") as FormArray;
+    lawyersArray.at(i).get('selectLawyer')?.setValue(`${lawyerDocument} - ${lawyerName}`);
     lawyersArray.at(i).get('idLawyer')?.setValue(lawyerId);
     lawyersArray.at(i).get("nameLawyer")?.setValue("");
     this.showSearchLawyer = false;
