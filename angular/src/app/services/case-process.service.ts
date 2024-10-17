@@ -20,7 +20,11 @@ export class CaseProcessService {
   }
 
   getCaseByIdOrName(search : string) {
-    return this.http.get(`${this.API_URI}/search/${search}`);
+    return this.http.get<any[]>(`${this.API_URI}/search/${search}`);
+  }
+
+  getCaseProcessById(id : number) {
+    return this.http.get(`${this.API_URI}/searchById/${id}`);
   }
 
   addCaseLawyer(caseLawyer : CaseLawyer) {
@@ -29,5 +33,9 @@ export class CaseProcessService {
 
   getCaseLawyer() {
     return this.http.get(`${this.API_URI}Lawyer`);
+  }
+
+  getCaseLawyerByIdCase(id : number) {
+    return this.http.get(`${this.API_URI}Lawyer/search/case/${id}`);
   }
 }

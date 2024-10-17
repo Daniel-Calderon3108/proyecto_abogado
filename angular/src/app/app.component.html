@@ -9,8 +9,29 @@
     <header *ngIf="showMenu">
       <h1>Abogados Valbuena</h1>
       <section class="search">
-        <input type="text" name="search" id="search" placeholder="Buscar Caso">
+        <input type="text" name="search" id="search"
+          [formControl]="searchControl" placeholder="Buscar..." autocomplete="off">
         <i class="fa-solid fa-magnifying-glass"></i>
+        <div *ngIf="showResults" class="search-results">
+          <ul *ngIf="showCase">
+            <p>Casos</p>
+            <li *ngFor="let case of dataCase" (click)="redirectResult('case', case.idCase)">
+              {{case.nameCase}}
+            </li>
+          </ul>
+          <ul *ngIf="showCustomer">
+            <p>Clientes</p>
+            <li *ngFor="let customer of dataCustomer" (click)="redirectResult('customer', customer.id_client)">
+              {{customer.nameClient}}
+            </li>
+          </ul>
+          <ul *ngIf="showLawyer">
+            <p>Abogados</p>
+            <li *ngFor="let lawyer of dataLawyer" (click)="redirectResult('lawyer', lawyer.id_lawyer)">
+              {{lawyer.nameLawyer}}
+            </li>
+          </ul>
+        </div>
       </section>
       <section class="header-extra">
         <section class="extra-color left">
@@ -38,7 +59,7 @@
             id="collapse-menu" (click)="collapseMenu()"></i></div>
         <p class="user">
           <img
-            src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png">
+            src="assets/no-user.webp">
           Usuario
         </p>
         <ul class="menu">
@@ -52,7 +73,7 @@
                 <p class="menu-title">Inicio</p>
               </li>
               <li class="menu-inside">
-                <a [routerLink]="['../home']"
+                <a [routerLink]="['/home']"
                   class="menu-link menu-link--inside"><i
                     class="fa-solid fa-house"
                     style="margin-right: 8px;"></i>Inicio</a>
@@ -69,13 +90,13 @@
                 <p class="menu-title">Usuario</p>
               </li>
               <li class="menu-inside">
-                <a [routerLink]="['../list-users']"
+                <a [routerLink]="['/list-users']"
                   class="menu-link menu-link--inside"><i
                     class="fa-solid fa-user"
                     style="margin-right: 8px;"></i>Administrar</a>
               </li>
               <li class="menu-inside">
-                <a [routerLink]="['../new-user']"
+                <a [routerLink]="['/new-user']"
                   class="menu-link menu-link--inside"><i
                     class="fa-solid fa-plus"
                     style="margin-right: 8px;"></i>Nuevo</a>
@@ -92,13 +113,13 @@
                 <p class="menu-title">Abogado</p>
               </li>
               <li class="menu-inside">
-                <a [routerLink]="['../list-lawyers']"
+                <a [routerLink]="['/list-lawyers']"
                   class="menu-link menu-link--inside"><i
                     class="fa-solid fa-briefcase"
                     style="margin-right: 8px;"></i>Administrar</a>
               </li>
               <li class="menu-inside">
-                <a [routerLink]="['../new-lawyer']"
+                <a [routerLink]="['/new-lawyer']"
                   class="menu-link menu-link--inside"><i
                     class="fa-solid fa-plus"
                     style="margin-right: 8px;"></i>Nuevo</a>
@@ -115,13 +136,13 @@
                 <p class="menu-title">Cliente</p>
               </li>
               <li class="menu-inside">
-                <a [routerLink]="['../list-customers']"
+                <a [routerLink]="['/list-customers']"
                   class="menu-link menu-link--inside"><i
                     class="fa-solid fa-user-shield"
                     style="margin-right: 8px;"></i>Administrar</a>
               </li>
               <li class="menu-inside">
-                <a [routerLink]="['../new-customer']"
+                <a [routerLink]="['/new-customer']"
                   class="menu-link menu-link--inside"><i
                     class="fa-solid fa-plus"
                     style="margin-right: 8px;"></i>Nuevo</a>
@@ -138,20 +159,21 @@
                 <p class="menu-title">Casos</p>
               </li>
               <li class="menu-inside">
-                <a [routerLink]="['../list-cases']"
+                <a [routerLink]="['/list-cases']"
                   class="menu-link menu-link--inside"><i
                     class="fa-solid fa-suitcase"
                     style="margin-right: 8px;"></i>Administrar</a>
               </li>
               <li class="menu-inside">
-                <a [routerLink]="['../new-case']"
+                <a [routerLink]="['/new-case']"
                   class="menu-link menu-link--inside"><i
                     class="fa-solid fa-plus"
                     style="margin-right: 8px;"></i>Nuevo</a>
               </li>
             </ul>
           </li>
-          <li class="menu-item menu-item--show">
+          <!-- Lo comento para no mostrarlo mientras no este complete el modulo de documento -->
+          <!-- <li class="menu-item menu-item--show">
             <a class="menu-link menu-close"><span
                 class="fa-solid fa-file-contract menu-icon"></span><span
                 class="menu-name">Documento</span><i
@@ -161,19 +183,19 @@
                 <p class="menu-title">Documento</p>
               </li>
               <li class="menu-inside">
-                <a [routerLink]="['../list-cases']"
+                <a [routerLink]="['/list-cases']"
                   class="menu-link menu-link--inside"><i
                     class="fa-solid fa-suitcase"
                     style="margin-right: 8px;"></i>Administrar</a>
               </li>
               <li class="menu-inside">
-                <a [routerLink]="['../new-case']"
+                <a [routerLink]="['/new-case']"
                   class="menu-link menu-link--inside"><i
                     class="fa-solid fa-plus"
                     style="margin-right: 8px;"></i>Nuevo</a>
               </li>
             </ul>
-          </li>
+          </li> -->
         </ul>
       </nav>
       <article class="operations"

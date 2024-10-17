@@ -1,6 +1,12 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { DataService } from './services/shared/data.service';
+import { FormControl } from '@angular/forms';
+import { CaseProcessService } from './services/case-process.service';
+import { CustomersService } from './services/customers.service';
+import { LawyersService } from './services/lawyers.service';
+import { debounceTime, forkJoin, map, Observable, startWith, switchMap } from 'rxjs';
+import { SearchResults } from './services/model';
 
 @Component({
   selector: 'app-root',
@@ -15,8 +21,18 @@ export class AppComponent implements OnInit, OnDestroy {
   currentRoute: string = '';
   showMenu: boolean = true;
   isDarkMode : boolean = false;
+  searchControl = new FormControl('');
+  showResults : boolean = false;
+  showCase : boolean = false;
+  showLawyer : boolean = false;
+  showCustomer : boolean = false;
+  dataCase : any = [];
+  dataLawyer : any = [];
+  dataCustomer : any = [];
 
-  constructor(private router: Router, private dataService : DataService) { }
+  constructor(private router: Router, private dataService : DataService,
+    private caseService : CaseProcessService, private customerService : CustomersService,
+    private lawyerService : LawyersService) { }
 
   ngOnInit(): void {
     // Obtener la URL completa de la ruta actual
@@ -58,6 +74,27 @@ export class AppComponent implements OnInit, OnDestroy {
     this.isDarkMode = savedTheme === "true";
 
     this.toggleDarkMode(true);
+
+    this.searchControl.valueChanges.pipe(
+      debounceTime(300), // Esperar 300ms después de que el usuario deja de escribir
+      startWith(''),
+      switchMap(name => this.search(name))
+    ).subscribe(
+      data => {
+        this.dataCustomer = data[1];
+        this.dataCase = data[0];
+        this.dataLawyer = data[2];
+        this.showResults = this.dataCustomer.length > 0 || this.dataCase.length > 0 || this.dataLawyer.length > 0;
+        this.showCustomer = this.dataCustomer.length > 0;
+        this.showCase = this.dataCase.length > 0;
+        this.showLawyer = this.dataLawyer.length > 0;
+      },
+      error => {
+        console.log('Error al encontrar resultados', error);
+        this.showResults = false;
+      }
+
+    )
   }
 
   ngOnDestroy(): void {
@@ -113,4 +150,41 @@ export class AppComponent implements OnInit, OnDestroy {
       document.documentElement.removeAttribute("theme");
     }
   }
+
+    search(name : string) : Observable<any[]> {
+      if (name.length < 3) {
+        this.showResults = false;
+        return new Observable(observer => observer.next([]));
+      }
+
+      let caseSearch = this.caseService.getCaseByIdOrName(name).pipe(
+        map(casesProcess => casesProcess.slice(0,4))
+      )
+
+      let customerSearch = this.customerService.getCustomerByName(name).pipe(
+        map(customer => customer.slice(0,4))
+      )
+
+      let lawyersSearch = this.lawyerService.getLawyerByName(name).pipe(
+        map(lawyers => lawyers.slice(0,4))
+      )
+
+      return new Observable(observer => {
+        // ForkJoin -> Unir todos los observadores
+        forkJoin([caseSearch, customerSearch, lawyersSearch]).subscribe(
+          ([cases, customers, lawyers]) => {
+            const result = [ cases, customers, lawyers ];
+            observer.next(result);
+            observer.complete();
+          },
+          error => observer.error(error)
+        );
+      });
+    }
+
+    redirectResult(type : string, result : string) {
+      this.router.navigateByUrl(`/${type}/${result}`);
+      this.showResults = false;
+      this.searchControl.setValue("");
+    }
 }

@@ -64,4 +64,8 @@ public class UserController {
             return ResponseEntity.status(401).body(new Response(false, "Usuario o Contraseña Incorrectos."));
         }
     }
+
+    // EndPoint Buscar Por Nombre
+    @GetMapping("search/{name}")
+    public User getByName(@PathVariable String name) { return service.findByName(name); }
 }

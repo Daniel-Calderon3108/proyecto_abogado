@@ -24,4 +24,7 @@ public class UserService implements IUserService {
         user.setPasswordUser(encriptPassword.encryptExistingPasswords(user.getPasswordUser()));
         repository.save(user);
     }
+
+    @Override
+    public User findByName(String name) { return repository.findBynameUser(name); }
 }

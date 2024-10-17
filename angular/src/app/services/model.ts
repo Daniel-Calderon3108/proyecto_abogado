@@ -99,3 +99,9 @@ export interface Document {
         idCase: number;
     }
 }
+
+export interface SearchResults {
+    cases?: any[];
+    customers?: any[];
+    lawyers?: any[];
+  }

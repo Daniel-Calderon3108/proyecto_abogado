@@ -1,20 +1,21 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { LoginComponent } from './login/login.component';
-import { CustomerComponent } from './customer/customer.component';
-import { FormCustomersComponent } from './form-customers/form-customers.component';
-import { LawyerComponent } from './lawyer/lawyer.component';
-import { FormLawyerComponent } from './form-lawyer/form-lawyer.component';
-import { UserComponent } from './user/user.component';
-import { FormUserComponent } from './form-user/form-user.component';
+import { LoginComponent } from './userModule/login/login.component';
 import { HomeComponent } from './home/home.component';
-import { CaseProcessComponent } from './case-process/case-process.component';
-import { FormCaseProcessComponent } from './form-case-process/form-case-process.component';
-import { FormDocumentComponent } from './DocumentApi/form-document/form-document.component';
-import { ListDocumentComponent } from './DocumentApi/list-document/list-document.component';
-import { ViewCustomerComponent } from './view-customer/view-customer.component';
-import { ViewLawyerComponent } from './view-lawyer/view-lawyer.component';
-import { ViewCaseComponent } from './view-case/view-case.component';
+import { CaseProcessComponent } from './caseProcessModule/case-process/case-process.component';
+import { FormCaseProcessComponent } from './caseProcessModule/form-case-process/form-case-process.component';
+import { ViewCaseComponent } from './caseProcessModule/view-case/view-case.component';
+import { CustomerComponent } from './customerModule/customer/customer.component';
+import { FormCustomersComponent } from './customerModule/form-customers/form-customers.component';
+import { ViewCustomerComponent } from './customerModule/view-customer/view-customer.component';
+import { FormDocumentComponent } from './documentModule/form-document/form-document.component';
+import { ListDocumentComponent } from './documentModule/list-document/list-document.component';
+import { FormLawyerComponent } from './lawyerModule/form-lawyer/form-lawyer.component';
+import { LawyerComponent } from './lawyerModule/lawyer/lawyer.component';
+import { ViewLawyerComponent } from './lawyerModule/view-lawyer/view-lawyer.component';
+import { FormUserComponent } from './userModule/form-user/form-user.component';
+import { UserComponent } from './userModule/user/user.component';
+import { ViewUserComponent } from './userModule/view-user/view-user.component';
 
 const routes: Routes = [
   {
@@ -29,6 +30,10 @@ const routes: Routes = [
   {
     path : "login",
     component : LoginComponent
+  },
+  {
+    path : "user/:name",
+    component : ViewUserComponent
   },
   {
     path : "list-customers",

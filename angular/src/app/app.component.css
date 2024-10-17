@@ -351,3 +351,40 @@ ul.menu-nesting {
 .operations.collapse {
     margin-left: 35px;
 }
+
+/* Estilos Resultados de Busqueda */
+.search .search-results {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: var(--border);
+    max-height: 400px;
+    overflow-y: auto;
+    z-index: 1000;
+}
+
+.search .search-results ul {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    font-size: var(--size-text1);
+}
+
+.search p {
+    color: #000000;
+    margin: 10px 5px;
+    font-weight: bold;
+}
+
+.search li {
+    padding: 5px;
+    cursor: pointer;
+    color: #000000;
+}
+
+.search li:hover {
+    background-color: #f0f0f0;
+}

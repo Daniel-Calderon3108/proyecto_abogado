@@ -1,0 +1,32 @@
+
+<h2>Listado De Clientes</h2>
+<div class="info" id="info">
+    <table class="table table-striped table-bordered" [ngClass]="{'table-dark' : isDarkMode}">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Tipo Documento</th>
+                <th>Documento</th>
+                <th>Direccion</th>
+                <th>Teléfono</th>
+                <th>Correo</th>
+                <th>Tipo</th>
+                <th>Estado</th>
+                <th>Usuario</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let model of data">
+                <td><a [routerLink]="['/customer', model.id_client]">{{model.nameClient}}</a></td>
+                <td>{{model.typeDocumentClient}}</td>
+                <td>{{model.documentClient}}</td>
+                <td>{{model.addressClient}}</td>
+                <td>{{model.phoneClient}}</td>
+                <td>{{model.emailClient}}</td>
+                <td>{{model.typeClient}}</td>
+                <td>{{model.statusClient == 1 ? "Activo" : "Inactivo"}}</td>
+                <td><a [routerLink]="['/user', model.user.nameUser]">{{model.user.nameUser}}</a></td>
+            </tr>
+        </tbody>
+    </table>
+</div>

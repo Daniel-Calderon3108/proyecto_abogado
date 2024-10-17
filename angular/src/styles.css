@@ -55,6 +55,10 @@ p {
     color: var(--color-letter);
 }
 
+a {
+    color: var(--color-letter);
+}
+
 h2 {
     font-size: 25px;
 }

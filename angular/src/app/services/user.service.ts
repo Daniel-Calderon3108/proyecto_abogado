@@ -22,4 +22,8 @@ export class UserService {
   login(session:{ name: string; password: string}): Observable<any> {
     return this.http.post(`${this.userUrl}login`, session);
   }
+
+  getUserByName(name : string) {
+    return this.http.get(`${this.userUrl}search/${name}`);
+  }
 }
