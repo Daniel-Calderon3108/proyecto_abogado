@@ -14,7 +14,7 @@
         </thead>
         <tbody>
             <tr *ngFor="let model of data">
-                <td><a [routerLink]="model.idCase">{{model.nameCase}}</a></td>
+                <td><a [routerLink]="['/case',model.idCase]">{{model.nameCase}}</a></td>
                 <td>{{model.descriptionCase}}</td>
                 <td>{{model.typeCase}}</td>
                 <td>{{model.dateInitCase}}</td>

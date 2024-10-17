@@ -13,20 +13,28 @@ export class ViewLawyerComponent implements OnInit {
   idLawyer : string = "";
   data : any = [];
   isDarkMode : boolean = localStorage.getItem("darkMode") === "true";
+  isCase : boolean = false;
 
   constructor(private lawyerService : LawyersService, private dataService : DataService,
     private activatedRoute : ActivatedRoute) { }
 
   ngOnInit(): void {
-    this.idLawyer = this.activatedRoute.snapshot.paramMap.get("id") || "";
-    this.lawyer();
+    this.activatedRoute.paramMap.subscribe(params =>{
+      this.idLawyer = params.get("id") || "";
+      this.lawyer();
+    })
     this.heightInfo();
+
+    this.dataService.currentDarKMode.subscribe( value => { this.isDarkMode = value; });
   }
 
   lawyer() {
     this.lawyerService.getLawyerByID(parseInt(this.idLawyer))
     .subscribe(
-      rs => this.data = rs,
+      rs => { 
+        this.data = rs;
+        this.isCase = this.data.caseLawyer?.length <= 0;
+      },
       err => console.log(err)
     );
   }

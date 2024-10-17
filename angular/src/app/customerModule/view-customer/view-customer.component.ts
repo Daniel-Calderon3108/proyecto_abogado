@@ -13,22 +13,30 @@ export class ViewCustomerComponent implements OnInit {
   idClient : string = "";
   data: any = [];
   isDarkMode: boolean = localStorage.getItem("darkMode") === "true";
+  isCase : boolean = false;
 
   constructor(private activatedRoute : ActivatedRoute, private customerService : CustomersService,
     private dataService : DataService) { }
 
   ngOnInit(): void {
-    this.idClient = this.activatedRoute.snapshot.paramMap.get("id") || "";
-    this.customer();
+    this.activatedRoute.paramMap.subscribe(params => {
+       this.idClient = params.get("id") || "";
+       this.customer();
+      }
+    )
     this.heightInfo();
     
     this.dataService.currentDarKMode.subscribe( value => { this.isDarkMode = value; });
+    
   }
 
   customer() {
     this.customerService.getCustomerByID(parseInt(this.idClient))
     .subscribe(
-      rs => this.data = rs,
+      rs => {
+        this.data = rs
+        this.isCase = this.data.caseProcess?.length <= 0;
+      },
       err => console.log(err)
     )
   }

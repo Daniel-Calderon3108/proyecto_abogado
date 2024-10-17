@@ -15,8 +15,11 @@ export class ViewUserComponent implements OnInit {
 
   constructor(private activatedRoute : ActivatedRoute, private userService : UserService) { }
   ngOnInit(): void {
-    this.nameUser = this.activatedRoute.snapshot.paramMap.get("name") || "";
+   this.activatedRoute.paramMap.subscribe(params =>{
+    this.nameUser = params.get("name") || "";
     this.user();
+   })
+   
     this.heightInfo();
   }
 

@@ -16,7 +16,7 @@
                 </div>
                 <div>
                     <h2>Usuario</h2>
-                    <p><a [routerLink]="['/user', data.user.nameUser]">{{data.user.nameUser}}</a></p>
+                    <p><a [routerLink]="['/user', data.user?.name]">{{data.user?.nameUser}}</a></p>
                 </div>
                 <div>
                     <h2>Fecha Registro</h2>
@@ -73,7 +73,7 @@
                     <th>Tipo</th>
                 </tr>
             </thead>
-            <tbody *ngIf="data.caseProcess.length > 0" >
+            <tbody *ngIf="!isCase" >
                 <tr *ngFor="let case of data.caseProcess"> 
                     <td><a [routerLink]="['/case', case.idCase]">{{case.nameCase}}</a></td>
                     <td>{{case.dateInitCase}}</td>
@@ -82,7 +82,7 @@
                     <td>{{case.typeCase}}</td>
                 </tr>
             </tbody>
-            <tbody *ngIf="data.caseProcess.length <= 0" >
+            <tbody *ngIf="isCase" >
                 <tr>
                     <td colspan="5">No se encontraron Casos.</td>
                 </tr>

@@ -84,10 +84,10 @@ export class AppComponent implements OnInit, OnDestroy {
         this.dataCustomer = data[1];
         this.dataCase = data[0];
         this.dataLawyer = data[2];
-        this.showResults = this.dataCustomer.length > 0 || this.dataCase.length > 0 || this.dataLawyer.length > 0;
-        this.showCustomer = this.dataCustomer.length > 0;
-        this.showCase = this.dataCase.length > 0;
-        this.showLawyer = this.dataLawyer.length > 0;
+        this.showResults = this.dataCustomer?.length > 0 || this.dataCase?.length > 0 || this.dataLawyer?.length > 0;
+        this.showCustomer = this.dataCustomer?.length > 0;
+        this.showCase = this.dataCase?.length > 0;
+        this.showLawyer = this.dataLawyer?.length > 0;
       },
       error => {
         console.log('Error al encontrar resultados', error);

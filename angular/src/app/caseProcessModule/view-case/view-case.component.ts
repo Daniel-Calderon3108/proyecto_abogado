@@ -19,9 +19,11 @@ export class ViewCaseComponent implements OnInit {
     private dataService : DataService) { }
 
   ngOnInit(): void {
-    this.idCase = this.activatedRoute.snapshot.paramMap.get("id") || "";
-    this.caseProcess();
-    this.caseLawyer();
+    this.activatedRoute.paramMap.subscribe(params =>{
+      this.idCase = params.get("id") || "";
+      this.caseProcess();
+      this.caseLawyer();
+    })
     this.heightInfo();
 
     this.dataService.currentDarKMode.subscribe( value => { this.isDarkMode = value; });
