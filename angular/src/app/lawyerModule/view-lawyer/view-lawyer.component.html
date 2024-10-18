@@ -71,11 +71,11 @@
             </thead>
             <tbody *ngIf="!isCase">
                 <tr *ngFor="let case of data.caseLawyer">
-                    <td><a [routerLink]="['/case', case.caseProcess.idCase]">{{case.caseProcess.nameCase}}</a></td>
-                    <td>{{case.caseProcess.dateInitCase}}</td>
-                    <td>{{case.caseProcess.dateInitCase ? case.caseProcess.dateInitCase : "Sin definir"}}</td>
-                    <td>{{case.caseProcess.statusCase}}</td>
-                    <td>{{case.caseProcess.typeCase}}</td>
+                    <td><a [routerLink]="['/case', case.idCase]">{{case.nameCase}}</a></td>
+                    <td>{{case.dateInitCase}}</td>
+                    <td>{{case.dateEndCase ? case.caseProcess.dateEndCase : "Sin definir"}}</td>
+                    <td>{{case.statusCase}}</td>
+                    <td>{{case.typeCase}}</td>
                 </tr>
             </tbody>
             <tbody *ngIf="isCase">

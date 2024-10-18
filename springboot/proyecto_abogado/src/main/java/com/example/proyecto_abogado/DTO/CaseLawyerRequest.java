@@ -20,6 +20,10 @@ public class CaseLawyerRequest {
     private Long idCase;
     private String nameCase;
     private String descriptionCase;
+    private String dateInitCase;
+    private String dateEndCase;
+    private String statusCase;
+    private String typeCase;
 
     public CaseLawyerRequest() {
 
@@ -37,5 +41,9 @@ public class CaseLawyerRequest {
         this.idCase = caseLawyer.getCaseProcess().getIdCase();
         this.nameCase = caseLawyer.getCaseProcess().getNameCase();
         this.descriptionCase = caseLawyer.getCaseProcess().getDescriptionCase();
+        this.dateInitCase = caseLawyer.getCaseProcess().getDateInitCase();
+        this.dateEndCase = caseLawyer.getCaseProcess().getDateEndCase();
+        this.statusCase = caseLawyer.getCaseProcess().getStatusCase();
+        this.typeCase = caseLawyer.getCaseProcess().getTypeCase();
     }
 }

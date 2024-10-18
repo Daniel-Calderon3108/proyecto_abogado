@@ -1,5 +1,6 @@
 package com.example.proyecto_abogado.controllers;
 
+import com.example.proyecto_abogado.DTO.LawyerRequest;
 import com.example.proyecto_abogado.DTO.Response;
 import com.example.proyecto_abogado.entities.Lawyer;
 import com.example.proyecto_abogado.services.ILawyerService;
@@ -8,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequestMapping("api/lawyer")
 @RestController
@@ -39,5 +41,10 @@ public class LawyerController {
 
     // EndPoint Buscar Por ID
     @GetMapping("searchById/{id}")
-    public Lawyer getById(@PathVariable Long id) { return service.findById(id); }
+    public LawyerRequest getById(@PathVariable Long id) {
+
+        Lawyer lawyer = service.findById(id);
+
+        return new LawyerRequest(lawyer);
+    }
 }
