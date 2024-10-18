@@ -31,12 +31,12 @@ public class CaseLawyer {
     // Relacion muchos a uno con abogado
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_lawyer")
-    @JsonBackReference // Evitar bucle
+    @JsonBackReference ("lawyers-case") // Evitar bucle
     private Lawyer lawyer;
 
     // Relacion muchos a uno con caso
     @ManyToOne
     @JoinColumn(name = "id_case")
-    @JsonManagedReference // Evitar bucle, lado principal
+    @JsonBackReference  ("relation-case")// Evitar bucle, lado principal
     private CaseProcess caseProcess;
 }

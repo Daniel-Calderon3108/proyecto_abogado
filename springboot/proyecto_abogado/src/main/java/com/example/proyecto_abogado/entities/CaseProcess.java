@@ -1,6 +1,7 @@
 package com.example.proyecto_abogado.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -45,11 +46,11 @@ public class CaseProcess {
     // Relacion muchos a uno
     @ManyToOne(fetch = FetchType.LAZY) // Cargo bajo demanda
     @JoinColumn(name = "id_client_case", referencedColumnName = "id_client")
-    @JsonBackReference // Evitar crear bucle
+    @JsonBackReference ("case-customer") // Evitar crear bucle
     private Customer customer;
 
     // Relacion uno a muchos
     @OneToMany(mappedBy = "caseProcess", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonBackReference // Evitar bucle
+    @JsonManagedReference("relation-case") // Evitar bucle
     private List<CaseLawyer> caseLawyer = new ArrayList<>();
 }

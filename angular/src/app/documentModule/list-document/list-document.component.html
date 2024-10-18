@@ -9,18 +9,16 @@
                 <th>Fecha Inicio</th>
                 <th>Estado</th>
                 <th>Nombre del caso</th>
-                <th>Id caso</th>
             </tr>
         </thead>
         <tbody>
             <tr *ngFor="let model of data">
                 <td>{{model.nameDocument}}</td>
-                <td>{{model.urlDocument}}</td>
+                <td><a href="{{model.urlDocument}}" class="fa-solid fa-file-pdf" target="_blank"></a></td>
                 <td>{{model.typeDocument}}</td>
                 <td>{{model.dateDocument}}</td>
                 <td>{{model.statusDocument}}</td>
-                <td>{{model.nameIdCase.nameCase}}</td>
-                <td>{{model.nameIdCase.idCase}}</td>
+                <td><a [routerLink]="['/case', model.nameIdCase.idCase]">{{model.nameIdCase.nameCase}}</a></td>
             </tr>
         </tbody>
     </table>

@@ -52,6 +52,6 @@ public class Lawyer {
 
     // Relacion uno a muchos
     @OneToMany(mappedBy = "lawyer", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference // Evitar bucle, lado principal
+    @JsonManagedReference ("lawyers-case") // Evitar bucle, lado principal
     private List<CaseLawyer> caseLawyer = new ArrayList<>();
 }
