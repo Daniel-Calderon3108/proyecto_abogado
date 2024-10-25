@@ -41,7 +41,7 @@ export class LoginComponent {
         if (res.success) {
           this.resMessage = res.message || 'Inicio de sesión exitoso';
           // Redirigir a la página de lista de clientes
-          this.router.navigateByUrl('home');
+          this.router.navigate(['/home']);
         } else {
           this.resMessage = res.message || 'Error de autenticación';
         }
@@ -52,9 +52,4 @@ export class LoginComponent {
       }
     });
   }
-
-  /*login() {
-    this.router.navigateByUrl("list-customers");
-    // Provisional, para redirigir al listado de clientes temporal "(click)="login()"
-  }*/
 }

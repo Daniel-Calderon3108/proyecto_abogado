@@ -6,19 +6,20 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root'
 })
 export class DocumentService {
-  private apiUrl = "http://localhost:8080/api/documents/";
+  
+  private API_URI = `${origin.replace('4200','8080')}/api/documents/`;
 
   constructor(private http : HttpClient) { }
 
   getDocument() {
-    return this.http.get(`${this.apiUrl}listDocument`);
+    return this.http.get(`${this.API_URI}listDocument`);
   }
 
   saveDocument(document : Document) {
-    return this.http.post(`${this.apiUrl}register`,document);
+    return this.http.post(`${this.API_URI}register`,document);
   }
 
   getDocumentById(id : number) {
-    return this.http.get(`${this.apiUrl}listDocument/${id}`);
+    return this.http.get(`${this.API_URI}listDocument/${id}`);
   }
 }

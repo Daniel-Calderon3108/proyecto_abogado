@@ -7,7 +7,7 @@ import { Lawyers } from './model';
 })
 export class LawyersService {
 
-  private API_URI : string  = "http://localhost:8080/api/lawyer";
+  private API_URI : string  = `${origin.replace('4200','8080')}/api/lawyer`;
 
   constructor(private http : HttpClient) { }
 

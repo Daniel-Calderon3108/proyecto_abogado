@@ -229,7 +229,7 @@ export class FormCaseProcessComponent implements OnInit {
     this.dataCase.nameCase = this.form.value.nameCase;
     this.dataCase.descriptionCase = this.form.value.descriptionCase;
     this.dataCase.dateInitCase = this.form.value.dateInitCase;
-    this.dataCase.dateEndCase = this.form.value.dateEndCase === "Sin definir" ? undefined : time;
+    this.dataCase.dateEndCase = this.form.value.dateEndCase === "Sin definir" ? undefined : this.form.value.dateEndCase;
     this.dataCase.statusCase = this.form.value.statusCase;
     this.dataCase.userRegisterCase = "1";
     this.dataCase.dateRegisterCase = time;

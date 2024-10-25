@@ -7,7 +7,7 @@ import { Customers } from './model';
 })
 export class CustomersService {
 
-  private API_URI : string  = "http://localhost:8080/api/customer";
+  private API_URI : string  = `${origin.replace('4200','8080')}/api/customer`;
 
   constructor(private http : HttpClient) { }
 

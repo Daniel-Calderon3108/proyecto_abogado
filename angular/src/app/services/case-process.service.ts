@@ -7,7 +7,7 @@ import { ApiResponse, Case, CaseLawyer } from './model';
 })
 export class CaseProcessService {
 
-  private API_URI = "http://localhost:8080/api/case";
+  private API_URI = `${origin.replace('4200','8080')}/api/case`;
 
   constructor(private http : HttpClient) { }
 
