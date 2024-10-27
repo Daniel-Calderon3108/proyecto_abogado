@@ -9,4 +9,5 @@ public interface ILawyerService {
     void save(Lawyer lawyer);
     List<Lawyer> findByNameOrDocument(String search);
     Lawyer findById(Long id);
+    Lawyer findByDocument(String document);
 }

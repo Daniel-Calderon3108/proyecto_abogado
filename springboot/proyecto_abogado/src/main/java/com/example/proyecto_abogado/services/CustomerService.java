@@ -36,4 +36,7 @@ public class CustomerService implements  ICustomerService {
         return repository.findById(id)
             .orElseThrow(() -> new RuntimeException("Cliente No Encontrado"));
     }
+
+    @Override
+    public Customer findByDocument(String document) { return repository.findByDocumentClient(document); }
 }

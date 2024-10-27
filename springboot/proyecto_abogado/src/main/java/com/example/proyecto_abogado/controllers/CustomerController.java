@@ -39,5 +39,8 @@ public class CustomerController {
 
     // EndPoint Buscar Por ID
     @GetMapping("searchById/{id}")
-    public Customer findById(@PathVariable Long id) { return service.findById(id);  }
+    public Customer findById(@PathVariable Long id) { return service.findById(id); }
+
+    @GetMapping("searchDocument/{document}")
+    public Customer getByDocument(@PathVariable String document) { return service.findByDocument(document); }
 }

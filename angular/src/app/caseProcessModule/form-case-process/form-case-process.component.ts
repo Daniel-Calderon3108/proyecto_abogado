@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { FormGroup, FormControl, FormArray } from '@angular/forms';
-import { debounceTime, map, Observable, startWith, switchMap } from 'rxjs';
+import { Router } from '@angular/router';
+import { FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
+import { debounceTime, distinctUntilChanged, map, Observable, startWith, switchMap } from 'rxjs';
 import { CaseProcessService } from 'src/app/services/case-process.service';
 import { CustomersService } from 'src/app/services/customers.service';
 import { LawyersService } from 'src/app/services/lawyers.service';
 import { Case, CaseLawyer } from 'src/app/services/model';
+import { TimeActualService } from 'src/app/services/time-actual/time-actual.service';
 
 
 @Component({
@@ -17,64 +18,39 @@ export class FormCaseProcessComponent implements OnInit {
 
   form = new FormGroup({
     nameCase: new FormControl(""),
-    descriptionCase: new FormControl(""),
-    dateInitCase: new FormControl(""),
-    dateEndCase: new FormControl("Sin definir"),
+    descriptionCase: new FormControl("",[Validators.required]),
+    dateInitCase: new FormControl("",[Validators.required]),
+    dateEndCase: new FormControl("Sin definir",[Validators.required]),
     statusCase: new FormControl("Abierto"),
-    userRegisterCase: new FormControl(""),
-    dateRegisterCase: new FormControl(""),
-    updateUserCase: new FormControl(""),
-    updateDateCase: new FormControl(""),
     typeCase: new FormControl("Penal"),
-    nameClientSelect : new FormControl(""),
-    idClient: new FormControl(""),
+    nameClientSelect: new FormControl(""),
+    idClient: new FormControl("",[Validators.required]),
     lawyers: new FormArray([])
   });
-
-  dataCase: Case = {
-    idCase: "",
-    nameCase: "",
-    descriptionCase: "",
-    dateInitCase: "",
-    dateEndCase: "Sin definir",
-    statusCase: "Abierto",
-    userRegisterCase: "",
-    dateRegisterCase: "",
-    updateUserCase: "",
-    updateDateCase: "",
-    typeCase: "Penal",
-    customer: {
-      idClient: ""
-    }
-  }
-
-  dataLawyer: CaseLawyer = {
-    idCaseLawyer: "",
-    dateRegisterLawyer: "",
-    userRegisterLawyer: "",
-    statusLawyerCase: "1",
-    idLawyer: "",
-    idCase: ""
-  }
 
   inputType: string = "text";
   inputValue: string = "Sin definir";
   readonly: Boolean = true;
   idCase: number = 0;
-  showSearchClient : boolean = false;
-  showSearchLawyer : boolean = false;
-  dataClient : any[] = [];
-  dataLawyerList : any[] = [];
-  openLawyer : number = -1;
-  nameClientControl = new FormControl();
+  showSearchClient: boolean = false;
+  showSearchLawyer: boolean = false;
+  dataClient: any[] = [];
+  dataLawyerList: any[] = [];
+  openLawyer: number = -1;
+  nameClientControl = new FormControl("");
 
+  isNameValidation: boolean = false;
+  isValidName: boolean = false;
+  nameMessage: string = "";
 
-  constructor(private casesService: CaseProcessService, private router: Router, private activatedRoute: ActivatedRoute, 
-    private customerService : CustomersService, private lawyerService : LawyersService) { }
+  messageSubmit: string = "";
+
+  constructor(private casesService: CaseProcessService, private router: Router,
+    private customerService: CustomersService, private lawyerService: LawyersService, private time: TimeActualService) { }
 
   ngOnInit(): void {
-    const param = this.activatedRoute.snapshot;
     this.heightInfo();
+    this.addLawyer();
 
     const textarea = document.getElementById('descriptionCase') as HTMLTextAreaElement | null;
 
@@ -106,6 +82,7 @@ export class FormCaseProcessComponent implements OnInit {
 
     this.nameClientControl.valueChanges.pipe(
       debounceTime(300), // Esperar 300ms después de que el usuario deja de escribir
+      distinctUntilChanged(),
       startWith(''),
       switchMap(name => this.searchCustomer(name))
     ).subscribe(
@@ -119,6 +96,33 @@ export class FormCaseProcessComponent implements OnInit {
       }
     );
 
+    this.form.get("nameCase")?.valueChanges.pipe(
+      debounceTime(300),
+      distinctUntilChanged(),
+      map(name => {
+        this.isNameValidation = true;
+        this.isValidName = false;
+        this.nameMessage = '';
+
+        const rules = [
+          { test: (name: string) => !!name, message: 'El campo nombre no puede estar vacío.' },
+          { test: (name: string) => name.length >= 8, message: 'El nombre debe tener al menos 8 caracteres.' },
+          { test: (name: string) => !/[^a-zA-Z0-9\s]+$/.test(name), message: 'El nombre no puede contener caracteres especiales.' },
+        ];
+
+        for (const rule of rules) {
+          if (!rule.test(name)) {
+            this.nameMessage = rule.message;
+            this.isValidName = false;
+            return;
+          }
+        }
+
+        this.nameMessage = 'Nombre Válido';
+        this.isValidName = true;
+      })
+    )
+      .subscribe();
   }
 
   heightInfo() {
@@ -133,7 +137,7 @@ export class FormCaseProcessComponent implements OnInit {
     return this.form.get('lawyers') as FormArray;
   }
 
-  searchCustomer(name : string) : Observable<any[]>  {
+  searchCustomer(name: string): Observable<any[]> {
     if (name.length < 3) {
       this.showSearchClient = false; // No mostrar resultados si menos de 3 caracteres
       return new Observable(observer => observer.next([])); // Retornar un observable vacío
@@ -143,7 +147,7 @@ export class FormCaseProcessComponent implements OnInit {
     ); // Retornar el observable del servicio
   }
 
-  selectClient(clientId: string, documentClient : string, nameClient : string) {
+  selectClient(clientId: string, documentClient: string, nameClient: string) {
     this.form.get("idClient")?.setValue(clientId); // Establecer el ID del cliente seleccionado
     this.form.get("nameClientSelect")?.setValue(`${documentClient} - ${nameClient}`);
     this.showSearchClient = false; // Ocultar la lista de sugerencias
@@ -153,8 +157,8 @@ export class FormCaseProcessComponent implements OnInit {
   addLawyer() {
     const lawyerGroup = new FormGroup({
       nameLawyer: new FormControl(''),
-      selectLawyer : new FormControl(''),
-      idLawyer: new FormControl('')
+      selectLawyer: new FormControl(''),
+      idLawyer: new FormControl('',[Validators.required])
     });
 
     this.lawyers.push(lawyerGroup);
@@ -164,13 +168,13 @@ export class FormCaseProcessComponent implements OnInit {
     if (this.lawyers.length > 0) {
       this.lawyers.removeAt(this.lawyers.length - 1);
     }
-
   }
 
-  onNameChange(i : number) {
+  onNameChange(i: number) {
     const nameControl = this.form.get(`lawyers.${i}.nameLawyer`) as FormControl;
     nameControl.valueChanges.pipe(
       debounceTime(300),
+      distinctUntilChanged(),
       startWith(''),
       switchMap(name => this.searchLawyer(name))
     ).subscribe(
@@ -186,17 +190,17 @@ export class FormCaseProcessComponent implements OnInit {
     )
   }
 
-  searchLawyer(name : string): Observable<any[]> {
+  searchLawyer(name: string): Observable<any[]> {
     if (name.length < 3) {
       this.showSearchLawyer = false;
       return new Observable(observer => observer.next([]));
     }
     return this.lawyerService.getLawyerByName(name).pipe(
-      map(lawyers => lawyers.slice(0,5))
+      map(lawyers => lawyers.slice(0, 5))
     );
   }
 
-  selectLawyer(lawyerId : string, lawyerDocument : string, lawyerName : string,  i : number) {
+  selectLawyer(lawyerId: string, lawyerDocument: string, lawyerName: string, i: number) {
     const lawyersArray = this.form.get("lawyers") as FormArray;
     lawyersArray.at(i).get('selectLawyer')?.setValue(`${lawyerDocument} - ${lawyerName}`);
     lawyersArray.at(i).get('idLawyer')?.setValue(lawyerId);
@@ -205,41 +209,28 @@ export class FormCaseProcessComponent implements OnInit {
   }
 
   save() {
-    // Inicializar variable para manejar fecha
-    let date_actual: Date = new Date();
-    // Obtener valores fecha por separado
-    let year: any = date_actual.getFullYear();
-    let month: any = date_actual.getMonth() + 1;
-    let day: any = date_actual.getDate();
-    let hour: any = date_actual.getHours();
-    let minute: any = date_actual.getMinutes();
-    let seconds: any = date_actual.getSeconds();
+    if (!(this.isValidName && this.form.valid)) {
+      this.messageSubmit = "Por favor, revisar que todos los campos esten debidamente diligenciados.";
+      return;
+    }
 
-    // Agregar ceros cuando es menor a 10
-    if (month < 10) month = `0${month}`;
-    if (day < 10) day = `0${day}`;
-    if (hour < 10) hour = `0${hour}`;
-    if (minute < 10) minute = `0${minute}`;
-    if (seconds < 10) seconds = `0${seconds}`;
+    let dataCase: Case = {
+      nameCase: this.form.value.nameCase,
+      descriptionCase: this.form.value.descriptionCase,
+      dateInitCase: this.form.value.dateInitCase,
+      dateEndCase: this.form.value.dateEndCase === "Sin definir" ? undefined : this.form.value.dateEndCase,
+      statusCase: this.form.value.statusCase,
+      userRegisterCase: "Administrador",
+      dateRegisterCase: this.time.getTime(),
+      updateUserCase: "Administrador",
+      updateDateCase: this.time.getTime(),
+      typeCase: "Penal",
+      customer: {
+        idClient: this.form.value.idClient
+      }
+    }
 
-    // Construir formato fecha para poder enviar a API
-    let time: string = `${year}-${month}-${day} ${hour}:${minute}:${seconds}`;
-
-    delete this.dataCase.idCase;
-    this.dataCase.nameCase = this.form.value.nameCase;
-    this.dataCase.descriptionCase = this.form.value.descriptionCase;
-    this.dataCase.dateInitCase = this.form.value.dateInitCase;
-    this.dataCase.dateEndCase = this.form.value.dateEndCase === "Sin definir" ? undefined : this.form.value.dateEndCase;
-    this.dataCase.statusCase = this.form.value.statusCase;
-    this.dataCase.userRegisterCase = "1";
-    this.dataCase.dateRegisterCase = time;
-    this.dataCase.updateUserCase = "1";
-    this.dataCase.updateDateCase = time;
-    this.dataCase.typeCase = this.form.value.typeCase;
-    this.dataCase.customer.idClient = this.form.value.idClient;
-    console.log(this.form.value);
-
-    this.casesService.saveCases(this.dataCase)
+    this.casesService.saveCases(dataCase)
       .subscribe(
         rs => {
           this.idCase = rs.data[0];
@@ -247,25 +238,25 @@ export class FormCaseProcessComponent implements OnInit {
           const lawyersData = this.form.value.lawyers;
 
           const saveLawyersRequest = lawyersData.map((element: any) => {
-            delete this.dataLawyer.idCaseLawyer;
-            this.dataLawyer.idLawyer = element.idLawyer;
-            this.dataLawyer.idCase = `${this.idCase}`;
-            this.dataLawyer.dateRegisterLawyer = time;
-            this.dataLawyer.userRegisterLawyer = "1";
-            console.log(element)
-            return this.casesService.addCaseLawyer(this.dataLawyer).toPromise();
+            let caseLawyer: CaseLawyer = {
+              dateRegisterLawyer: this.time.getTime(),
+              userRegisterLawyer: "Administrador",
+              statusLawyerCase: "1",
+              idLawyer: element.idLawyer,
+              idCase: `${this.idCase}`
+            }
+            return this.casesService.addCaseLawyer(caseLawyer).toPromise();
           });
 
           Promise.all(saveLawyersRequest)
-          .then(
-            rs => this.router.navigateByUrl("list-cases")
-          )
-          .catch(
-            err => console.log("Error al asignar abogados",err)
-          )
-          
+            .then(
+              rs => this.router.navigateByUrl("list-cases")
+            )
+            .catch(
+              err => console.log("Error al asignar abogados", err)
+            )
         },
         err => console.log(err)
-      );    
+      );
   }
 }

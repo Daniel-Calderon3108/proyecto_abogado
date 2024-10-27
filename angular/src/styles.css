@@ -9,7 +9,7 @@
 
 :root {
     --border: 10px;
-    --letter : "Roboto", sans-serif;
+    --letter: "Roboto", sans-serif;
 
     --color-white: #FFFF;
     --color-one: #446ADB;
@@ -22,12 +22,16 @@
     --color-black: #000000;
     --color-red: #c93131;
     --color-switch: #2e30309f;
-    --color-body : #FFFF;
+    --color-body: #FFFF;
     --color-letter: #000000;
 
     --size-paragraph: 20px;
     --size-text: 16px;
-    --size-text1 : 12px;
+    --size-text1: 12px;
+
+    --color-error: #f5b7b1;
+    --background-success: #28b463;
+    --color-success: #82e0aa;
 }
 
 /* Tema Oscuro */
@@ -164,9 +168,64 @@ form p {
     padding: 10px;
 }
 
-.form-item  button {
+.form-item button {
     background: var(--color-one);
     font-size: 16px;
     font-weight: bold;
     color: var(--color-white);
+}
+
+.form-item .form-input {
+    position: relative;
+}
+
+.form-item .form-input .status-form {
+    position: absolute;
+    height: 100%;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    border-bottom-right-radius: var(--border);
+    border-top-right-radius: var(--border);
+    padding: 0 5px;
+}
+
+.status-form .status-info {
+    position: absolute;
+    right: 0px;
+    bottom: 16px;
+    width: max-content;
+    padding: 5px 10px;
+    border-radius: var(--border);
+    display: none;
+}
+
+.form-item .form-input .status-form.success,
+.status-form .status-info.success {
+    background: var(--background-success);
+    color: var(--color-success);
+}
+
+.form-item .form-input .status-form.error,
+.status-form .status-info.error {
+    background: var(--color-red);
+    color: var(--color-error);
+}
+
+.form-item .form-input .status-form:hover .status-info {
+    display: block;
+}
+
+.form-item .form-input .status-form.hide {
+    display: none;
+}
+
+.message-submit {
+    font-family: 'Roboto', sans-serif;
+    background: var(--color-red);
+    padding: 5px 10px;
+    border-radius: var(--border);
+    color: var(--color-error);
+    margin: 0 30px;
 }

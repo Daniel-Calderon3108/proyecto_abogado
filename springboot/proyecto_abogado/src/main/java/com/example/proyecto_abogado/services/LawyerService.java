@@ -35,4 +35,7 @@ public class LawyerService implements ILawyerService{
         return repository.findById(id)
                 .orElseThrow(()-> new RuntimeException("Abogado No Encontrado"));
     }
+
+    @Override
+    public Lawyer findByDocument(String document) { return repository.findByDocumentLawyer(document); }
 }

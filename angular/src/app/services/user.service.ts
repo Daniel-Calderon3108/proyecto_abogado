@@ -24,6 +24,6 @@ export class UserService {
   }
 
   getUserByName(name : string) {
-    return this.http.get(`${this.API_URI}search/${name}`);
+    return this.http.get<any[]>(`${this.API_URI}search/${name}`);
   }
 }

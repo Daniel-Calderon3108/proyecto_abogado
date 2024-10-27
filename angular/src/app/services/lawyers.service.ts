@@ -26,4 +26,8 @@ export class LawyersService {
   getLawyerByID(id : number) {
     return this.http.get(`${this.API_URI}/searchById/${id}`);
   }
+
+  getLawyerByDocument(document : string) {
+    return this.http.get<any[]>(`${this.API_URI}/searchDocument/${document}`);
+  }
 }

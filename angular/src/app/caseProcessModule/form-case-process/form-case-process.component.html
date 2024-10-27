@@ -5,8 +5,17 @@
         <div class="form-items">
             <div class="form-item">
                 <label for="nameCase">Nombre</label>
-                <input type="text" name="nameCase" id="nameCase"
-                    formControlName="nameCase">
+                <div class="form-input">
+                    <input type="text" name="nameCase" id="nameCase"
+                        formControlName="nameCase">
+                    <div class="status-form"
+                        [ngClass]="{'hide' : !isNameValidation, 'error' : !isValidName, 'success' : isValidName }">
+                        <i class="fa-solid"
+                            [ngClass]="{'fa-xmark' : !isValidName, 'fa-check' : isValidName }"></i>
+                        <p class="status-info"
+                            [ngClass]="{'error' : !isValidName, 'success' : isValidName }">{{nameMessage}}</p>
+                    </div>
+                </div>
             </div>
             <div class="form-item">
                 <label for="typeCase">Tipo</label>
@@ -64,11 +73,13 @@
             <div class="form-item">
                 <label for="nameCli">Nombre</label>
                 <div class="search-bar">
-                    <input type="text" name="nameCli" id="nameCli" [formControl]="nameClientControl">
+                    <input type="text" name="nameCli" id="nameCli"
+                        [formControl]="nameClientControl">
                     <ul *ngIf="showSearchClient">
-                        <li *ngFor="let customer of dataClient" 
-                        (click)="selectClient(customer.id_client, customer.documentClient, customer.nameClient)">
-                            {{customer.documentClient}} - {{customer.nameClient}}
+                        <li *ngFor="let customer of dataClient"
+                            (click)="selectClient(customer.id_client, customer.documentClient, customer.nameClient)">
+                            {{customer.documentClient}} -
+                            {{customer.nameClient}}
                         </li>
                     </ul>
                 </div>
@@ -76,7 +87,7 @@
             <div class="form-item">
                 <label>Cliente Seleccionado</label>
                 <input type="text" formControlName="nameClientSelect"
-                    readonly>
+                    readonly autocomplete="off">
                 <input type="hidden" formControlName="idClient">
             </div>
         </div>
@@ -84,9 +95,10 @@
             <p>Asignar Abogados</p>
             <div>
                 <button (click)="addLawyer()" data-toggle="tooltip"
-                data-placement="left" title="Agregar Abogado">+</button>
+                    data-placement="left" title="Agregar Abogado">+</button>
                 <button (click)="removeLawyer()" data-toggle="tooltip"
-                data-placement="left" title="Eliminar Ultimo Abogado">-</button>
+                    data-placement="left"
+                    title="Eliminar Ultimo Abogado">-</button>
             </div>
         </div>
         <div formArrayName="lawyers">
@@ -95,24 +107,31 @@
                 <p>Abogado {{i + 1}}</p>
                 <div class="form-items">
                     <div class="form-item">
-                        <label for="">Nombre</label>
+                        <label for>Nombre</label>
                         <div class="search-bar">
-                            <input type="text" id="nameLawyer-{{i}}" formControlName="nameLawyer" (focus)="onNameChange(i)">
+                            <input type="text" id="nameLawyer-{{i}}"
+                                formControlName="nameLawyer"
+                                (focus)="onNameChange(i)">
                             <ul *ngIf="showSearchLawyer && openLawyer == i">
-                                <li *ngFor="let lawyer of dataLawyerList" (click)="selectLawyer(lawyer.id_lawyer, lawyer.documentLawyer, lawyer.nameLawyer, i)">
-                                    {{lawyer.documentLawyer}} - {{lawyer.nameLawyer}}
+                                <li *ngFor="let lawyer of dataLawyerList"
+                                    (click)="selectLawyer(lawyer.id_lawyer, lawyer.documentLawyer, lawyer.nameLawyer, i)">
+                                    {{lawyer.documentLawyer}} -
+                                    {{lawyer.nameLawyer}}
                                 </li>
                             </ul>
                         </div>
                     </div>
                     <div class="form-item">
                         <label>Abogado Seleccionado</label>
-                        <input type="text" id="selectLawyer-{{i}}" formControlName="selectLawyer" readonly>
-                        <input type="hidden" id="idLawyer-{{i}}" formControlName="idLawyer">
+                        <input type="text" id="selectLawyer-{{i}}"
+                            formControlName="selectLawyer" readonly>
+                        <input type="hidden" id="idLawyer-{{i}}"
+                            formControlName="idLawyer">
                     </div>
                 </div>
             </div>
         </div>
+        <p class="message-submit" *ngIf="messageSubmit">{{ messageSubmit }}</p>
         <div class="form-items" style="justify-content: center;">
             <div class="form-item" style="width: 50%;">
                 <button (click)="save()">Guardar</button>

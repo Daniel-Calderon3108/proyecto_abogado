@@ -47,4 +47,7 @@ public class LawyerController {
 
         return new LawyerRequest(lawyer);
     }
+
+    @GetMapping("searchDocument/{document}")
+    public Lawyer getByDocument(@PathVariable String document) { return service.findByDocument(document); }
 }

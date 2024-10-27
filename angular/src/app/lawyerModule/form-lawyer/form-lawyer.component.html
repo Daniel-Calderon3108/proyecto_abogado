@@ -1,23 +1,33 @@
 <h2>Nuevo Abogado</h2>
 <div class="info" id="info">
-    <form>
+    <form [formGroup]="form">
         <p>Datos Abogado</p>
         <div class="form-items">
             <div class="form-item">
                 <label for="nombre">Nombre</label>
-                <input type="text" name="nombre" id="nombre"
-                    [(ngModel)]="data.nameLawyer">
+                <div class="form-input">
+                    <input type="text" name="nombre" #nombre formControlName="nameLawyer">
+                    <div class="status-form" [ngClass]="{'hide' : !isNameValidation, 'error' : !isValidName, 'success' : isValidName }">
+                        <i class="fa-solid" [ngClass]="{'fa-xmark' : !isValidName, 'fa-check' : isValidName }"></i>
+                        <p class="status-info" [ngClass]="{'error' : !isValidName, 'success' : isValidName }">{{nameMessage}}</p>
+                    </div>
+                </div>
             </div>
             <div class="form-item">
                 <label for="correo">Correo</label>
-                <input type="text" name="correo" id="correo"
-                    [(ngModel)]="data.emailLawyer">
+                <div class="form-input">
+                    <input type="text" name="correo" #correo formControlName="emailLawyer">
+                    <div class="status-form" [ngClass]="{'hide' : !isEmailValidation, 'error' : !isValidEmail, 'success' : isValidEmail }">
+                        <i class="fa-solid" [ngClass]="{'fa-xmark' : !isValidEmail, 'fa-check' : isValidEmail }"></i>
+                        <p class="status-info" [ngClass]="{'error' : !isValidEmail, 'success' : isValidEmail }">{{emailMessage}}</p>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="form-items">
             <div class="form-item">
                 <label for="tipo_documento">Tipo Documento</label>
-                <select name="tipo_documento" id="tipo_documento" [(ngModel)]="data.typeDocumentLawyer">
+                <select name="tipo_documento" #tipo_documento formControlName="typeDocumentLawyer">
                     <option value="Cedula Ciudadania">Cedula Ciudadania</option>
                     <option value="Cedula Extranjera">Cedula Extranjera</option>
                     <option value="Tarjeta Identidad">Tarjeta Identidad</option>
@@ -26,19 +36,29 @@
             </div>
             <div class="form-item">
                 <label for="documento">Documento</label>
-                <input type="text" name="documento" id="documento"
-                    [(ngModel)]="data.documentLawyer">
+                <div class="form-input">
+                    <input type="text" name="documento" #documento formControlName="documentLawyer">
+                    <div class="status-form" [ngClass]="{'hide' : !isDocumentValidation, 'error' : !isValidDocument, 'success' : isValidDocument }">
+                        <i class="fa-solid" [ngClass]="{'fa-xmark' : !isValidDocument, 'fa-check' : isValidDocument }"></i>
+                        <p class="status-info" [ngClass]="{'error' : !isValidDocument, 'success' : isValidDocument }">{{documentMessage}}</p>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="form-items">
             <div class="form-item">
-                <label for="telefono">Telefono</label>
-                <input type="text" name="telefono" id="telefono"
-                    [(ngModel)]="data.phoneLawyer">
+                <label for="telefono">Teléfono</label>
+                <div class="form-input">
+                    <input type="text" name="telefono" #telefono formControlName="phoneLawyer">
+                    <div class="status-form" [ngClass]="{'hide' : !isPhoneValidation, 'error' : !isValidPhone, 'success' : isValidPhone }">
+                        <i class="fa-solid" [ngClass]="{'fa-xmark' : !isValidPhone, 'fa-check' : isValidPhone }"></i>
+                        <p class="status-info" [ngClass]="{'error' : !isValidPhone, 'success' : isValidPhone }">{{phoneMessage}}</p>
+                    </div>
+                </div>
             </div>
             <div class="form-item">
                 <label for="especialidad">Especialidad</label>
-                <select name="especialidad" id="especialidad" [(ngModel)]="data.typeLawyer">
+                <select name="especialidad" #especialidad formControlName="typeLawyer">
                     <option value="Penal">Penal</option>
                     <option value="Civil">Civil</option>
                     <option value="Familiar">Familiar</option>
@@ -59,15 +79,26 @@
         <div class="form-items">
             <div class="form-item">
                 <label for="usuario">Usuario</label>
-                <input type="text" name="usuario" id="usuario"
-                    [(ngModel)]="data.user.nameUser">
+                <div class="form-input">
+                    <input type="text" name="usuario" #usuario formControlName="nameUser">
+                    <div class="status-form" [ngClass]="{'hide' : !isUserValidation, 'error' : !isValidUser, 'success' : isValidUser }">
+                        <i class="fa-solid" [ngClass]="{'fa-xmark' : !isValidUser, 'fa-check' : isValidUser }"></i>
+                        <p class="status-info" [ngClass]="{'error' : !isValidUser, 'success' : isValidUser }">{{userMessage}}</p>
+                    </div>
+                </div>
             </div>
             <div class="form-item">
                 <label for="clave">Clave</label>
-                <input type="password" name="clave" id="clave"
-                    [(ngModel)]="data.user.passwordUser">
+                <div class="form-input">
+                    <input type="password" name="clave" #clave formControlName="passwordUser">
+                    <div class="status-form" [ngClass]="{'hide' : !isPasswordValidation, 'error' : !isValidPassword, 'success' : isValidPassword }">
+                        <i class="fa-solid" [ngClass]="{'fa-xmark' : !isValidPassword, 'fa-check' : isValidPassword }"></i>
+                        <p class="status-info" [ngClass]="{'error' : !isValidPassword, 'success' : isValidPassword }">{{passwordMessage}}</p>
+                    </div>
+                </div>
             </div>
         </div>
+        <p class="message-submit" *ngIf="messageSubmit">{{ messageSubmit }}</p>
         <div class="form-items" style="justify-content: center;">
             <div class="form-item" style="width: 50%;">
                 <button (click)="save()">Guardar</button>

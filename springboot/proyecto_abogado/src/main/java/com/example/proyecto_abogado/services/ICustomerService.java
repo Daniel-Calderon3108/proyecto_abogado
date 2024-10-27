@@ -9,4 +9,5 @@ public interface ICustomerService {
     void save(Customer customer);
     List<Customer> findByNameOrDocument(String search);
     Customer findById(Long id);
+    Customer findByDocument(String document);
 }

@@ -12,23 +12,25 @@
                 <form (ngSubmit)="onSubmitLogin()">
                     <div class="form-container">
                         <label>Usuario</label>
-                        <input type="text" name="usuario" [(ngModel)]="session.name" >
+                        <input type="text" name="usuario" [(ngModel)]="session.name" #name [ngClass]="{'error': isFocusName}">
                     </div>
                     <div class="form-container">
                         <label>Clave</label>
-                        <input type="password" name="password" id="" [(ngModel)]="session.password">
+                        <input type="password" name="password" id="" [(ngModel)]="session.password" #password [ngClass]="{'error': isFocusPassword}">
+                    </div>
+                    <div class="form-container">
+                        <p *ngIf="resMessage">{{ resMessage }}</p>
+                        <p *ngIf="errMessage">{{ errMessage }}</p>
                     </div>
                     <div class="form-container">
                         <div class="remember">
-                            <input type="checkbox" name="" id="remember">
+                            <input type="checkbox" name="remember" [(ngModel)]="remember" >
                             <label for="remember">Recuerda me</label>
                         </div>
                     </div>
                     <div class="form-container">
                         <button>Entrar</button>
                     </div>
-                    <p *ngIf="resMessage">{{ resMessage }}</p>
-                    <p *ngIf="errMessage">{{ errMessage }}</p>
                 </form>
             </div>
         </div>
