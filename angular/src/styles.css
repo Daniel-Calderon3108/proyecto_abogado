@@ -71,6 +71,7 @@ h2 {
 .info {
     overflow-x: auto;
     margin-top: 20px;
+    position: relative;
 }
 
 .info::-webkit-scrollbar {
@@ -98,6 +99,58 @@ h2 {
     border-radius: 5px;
 }
 
+/* Estilos Menu Info */
+.options {
+    position: absolute;
+    top: 0;
+    right: 0;
+    color: var(--color-white);
+    background: var(--color-six);
+    padding: 5px;
+    border-radius: 5px;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.options ul {
+    position: absolute;
+    right: 0;
+    top: 30px;
+    background: var(--color-six);
+    padding: 5px;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    list-style: none;
+    width: max-content;
+    display: none;
+}
+
+.options ul li {
+    padding: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: var(--letter);
+    font-size: var(--size-text1);
+}
+
+.options ul li:hover {
+    background: var(--color-one);
+}
+
+.options:hover {
+    border-radius: 0;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+.options:hover ul {
+    display: block;
+}
+
 /* Estilos tabla */
 table {
     width: 100%;
@@ -122,6 +175,10 @@ table i {
 
 table a {
     color: var(--color-letter);
+}
+
+table a.fa-solid {
+    text-decoration: none;
 }
 
 /* Estilos formulario */

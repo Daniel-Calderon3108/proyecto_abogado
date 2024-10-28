@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { LawyersService } from 'src/app/services/lawyers.service';
-import { Lawyers } from 'src/app/services/model';
-import { Router } from '@angular/router';
+import { Lawyers, User } from 'src/app/services/model';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl, FormGroup } from '@angular/forms';
 import { TimeActualService } from 'src/app/services/time-actual/time-actual.service';
 import { debounceTime, distinctUntilChanged, map, Observable, switchMap } from 'rxjs';
@@ -21,9 +21,17 @@ export class FormLawyerComponent implements OnInit {
     typeLawyer: new FormControl("Penal"),
     typeDocumentLawyer: new FormControl("Cedula Ciudadania"),
     documentLawyer: new FormControl(""),
+    statusLawyer : new FormControl(""),
     nameUser: new FormControl(""),
-    passwordUser: new FormControl("")
+    passwordUser: new FormControl(""),
+    statusUser : new FormControl("")
   });
+
+  idLawyer: string = ""; // Id Abogado si es actualizar
+  nameUser: string = ""; // Nombre Usuario si es actualizar
+  document: string = ""; // Documento si es actualizar
+  labelPass: string = "Clave"; // Se cambia el valor si es registrar o actualizar
+  edit: boolean = false; // ¿Actualizar?
 
   isNameValidation: boolean = false;
   isValidName: boolean = false;
@@ -52,9 +60,17 @@ export class FormLawyerComponent implements OnInit {
   messageSubmit: string = "";
 
   constructor(private lawyerService: LawyersService, private router: Router,
-     private time: TimeActualService, private userService : UserService) { }
+    private time: TimeActualService, private userService: UserService, private activatedRoute: ActivatedRoute) { }
 
   ngOnInit(): void {
+
+    this.activatedRoute.paramMap.subscribe(params => {
+      if (params.has("id")) {
+        this.idLawyer = params.get("id") || "";
+        this.searchEditLawyer(this.idLawyer);
+      }
+    });
+
     this.heightInfo();
     // Validar Nombre Abogado
     this.form.get("nameLawyer")?.valueChanges.pipe(
@@ -167,6 +183,10 @@ export class FormLawyerComponent implements OnInit {
       .subscribe(document => {
         // Validar Disponibilidad Documento
         if (document) {
+          if (this.document === document?.documentLawyer) {
+            this.documentMessage = 'Documento Válido.';
+            return;
+          }
           this.documentMessage = 'Este documento ya esta registrado.';
           this.isValidDocument = false;
         } else if (this.isValidDocument) { this.documentMessage = 'Documento Válido.'; }
@@ -200,6 +220,10 @@ export class FormLawyerComponent implements OnInit {
     ).subscribe(user => {
       // Verificar disponibilidad del usuario
       if (user) {
+        if (this.nameUser == user?.nameUser) {
+          this.userMessage = 'Usuario Válido.';
+          return;
+        }
         this.userMessage = 'Este usuario está ocupado.';
         this.isValidUser = false;
       } else if (this.isValidUser) { this.userMessage = 'Usuario Válido.'; }
@@ -212,7 +236,7 @@ export class FormLawyerComponent implements OnInit {
         this.isPasswordValidation = true;
         this.isValidPassword = false;
         this.passwordMessage = '';
-    
+
         // Reglas de validación
         const rules = [
           { test: (pwd: string) => !!pwd, message: 'El campo clave no puede estar vacío.' },
@@ -222,31 +246,61 @@ export class FormLawyerComponent implements OnInit {
           { test: (pwd: string) => /\d/.test(pwd), message: 'La clave debe contener al menos un número.' },
           { test: (pwd: string) => /[!@#$%^&*(),.?":{}|<>]/.test(pwd), message: 'La clave debe contener al menos un carácter especial.' }
         ];
-    
-        for (const rule of rules) {
-          if (!rule.test(password)) {
-            this.passwordMessage = rule.message;
-            this.isValidPassword = false;
-            return;
+
+        if (!(this.edit && password === "")) {
+          for (const rule of rules) {
+            if (!rule.test(password)) {
+              this.passwordMessage = rule.message;
+              this.isValidPassword = false;
+              return;
+            }
           }
+        } else {
+          this.passwordMessage = 'No se realizara cambios en la clave.';
+          this.isValidPassword = true;
+          return;
         }
-    
+
         this.passwordMessage = 'Clave Válida.';
         this.isValidPassword = true;
       })
     ).subscribe();
   }
+  // Buscar Abogado Actualizar
+  searchEditLawyer(id: string) {
+    if (id) {
+      this.lawyerService.getLawyerByID(parseInt(id)).subscribe(
+        rs => {
+          this.form.get("nameLawyer")?.setValue(rs.nameLawyer);
+          this.form.get("phoneLawyer")?.setValue(rs.phoneLawyer);
+          this.form.get("emailLawyer")?.setValue(rs.emailLawyer);
+          this.form.get("typeLawyer")?.setValue(rs.typeLawyer);
+          this.form.get("typeDocumentLawyer")?.setValue(rs.typeDocumentLawyer);
+          this.form.get("documentLawyer")?.setValue(rs.documentLawyer);
+          this.form.get("statusLawyer")?.setValue(rs.statusLawyer);
+          this.form.get("nameUser")?.setValue(rs.nameUser);
+          this.form.get("statusUser")?.setValue(rs.statusUser);
+          this.nameUser = rs.nameUser || "";
+          this.document = rs.documentLawyer || "";
+          this.labelPass = "Nueva Clave (Opcional)";
+          this.edit = true;
+          this.isValidPassword = true;
+        },
+        err => console.log("Hubo un error al traer información del abogado" + err)
+      )
+    }
+  }
   // Buscar Documento
-  searchDocument(document: string): Observable<any[]> {
+  searchDocument(document: string): Observable<Lawyers> {
     if (document === "") {
-      return new Observable(observer => observer.next([]));
+      return new Observable(observer => observer.next());
     }
     return this.lawyerService.getLawyerByDocument(document);
   }
   // Buscar Usuario
-  searchUser(user : string) : Observable<any[]> {
+  searchUser(user: string): Observable<User> {
     if (user === "") {
-      return new Observable(observer => observer.next([]));
+      return new Observable(observer => observer.next());
     }
     return this.userService.getUserByName(user);
   }
@@ -265,27 +319,27 @@ export class FormLawyerComponent implements OnInit {
       phoneLawyer: this.form.value.phoneLawyer,
       emailLawyer: this.form.value.emailLawyer,
       typeLawyer: this.form.value.typeLawyer,
-      userRegisterLawyer: "Administrador",
-      dateRegisterLawyer: this.time.getTime(),
+      userRegisterLawyer: this.edit ? undefined : "Administrador",
+      dateRegisterLawyer: this.edit ? undefined : this.time.getTime(),
       userUpdateLawyer: "Administrador",
       dateUpdateLawyer: this.time.getTime(),
       typeDocumentLawyer: this.form.value.typeDocumentLawyer,
       documentLawyer: this.form.value.documentLawyer,
-      statusLawyer: true,
+      statusLawyer: this.edit ? this.form.value.statusLawyer : true,
       user: {
         nameUser: this.form.value.nameUser,
         passwordUser: this.form.value.passwordUser,
-        userRegister: "Administrador",
-        dateRegister: this.time.getTime(),
+        userRegister: this.edit ? undefined : "Administrador",
+        dateRegister: this.edit ? undefined : this.time.getTime(),
         userUpdate: "Administrador",
         lastUpdate: this.time.getTime(),
         photoUser: "Ninguna",
-        statusUser: true,
+        statusUser: this.edit ? this.form.value.statusUser : true,
         rolUser: "Abogado",
       }
     };
 
-    this.lawyerService.saveLawyer(lawyer)
+    this.lawyerService.saveLawyer(lawyer, this.edit, this.idLawyer)
       .subscribe(
         rs => this.router.navigateByUrl("list-lawyers"),
         err => console.log(err)

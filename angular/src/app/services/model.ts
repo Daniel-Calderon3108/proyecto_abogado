@@ -43,6 +43,24 @@ export interface Lawyers {
     statusLawyer?: boolean;
     user: User
 }
+
+export interface LawyersDTO {
+    idLawyer?: string;
+    nameLawyer?: string;
+    phoneLawyer?: string;
+    emailLawyer?: string;
+    typeLawyer?: string;
+    userRegisterLawyer?: string;
+    dateRegisterLawyer?: string;
+    userUpdateLawyer?: string;
+    dateUpdateLawyer?: string;
+    typeDocumentLawyer?: string;
+    documentLawyer?: string;
+    statusLawyer?: string;
+    idUser?: string;
+    nameUser?: string;
+    statusUser?: string;
+}
 export interface session {
     name: string;
     password: string
@@ -104,4 +122,4 @@ export interface SearchResults {
     cases?: any[];
     customers?: any[];
     lawyers?: any[];
-  }
+}

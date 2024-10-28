@@ -1,4 +1,11 @@
 <div class="info" id="info">
+    <div class="options">
+        <i class="fa-solid fa-bars"></i>
+        <ul>
+            <li (click)="editLawyer()">Editar</li>
+            <li (click)="changeStatus()">Cambiar Estado</li>
+        </ul>
+    </div>
     <section class="view">
         <article class="name">
             <img src="assets/no-user.webp" alt="{{data.nameLawyer}}">
@@ -16,7 +23,7 @@
                 </div>
                 <div>
                     <h2>Estado</h2>
-                    <p>{{data.statusLawyer ? "Activo" : "Inactivo"}}</p>
+                    <p #status>{{data.statusLawyer ? "Activo" : "Inactivo"}}</p>
                 </div>
                 <div>
                     <h2>Última Vez Actualizado Por</h2>
@@ -38,7 +45,7 @@
                 </div>
                 <div>
                     <h2>Fecha Última Actualización</h2>
-                    <p>{{data.dateUpdateLawyer}}</p>
+                    <p #lastUpdate>{{data.dateUpdateLawyer}}</p>
                 </div>
             </div>
             <div class="info-view">

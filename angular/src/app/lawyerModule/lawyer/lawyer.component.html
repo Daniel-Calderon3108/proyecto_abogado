@@ -11,6 +11,7 @@
                 <th>Especialidad</th>
                 <th>Estado</th>
                 <th>Usuario</th>
+                <th>Editar</th>
             </tr>
         </thead>
         <tbody>
@@ -23,6 +24,7 @@
                 <td>{{model.typeLawyer}}</td>
                 <td>{{model.statusLawyer == 1 ? "Activo" : "Inactivo"}}</td>
                 <td><a [routerLink]="['/user', model.user.nameUser]">{{model.user.nameUser}}</a></td>
+                <td><a [routerLink]="['/edit-lawyer', model.id_lawyer]" class="fa-solid fa-pen-square"></a></td>
             </tr>
         </tbody>
     </table>

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { User } from 'src/app/services/model';
 import { UserService } from 'src/app/services/user.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl, FormGroup } from '@angular/forms';
 import { TimeActualService } from 'src/app/services/time-actual/time-actual.service';
 import { debounceTime, distinctUntilChanged, map, Observable, switchMap } from 'rxjs';
@@ -12,28 +12,42 @@ import { debounceTime, distinctUntilChanged, map, Observable, switchMap } from '
   styleUrls: ['./form-user.component.css']
 })
 export class FormUserComponent implements OnInit {
-
   form = new FormGroup({
     nameUser: new FormControl(""),
     passwordUser: new FormControl(""),
     photoUser: new FormControl("Ninguna"),
-    rolUser: new FormControl("Usuario")
+    rolUser: new FormControl("Usuario"),
+    statusUser: new FormControl("")
   });
 
+  idUser: string = ""; // Id User si es actualizar
+  nameUser: string = ""; // Nombre Usuario si es actualizar
+  labelPass: string = "Clave"; // Se cambia valor si es registrar o actualizar
+  edit: boolean = false; // ¿Actualizar?
+
   isNameValidation: boolean = false;
-  isValidName : boolean = false;
-  nameMessage : string = "";
+  isValidName: boolean = false;
+  nameMessage: string = "";
 
   isPasswordValidation: boolean = false;
-  isValidPassword : boolean = false;
-  passwordMessage : string = "";
+  isValidPassword: boolean = false;
+  passwordMessage: string = "";
 
-  messageSubmit : string = "";
+  messageSubmit: string = "";
 
-  constructor(private userService: UserService, private router: Router, private time: TimeActualService) { }
+  constructor(private userService: UserService, private router: Router,
+    private time: TimeActualService, private activatedRoute: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.heightInfo();
+
+    this.activatedRoute.paramMap.subscribe(params => {
+      if (params.has("id")) {
+        this.idUser = params.get("id") || "";
+        this.searchEditUser(this.idUser);
+      }
+    })
+
     // Validar Nombre de Usuario
     this.form.get("nameUser")?.valueChanges.pipe(
       debounceTime(300), // Espera 300ms después de que el usuario deja de escribir
@@ -63,6 +77,10 @@ export class FormUserComponent implements OnInit {
     ).subscribe(user => {
       // Verificar disponibilidad del usuario
       if (user) {
+        if (this.nameUser == user?.nameUser) {
+          this.nameMessage = 'Usuario Válido.';
+          return;
+        }
         this.nameMessage = 'Este usuario está ocupado.';
         this.isValidName = false;
       } else if (this.isValidName) { this.nameMessage = 'Usuario Válido.'; }
@@ -75,7 +93,7 @@ export class FormUserComponent implements OnInit {
         this.isPasswordValidation = true;
         this.isValidPassword = false;
         this.passwordMessage = '';
-    
+
         // Reglas de validación
         const rules = [
           { test: (pwd: string) => !!pwd, message: 'El campo clave no puede estar vacío.' },
@@ -85,48 +103,71 @@ export class FormUserComponent implements OnInit {
           { test: (pwd: string) => /\d/.test(pwd), message: 'La clave debe contener al menos un número.' },
           { test: (pwd: string) => /[!@#$%^&*(),.?":{}|<>]/.test(pwd), message: 'La clave debe contener al menos un carácter especial.' }
         ];
-    
-        for (const rule of rules) {
-          if (!rule.test(password)) {
-            this.passwordMessage = rule.message;
-            this.isValidPassword = false;
-            return;
+
+        if (!(this.edit && password === "")) {
+          for (const rule of rules) {
+            if (!rule.test(password)) {
+              this.passwordMessage = rule.message;
+              this.isValidPassword = false;
+              return;
+            }
           }
+        } else {
+          this.passwordMessage = 'No se realizara cambios en la clave.';
+          this.isValidPassword = true;
+          return;
         }
-    
+
         this.passwordMessage = 'Clave Válida.';
         this.isValidPassword = true;
       })
     ).subscribe();
   }
+  // Buscar Usuario Actualizar
+  searchEditUser(id: string) {
+    if (id) {
+      this.userService.getUserById(id).subscribe(
+        rs => {
+          this.form.get("nameUser")?.setValue(rs.nameUser);
+          this.form.get("rolUser")?.setValue(rs.rolUser);
+          this.form.get("statusUser")?.setValue(rs.statusUser);
+          this.nameUser = rs.nameUser || "";
+          this.labelPass = "Nueva Clave (Opcional)";
+          this.edit = true;
+          this.isValidPassword = true;
+        },
+        err => console.log("Hubo un error al traer información del usuario" + err)
+      );
+    }
+  }
   // Buscar Nombre Usuario
-  searchUser(name : string) : Observable<any[]> {
+  searchUser(name: string): Observable<User> {
     if (name === "") {
-      return new Observable(observer => observer.next([]));
+      return new Observable(observer => observer.next());
     }
     return this.userService.getUserByName(name);
   }
   // Salvar Usuario
   save() {
     // Validar que los campos esten debidamente diligenciados
-    if(!(this.isValidName && this.isValidPassword)) {
+    if (!(this.isValidName && this.isValidPassword)) {
       this.messageSubmit = "Por favor, revisar que todos los campos esten debidamente diligenciados.";
       return;
     }
     // Crear JSON para peticion con los datos ingresados por usuario
     let user: User = {
       nameUser: this.form.value.nameUser,
-      passwordUser: this.form.value.passwordUser,
-      userRegister: "Administrador",
-      dateRegister: this.time.getTime(),
+      passwordUser: this.form.value.passwordUser === "" && this.edit ? undefined : this.form.value.passwordUser,
+      userRegister: this.edit ? undefined : "Administrador",
+      dateRegister: this.edit ? undefined : this.time.getTime(),
       userUpdate: "Administrador",
       lastUpdate: this.time.getTime(),
       photoUser: this.form.value.photoUser,
-      statusUser: true,
+      statusUser: this.edit ? this.form.value.statusUser : true,
       rolUser: this.form.value.rolUser
     }
 
-    this.userService.saveUser(user)
+    this.userService.saveUser(user, this.edit, this.idUser)
       .subscribe(
         rs => this.router.navigateByUrl("list-users"),
         err => console.log(err)

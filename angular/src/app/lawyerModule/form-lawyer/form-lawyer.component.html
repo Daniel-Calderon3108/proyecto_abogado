@@ -44,6 +44,13 @@
                     </div>
                 </div>
             </div>
+            <div class="form-item" *ngIf="edit">
+                <label for="status">Estado</label>
+                <select name="" id="" formControlName="statusLawyer">
+                    <option value="true">Activo</option>
+                    <option value="false">Inactivo</option>
+                </select>
+            </div>
         </div>
         <div class="form-items">
             <div class="form-item">
@@ -88,7 +95,7 @@
                 </div>
             </div>
             <div class="form-item">
-                <label for="clave">Clave</label>
+                <label for="clave">{{labelPass}}</label>
                 <div class="form-input">
                     <input type="password" name="clave" #clave formControlName="passwordUser">
                     <div class="status-form" [ngClass]="{'hide' : !isPasswordValidation, 'error' : !isValidPassword, 'success' : isValidPassword }">
@@ -96,6 +103,13 @@
                         <p class="status-info" [ngClass]="{'error' : !isValidPassword, 'success' : isValidPassword }">{{passwordMessage}}</p>
                     </div>
                 </div>
+            </div>
+            <div class="form-item" *ngIf="edit">
+                <label for="statusUser">Estado</label>
+                <select name="" id="" formControlName="statusUser">
+                    <option value="true">Activo</option>
+                    <option value="false">Inactivo</option>
+                </select>
             </div>
         </div>
         <p class="message-submit" *ngIf="messageSubmit">{{ messageSubmit }}</p>

@@ -7,6 +7,7 @@
                 <th>Usuario</th>
                 <th>Rol</th>
                 <th>Estado</th>
+                <th>Editar</th>
             </tr>
         </thead>
         <tbody>
@@ -14,6 +15,7 @@
                 <td><a [routerLink]="['/user', model.nameUser]">{{model.nameUser}}</a></td>
                 <td>{{model.rolUser}}</td>
                 <td>{{model.statusUser == 1 ? "Activo" : "Inactivo"}}</td>
+                <td><a [routerLink]="['/edit-user',model.id_user]" class="fa-solid fa-pen-to-square"></a></td>
             </tr>
         </tbody>
     </table>

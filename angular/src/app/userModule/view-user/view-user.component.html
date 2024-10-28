@@ -1,10 +1,17 @@
 <div class="info" id="info">
+    <div class="options">
+        <i class="fa-solid fa-bars"></i>
+        <ul>
+            <li (click)="editUser()">Editar</li>
+            <li (click)="changeStatus()">Cambiar Estado</li>
+        </ul>
+    </div>
     <h2>{{data.nameUser}}</h2>
     <section class="view">
         <div class="info-view-container">
             <div class="info-view">
                 <h2>Estado:</h2>
-                <p>{{data.statusUser ? "Activo" : "Inactivo"}}</p>
+                <p #status>{{data.statusUser ? "Activo" : "Inactivo"}}</p>
             </div>
             <div class="info-view">
                 <h2>Rol:</h2>
@@ -24,7 +31,7 @@
             </div>
             <div class="info-view">
                 <h2>Fecha Última Actualización:</h2>
-                <p>{{data.lastUpdate}}</p>
+                <p #lastUpdate>{{data.lastUpdate}}</p>
             </div>
         </div>
     </section>

@@ -16,7 +16,7 @@
                 </div>
             </div>
             <div class="form-item">
-                <label for="passwordUser">Clave</label>
+                <label for="passwordUser">{{labelPass}}</label>
                 <div class="form-input">
                     <input type="password" name="passwordUser" #passwordUser formControlName="passwordUser">
                     <div class="status-form" [ngClass]="{'hide' : !isPasswordValidation, 'error' : !isValidPassword, 'success' : isValidPassword }">
@@ -27,6 +27,13 @@
             </div>
         </div>
         <div class="form-items">
+            <div class="form-item" *ngIf="edit">
+                <label for="status">Estado</label>
+                <select name="" id="" formControlName="statusUser">
+                    <option value="true">Activo</option>
+                    <option value="false">Inactivo</option>
+                </select>
+            </div>
             <div class="form-item">
                 <label for="rolUser">Rol</label>
                 <select name="rolUser" id="rolUser" formControlName="rolUser">

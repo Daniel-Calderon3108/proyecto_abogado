@@ -31,10 +31,24 @@ const routes: Routes = [
     path : "login",
     component : LoginComponent
   },
+  // Usuario
   {
     path : "user/:name",
     component : ViewUserComponent
   },
+  {
+    path : "list-users",
+    component : UserComponent
+  },
+  {
+    path : "new-user",
+    component : FormUserComponent
+  },
+  {
+    path : "edit-user/:id",
+    component : FormUserComponent
+  },
+  // Cliente
   {
     path : "list-customers",
     component : CustomerComponent
@@ -47,6 +61,7 @@ const routes: Routes = [
     path: "customer/:id",
     component: ViewCustomerComponent
   },
+  // Abogado
   {
     path : "list-lawyers",
     component : LawyerComponent
@@ -60,13 +75,10 @@ const routes: Routes = [
     component : ViewLawyerComponent
   },
   {
-    path : "list-users",
-    component : UserComponent
+    path : "edit-lawyer/:id",
+    component : FormLawyerComponent
   },
-  {
-    path : "new-user",
-    component : FormUserComponent
-  },
+  // Casos
   {
     path : "list-cases",
     component : CaseProcessComponent
@@ -79,6 +91,7 @@ const routes: Routes = [
     path : "case/:id",
     component : ViewCaseComponent
   },
+  // Documentos
   {
     path : "list-document",
     component : ListDocumentComponent

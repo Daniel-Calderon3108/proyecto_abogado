@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CustomersService } from 'src/app/services/customers.service';
-import { Customers } from 'src/app/services/model';
+import { Customers, User } from 'src/app/services/model';
 import { TimeActualService } from 'src/app/services/time-actual/time-actual.service';
 import { FormControl, FormGroup } from '@angular/forms';
 import { UserService } from 'src/app/services/user.service';
@@ -276,9 +276,9 @@ export class FormCustomersComponent implements OnInit {
     return this.customerService.getCustomerByDocument(document);
   }
   // Buscar Usuario
-  searchUser(user : string) : Observable<any[]> {
+  searchUser(user : string) : Observable<User> {
     if (user === "") {
-      return new Observable(observer => observer.next([]));
+      return new Observable(observer => observer.next());
     }
     return this.userService.getUserByName(user);
   }

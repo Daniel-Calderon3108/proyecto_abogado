@@ -28,6 +28,7 @@ public class LawyerRequest {
     // Usuario
     private Long idUser;
     private String nameUser;
+    private boolean statusUser;
     private List<CaseLawyerRequest> caseLawyer;
 
     public LawyerRequest() {
@@ -49,6 +50,7 @@ public class LawyerRequest {
         this.statusLawyer = lawyer.isStatusLawyer();
         this.idUser = lawyer.getUser().getId_user();
         this.nameUser = lawyer.getUser().getNameUser();
+        this.statusUser = lawyer.getUser().isStatusUser();
         this.caseLawyer = lawyer.getCaseLawyer().stream()
                 .map(caseLawyer -> new CaseLawyerRequest(caseLawyer)).collect(Collectors.toList());
     }
