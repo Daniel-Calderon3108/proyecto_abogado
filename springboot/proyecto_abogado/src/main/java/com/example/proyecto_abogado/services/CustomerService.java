@@ -21,9 +21,10 @@ public class CustomerService implements  ICustomerService {
     public List<Customer> getAll() { return (List<Customer>) repository.findAll(); }
 
     @Override
-    public void save(Customer customer) {
+    public Customer save(Customer customer) {
         customer.getUser().setPasswordUser(encriptPassword.encryptExistingPasswords(customer.getUser().getPasswordUser()));
         repository.save(customer);
+        return customer;
     }
 
     @Override

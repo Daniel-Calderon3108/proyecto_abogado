@@ -48,7 +48,7 @@
         <span id="date-actual">{{ date_actual | date : 'dd-MM-yyyy HH:mm:ss'
           }}</span>
         <a class="sign-out" href="#" data-toggle="tooltip"
-          data-placement="right" title="Cerrar Sesión">
+          data-placement="right" title="Cerrar Sesión" (click)="closeSesion()">
           <i class="fa-solid fa-right-from-bracket"></i>
         </a>
       </section>
@@ -60,7 +60,7 @@
         <p class="user">
           <img
             src="assets/no-user.webp">
-          Usuario
+          {{nameUser}}
         </p>
         <ul class="menu">
           <li class="menu-item menu-item--show">

@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface ICustomerService {
     List<Customer> getAll();
-    void save(Customer customer);
+    Customer save(Customer customer);
     List<Customer> findByNameOrDocument(String search);
     Customer findById(Long id);
     Customer findByDocument(String document);

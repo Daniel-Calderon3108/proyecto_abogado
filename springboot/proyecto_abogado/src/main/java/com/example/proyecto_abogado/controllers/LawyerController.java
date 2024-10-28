@@ -36,8 +36,8 @@ public class LawyerController {
     public ResponseEntity<?> save(@RequestBody Lawyer lawyer) {
         System.out.println("Abogado recibido: " + lawyer); // Imprime el objeto completo
         try {
-            service.save(lawyer);
-            return ResponseEntity.ok(new Response(true, "Abogado registrado exitosamente."));
+            Lawyer lawyerRegister = service.save(lawyer);
+            return ResponseEntity.ok(new Response(true, "Abogado registrado exitosamente.", lawyerRegister.getId_lawyer().toString()));
         } catch (Exception e) {
             return ResponseEntity.status(500).body(new Response(false, "Error al registrar el abogado: "
                     + e.getMessage()));
@@ -85,7 +85,7 @@ public class LawyerController {
             updateLawyer.getUser().setPhotoUser(lawyer.getUser().getPhotoUser());
             updateLawyer.getUser().setStatusUser(lawyer.getUser().isStatusUser());
             lawyerRepository.save(updateLawyer);
-            return ResponseEntity.ok().body(new Response(true, "Se actualizo el abogado"));
+            return ResponseEntity.ok().body(new Response(true, "Se actualizo el abogado", updateLawyer.getId_lawyer().toString()));
         }
         return ResponseEntity.status(401).body(new Response(false, "Abogado no encontrado"));
     }

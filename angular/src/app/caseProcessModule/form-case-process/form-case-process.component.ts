@@ -7,6 +7,7 @@ import { CustomersService } from 'src/app/services/customers.service';
 import { LawyersService } from 'src/app/services/lawyers.service';
 import { Case, CaseLawyer } from 'src/app/services/model';
 import { TimeActualService } from 'src/app/services/time-actual/time-actual.service';
+import { AuthServiceService } from 'src/app/services/authService/auth-service.service';
 
 
 @Component({
@@ -46,7 +47,8 @@ export class FormCaseProcessComponent implements OnInit {
   messageSubmit: string = "";
 
   constructor(private casesService: CaseProcessService, private router: Router,
-    private customerService: CustomersService, private lawyerService: LawyersService, private time: TimeActualService) { }
+    private customerService: CustomersService, private lawyerService: LawyersService, 
+    private time: TimeActualService, private auth : AuthServiceService) { }
 
   ngOnInit(): void {
     this.heightInfo();
@@ -220,9 +222,9 @@ export class FormCaseProcessComponent implements OnInit {
       dateInitCase: this.form.value.dateInitCase,
       dateEndCase: this.form.value.dateEndCase === "Sin definir" ? undefined : this.form.value.dateEndCase,
       statusCase: this.form.value.statusCase,
-      userRegisterCase: "Administrador",
+      userRegisterCase: this.auth.getUser(),
       dateRegisterCase: this.time.getTime(),
-      updateUserCase: "Administrador",
+      updateUserCase: this.auth.getUser(),
       updateDateCase: this.time.getTime(),
       typeCase: "Penal",
       customer: {
@@ -240,7 +242,7 @@ export class FormCaseProcessComponent implements OnInit {
           const saveLawyersRequest = lawyersData.map((element: any) => {
             let caseLawyer: CaseLawyer = {
               dateRegisterLawyer: this.time.getTime(),
-              userRegisterLawyer: "Administrador",
+              userRegisterLawyer: this.auth.getUser(),
               statusLawyerCase: "1",
               idLawyer: element.idLawyer,
               idCase: `${this.idCase}`
@@ -250,7 +252,7 @@ export class FormCaseProcessComponent implements OnInit {
 
           Promise.all(saveLawyersRequest)
             .then(
-              rs => this.router.navigateByUrl("list-cases")
+              rs => this.router.navigate(['/case',this.idCase])
             )
             .catch(
               err => console.log("Error al asignar abogados", err)

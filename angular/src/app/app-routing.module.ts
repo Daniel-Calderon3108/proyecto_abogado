@@ -16,6 +16,7 @@ import { ViewLawyerComponent } from './lawyerModule/view-lawyer/view-lawyer.comp
 import { FormUserComponent } from './userModule/form-user/form-user.component';
 import { UserComponent } from './userModule/user/user.component';
 import { ViewUserComponent } from './userModule/view-user/view-user.component';
+import { AuthGuardService } from './services/authService/auth-guard.service';
 
 const routes: Routes = [
   {
@@ -25,7 +26,8 @@ const routes: Routes = [
   },
   {
     path : "home",
-    component : HomeComponent
+    component : HomeComponent,
+    canActivate : [AuthGuardService]
   },
   {
     path : "login",
@@ -34,71 +36,96 @@ const routes: Routes = [
   // Usuario
   {
     path : "user/:name",
-    component : ViewUserComponent
+    component : ViewUserComponent,
+    canActivate: [AuthGuardService]
   },
   {
     path : "list-users",
-    component : UserComponent
+    component : UserComponent,
+    canActivate: [AuthGuardService]
   },
   {
     path : "new-user",
-    component : FormUserComponent
+    component : FormUserComponent,
+    canActivate: [AuthGuardService]
   },
   {
     path : "edit-user/:id",
-    component : FormUserComponent
+    component : FormUserComponent,
+    canActivate: [AuthGuardService]
   },
   // Cliente
   {
     path : "list-customers",
-    component : CustomerComponent
+    component : CustomerComponent,
+    canActivate: [AuthGuardService]
   },
   {
     path : "new-customer",
-    component : FormCustomersComponent
+    component : FormCustomersComponent,
+    canActivate: [AuthGuardService]
   },
   {
     path: "customer/:id",
-    component: ViewCustomerComponent
+    component: ViewCustomerComponent,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: "edit-customer/:id",
+    component : FormCustomersComponent,
+    canActivate: [AuthGuardService]
   },
   // Abogado
   {
     path : "list-lawyers",
-    component : LawyerComponent
+    component : LawyerComponent,
+    canActivate: [AuthGuardService]
   },
   {
     path : "new-lawyer",
-    component : FormLawyerComponent
+    component : FormLawyerComponent,
+    canActivate: [AuthGuardService]
   },
   {
     path : "lawyer/:id",
-    component : ViewLawyerComponent
+    component : ViewLawyerComponent,
+    canActivate: [AuthGuardService]
   },
   {
     path : "edit-lawyer/:id",
-    component : FormLawyerComponent
+    component : FormLawyerComponent,
+    canActivate: [AuthGuardService]
   },
   // Casos
   {
     path : "list-cases",
-    component : CaseProcessComponent
+    component : CaseProcessComponent,
+    canActivate: [AuthGuardService]
   },
   {
     path : "new-case",
-    component : FormCaseProcessComponent
+    component : FormCaseProcessComponent,
+    canActivate: [AuthGuardService]
   },
   {
     path : "case/:id",
-    component : ViewCaseComponent
+    component : ViewCaseComponent,
+    canActivate: [AuthGuardService]
   },
   // Documentos
   {
     path : "list-document",
-    component : ListDocumentComponent
+    component : ListDocumentComponent,
+    canActivate: [AuthGuardService]
   },
   {
     path : "new-document",
-    component : FormDocumentComponent
+    component : FormDocumentComponent,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: "**",
+    redirectTo: "/home"
   }
 ];
 

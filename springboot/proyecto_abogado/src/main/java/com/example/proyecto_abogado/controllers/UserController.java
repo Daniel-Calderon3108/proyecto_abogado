@@ -36,8 +36,8 @@ public class UserController {
     public ResponseEntity<?> save(@RequestBody User user) {
         System.out.println("Usuario recibido: " + user); // Imprime el objeto completo
         try {
-            service.save(user);
-            return ResponseEntity.ok(new Response(true, "Usuario registrado exitosamente."));
+            User userRegister = service.save(user);
+            return ResponseEntity.ok(new Response(true, "Usuario registrado exitosamente.", userRegister.getNameUser()));
         } catch (Exception e) {
             return ResponseEntity.status(500).body(new Response(false, "Error al registrar el usuario: "
                     + e.getMessage()));
@@ -60,7 +60,7 @@ public class UserController {
             User user = userLogin.get();
             BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
             if (passwordEncoder.matches(password, user.getPasswordUser())) { // Comparar la contraseña con la cifrada
-                return ResponseEntity.ok().body(new Response(true, "Inicio de sesión exitoso."));
+                return ResponseEntity.ok().body(new Response(true, "Inicio de sesión exitoso.", user));
             } else {
                 return ResponseEntity.status(401).body(new Response(false, "Usuario o Contraseña Incorrectos."));
             }
@@ -92,7 +92,7 @@ public class UserController {
             updateUser.setRolUser(user.getRolUser());
             System.out.println("Datos Usuario a Actualizar " + updateUser);
             userRepository.save(updateUser);
-            return ResponseEntity.ok().body(new Response(true,"Se actualizo el usuario."));
+            return ResponseEntity.ok().body(new Response(true,"Se actualizo el usuario.", updateUser.getNameUser()));
         }
         return ResponseEntity.status(401).body(new Response(false, "Usuario no encontrado"));
     }

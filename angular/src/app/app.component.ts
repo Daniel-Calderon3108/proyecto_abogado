@@ -28,12 +28,14 @@ export class AppComponent implements OnInit, OnDestroy {
   dataCase: any = [];
   dataLawyer: any = [];
   dataCustomer: any = [];
+  nameUser : string = localStorage.getItem("nameUser") || "Usuario";
 
   constructor(private router: Router, private dataService: DataService,
     private caseService: CaseProcessService, private customerService: CustomersService,
     private lawyerService: LawyersService) { }
 
   ngOnInit(): void {
+
     // Obtener la URL completa de la ruta actual
     this.router.events.subscribe(() => {
       this.showResults = false;
@@ -160,5 +162,13 @@ export class AppComponent implements OnInit, OnDestroy {
       this.showResults = false;
       this.searchControl.setValue('');
     });
+  }
+
+  closeSesion() {
+    if(localStorage.getItem("nameUser")) {
+      localStorage.removeItem("nameUser");
+      localStorage.removeItem("rolUser");
+      this.router.navigate(['/login']);
+    }
   }
 }

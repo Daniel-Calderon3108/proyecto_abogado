@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Customers } from './model';
+import { ApiResponse, Customers } from './model';
 
 @Injectable({
   providedIn: 'root'
@@ -15,8 +15,11 @@ export class CustomersService {
     return this.http.get(`${this.API_URI}`);
   }
 
-  saveCustomer(customer : Customers) {
-    return this.http.post(`${this.API_URI}/register`, customer);
+  saveCustomer(customer : Customers, edit : boolean, id : string) {
+    if(edit) {
+      return this.http.put<ApiResponse<null>>(`${this.API_URI}/update/${id}`,customer);
+    }
+    return this.http.post<ApiResponse<null>>(`${this.API_URI}/register`, customer);
   }
 
   getCustomerByName(name : string) {
@@ -24,10 +27,14 @@ export class CustomersService {
   }
 
   getCustomerByID(id : number) {
-    return this.http.get(`${this.API_URI}/searchById/${id}`);
+    return this.http.get<Customers>(`${this.API_URI}/searchById/${id}`);
   }
 
   getCustomerByDocument(document : string) {
-    return this.http.get<any[]>(`${this.API_URI}/searchDocument/${document}`);
+    return this.http.get<Customers>(`${this.API_URI}/searchDocument/${document}`);
+  }
+
+  changeStatus(id : string, customer : Customers) {
+    return this.http.put<ApiResponse<null>>(`${this.API_URI}/changeStatus/${id}`,customer);
   }
 }

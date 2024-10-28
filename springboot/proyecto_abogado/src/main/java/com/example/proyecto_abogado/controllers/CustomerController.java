@@ -34,8 +34,8 @@ public class CustomerController {
     public ResponseEntity<?> save(@RequestBody Customer customer) {
         System.out.println("Cliente recibido: " + customer); // Imprime el objeto completo
         try {
-            service.save(customer);
-            return ResponseEntity.ok(new Response(true, "Cliente registrado exitosamente."));
+            Customer customerRegister = service.save(customer);
+            return ResponseEntity.ok(new Response(true, "Cliente registrado exitosamente.", customerRegister.getId_client().toString()));
         } catch (Exception e) {
             return ResponseEntity.status(500).body(new Response(false, "Error al registrar el cliente: "
                     + e.getMessage()));
@@ -79,7 +79,7 @@ public class CustomerController {
             updateCustomer.getUser().setPhotoUser(customer.getUser().getPhotoUser());
             updateCustomer.getUser().setStatusUser(customer.getUser().isStatusUser());
             customerRepository.save(updateCustomer);
-            return ResponseEntity.ok().body(new Response(true, "Se actualizo el cliente"));
+            return ResponseEntity.ok().body(new Response(true, "Se actualizo el cliente", updateCustomer.getId_client().toString()));
         }
         return ResponseEntity.status(401).body(new Response(false, "Cliente no encontrado"));
     }

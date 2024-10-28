@@ -5,7 +5,8 @@ import { TimeActualService } from 'src/app/services/time-actual/time-actual.serv
 import { FormControl, FormGroup } from '@angular/forms';
 import { UserService } from 'src/app/services/user.service';
 import { debounceTime, distinctUntilChanged, map, Observable, switchMap } from 'rxjs';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { AuthServiceService } from 'src/app/services/authService/auth-service.service';
 
 @Component({
   selector: 'app-form-customers',
@@ -22,9 +23,17 @@ export class FormCustomersComponent implements OnInit {
     typeClient: new FormControl("Natural"),
     typeDocumentClient: new FormControl("Cedula Ciudadania"),
     documentClient: new FormControl(""),
+    statusClient : new FormControl(""),
     nameUser: new FormControl(""),
-    passwordUser: new FormControl("")
+    passwordUser: new FormControl(""),
+    statusUser : new FormControl("")
   });
+
+  idCustomer: string = ""; // Id Cliente si es actualizar
+  nameUser: string = ""; // Nombre Usuario si es actualizar
+  document: string = ""; // Documento si es actualizar
+  labelPass: string = "Clave"; // Se cambia el valor si es registrar o actualizar
+  edit: boolean = false; // ¿Actualizar?
 
   isNameValidation: boolean = false;
   isValidName: boolean = false;
@@ -57,10 +66,19 @@ export class FormCustomersComponent implements OnInit {
   messageSubmit: string = "";
 
   constructor(private customerService: CustomersService, private router: Router,
-    private time: TimeActualService, private userService: UserService) { }
+    private time: TimeActualService, private userService: UserService, 
+    private activatedRoute: ActivatedRoute, private auth : AuthServiceService) { }
 
   ngOnInit(): void {
     this.heightInfo();
+
+    this.activatedRoute.paramMap.subscribe(params => {
+      if (params.has("id")) {
+        this.idCustomer = params.get("id") || "";
+        this.searchEditCustomer(this.idCustomer);
+      }
+    })
+
     // Validar Nombre Cliente
     this.form.get("nameClient")?.valueChanges.pipe(
       debounceTime(300),
@@ -199,6 +217,10 @@ export class FormCustomersComponent implements OnInit {
       .subscribe(document => {
         // Validar Disponibilidad Documento
         if (document) {
+          if (this.document === document?.documentClient) {
+            this.documentMessage = 'Documento Valido.';
+            return;
+          }
           this.documentMessage = 'Este documento ya esta registrado.';
           this.isValidDocument = false;
         } else if (this.isValidDocument) { this.documentMessage = 'Documento Válido.'; }
@@ -232,6 +254,10 @@ export class FormCustomersComponent implements OnInit {
     ).subscribe(user => {
       // Verificar disponibilidad del usuario
       if (user) {
+        if(this.nameUser === user?.nameUser) {
+          this.userMessage = 'Usuario Válido.';
+          return;
+        }
         this.userMessage = 'Este usuario está ocupado.';
         this.isValidUser = false;
       } else if (this.isValidUser) { this.userMessage = 'Usuario Válido.'; }
@@ -255,12 +281,18 @@ export class FormCustomersComponent implements OnInit {
           { test: (pwd: string) => /[!@#$%^&*(),.?":{}|<>]/.test(pwd), message: 'La clave debe contener al menos un carácter especial.' }
         ];
 
-        for (const rule of rules) {
-          if (!rule.test(password)) {
-            this.passwordMessage = rule.message;
-            this.isValidPassword = false;
-            return;
+        if(!(this.edit && password === "")) {
+          for (const rule of rules) {
+            if (!rule.test(password)) {
+              this.passwordMessage = rule.message;
+              this.isValidPassword = false;
+              return;
+            }
           }
+        } else {
+          this.passwordMessage = 'No se realizar cambios en la clave.';
+          this.isValidPassword = true;
+          return;
         }
 
         this.passwordMessage = 'Clave Válida.';
@@ -268,10 +300,35 @@ export class FormCustomersComponent implements OnInit {
       })
     ).subscribe();
   }
+  // Buscar Cliente Actualizar
+  searchEditCustomer(id: string) {
+    if (id) {
+      this.customerService.getCustomerByID(parseInt(id)).subscribe(
+        rs => {
+          this.form.get("nameClient")?.setValue(rs.nameClient);
+          this.form.get("addressClient")?.setValue(rs.addressClient);
+          this.form.get("phoneClient")?.setValue(rs.phoneClient);
+          this.form.get("emailClient")?.setValue(rs.emailClient);
+          this.form.get("typeClient")?.setValue(rs.typeClient);
+          this.form.get("typeDocumentClient")?.setValue(rs.typeDocumentClient);
+          this.form.get("documentClient")?.setValue(rs.documentClient);
+          this.form.get("statusClient")?.setValue(rs.statusClient);
+          this.form.get("nameUser")?.setValue(rs.user?.nameUser);
+          this.form.get("statusUser")?.setValue(rs.user?.statusUser);
+          this.nameUser = rs.user?.nameUser || "";
+          this.document = rs.documentClient || "";
+          this.labelPass = "Nueva Clave (Opcional)";
+          this.edit = true;
+          this.isValidPassword = true;
+        },
+        err => console.log("Hubo un error al traer la información del abogado" + err)
+      )
+    }
+  }
   // Buscar Documento
-  searchDocument(document: string): Observable<any[]> {
+  searchDocument(document: string): Observable<Customers> {
     if (document === "") {
-      return new Observable(observer => observer.next([]));
+      return new Observable(observer => observer.next());
     }
     return this.customerService.getCustomerByDocument(document);
   }
@@ -298,29 +355,29 @@ export class FormCustomersComponent implements OnInit {
       phoneClient: this.form.value.phoneClient,
       emailClient: this.form.value.emailClient,
       typeClient: this.form.value.typeClient,
-      userRegisterClient: "Administrador",
-      dateRegisterClient: this.time.getTime(),
-      updateUserClient: "Administrador",
+      userRegisterClient: this.edit ? undefined : this.auth.getUser(),
+      dateRegisterClient: this.edit ? undefined : this.time.getTime(),
+      updateUserClient: this.auth.getUser(),
       dateUpdateClient: this.time.getTime(),
       typeDocumentClient: this.form.value.typeDocumentClient,
       documentClient: this.form.value.documentClient,
-      statusClient: true,
+      statusClient: this.edit ? this.form.value.statusClient : true,
       user: {
         nameUser: this.form.value.nameUser,
         passwordUser: this.form.value.passwordUser,
-        userRegister: "Administrador",
-        dateRegister: this.time.getTime(),
-        userUpdate: "Adminstrador",
+        userRegister: this.edit ? undefined : this.auth.getUser(),
+        dateRegister: this.edit ? undefined : this.time.getTime(),
+        userUpdate: this.auth.getUser(),
         lastUpdate: this.time.getTime(),
         photoUser: "Ninguna",
-        statusUser: true,
+        statusUser: this.edit ? this.form.value.statusUser : true,
         rolUser: "Usuario"
       }
     };
 
-    this.customerService.saveCustomer(customer)
+    this.customerService.saveCustomer(customer, this.edit, this.idCustomer)
       .subscribe(
-        rs => this.router.navigateByUrl("list-customers"),
+        rs => this.router.navigate(['/customer', rs.singleData]),
         err => console.log(err)
       )
   }

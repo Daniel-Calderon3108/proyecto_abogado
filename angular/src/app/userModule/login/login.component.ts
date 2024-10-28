@@ -67,6 +67,10 @@ export class LoginComponent {
             localStorage.removeItem("nameRemember");
             localStorage.removeItem("passRemember");
           }
+          // Establecer variable de sesión
+          localStorage.setItem("nameUser", res.data.nameUser || "");
+          localStorage.setItem("rolUser", res.data.rolUser || "");
+
           this.router.navigate(['/home']); // Redireccionar a la pagina de inicio
         } else {
           this.resMessage = res.message || 'Error de autenticación';

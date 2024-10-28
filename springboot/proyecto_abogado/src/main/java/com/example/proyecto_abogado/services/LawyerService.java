@@ -20,9 +20,10 @@ public class LawyerService implements ILawyerService{
     public List<Lawyer> getAll() { return (List<Lawyer>) repository.findAll(); }
 
     @Override
-    public void save(Lawyer lawyer) {
+    public Lawyer save(Lawyer lawyer) {
         lawyer.getUser().setPasswordUser(encriptPassword.encryptExistingPasswords(lawyer.getUser().getPasswordUser()));
         repository.save(lawyer);
+        return lawyer;
     }
 
     @Override

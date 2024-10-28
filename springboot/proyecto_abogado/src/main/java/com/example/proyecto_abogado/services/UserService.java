@@ -20,9 +20,10 @@ public class UserService implements IUserService {
     public List<User> getAll() { return (List<User>) repository.findAll(); }
 
     @Override
-    public void save(User user) {
+    public User save(User user) {
         user.setPasswordUser(encriptPassword.encryptExistingPasswords(user.getPasswordUser()));
         repository.save(user);
+        return user;
     }
 
     @Override

@@ -1,4 +1,11 @@
 <div class="info" id="info">
+    <div class="options">
+        <i class="fa-solid fa-bars"></i>
+        <ul>
+            <li (click)="editCustomer()">Editar</li>
+            <li (click)="changeStatus()">Cambiar Estado</li>
+        </ul>
+    </div>
     <section class="view">
         <article class="name">
             <img src="assets/no-user.webp" alt="{{data.nameClient}}">
@@ -34,11 +41,11 @@
                 </div>
                 <div>
                     <h2>Estado</h2>
-                    <p>{{data.statusClient ? "Activo" : "Inactivo" }}</p>
+                    <p #status>{{data.statusClient ? "Activo" : "Inactivo" }}</p>
                 </div>
                 <div>
                     <h2>Última Vez Actualizado Por</h2>
-                    <p>{{data.updateUserClient}}</p>
+                    <p #lastUpdate>{{data.updateUserClient}}</p>
                 </div>
             </div>
             <div class="info-view">

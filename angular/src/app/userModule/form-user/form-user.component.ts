@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl, FormGroup } from '@angular/forms';
 import { TimeActualService } from 'src/app/services/time-actual/time-actual.service';
 import { debounceTime, distinctUntilChanged, map, Observable, switchMap } from 'rxjs';
+import { AuthServiceService } from 'src/app/services/authService/auth-service.service';
 
 @Component({
   selector: 'app-form-user',
@@ -36,7 +37,8 @@ export class FormUserComponent implements OnInit {
   messageSubmit: string = "";
 
   constructor(private userService: UserService, private router: Router,
-    private time: TimeActualService, private activatedRoute: ActivatedRoute) { }
+    private time: TimeActualService, private activatedRoute: ActivatedRoute,
+    private auth : AuthServiceService) { }
 
   ngOnInit(): void {
     this.heightInfo();
@@ -158,9 +160,9 @@ export class FormUserComponent implements OnInit {
     let user: User = {
       nameUser: this.form.value.nameUser,
       passwordUser: this.form.value.passwordUser === "" && this.edit ? undefined : this.form.value.passwordUser,
-      userRegister: this.edit ? undefined : "Administrador",
+      userRegister: this.edit ? undefined : this.auth.getUser(),
       dateRegister: this.edit ? undefined : this.time.getTime(),
-      userUpdate: "Administrador",
+      userUpdate: this.auth.getUser(),
       lastUpdate: this.time.getTime(),
       photoUser: this.form.value.photoUser,
       statusUser: this.edit ? this.form.value.statusUser : true,
@@ -169,7 +171,7 @@ export class FormUserComponent implements OnInit {
 
     this.userService.saveUser(user, this.edit, this.idUser)
       .subscribe(
-        rs => this.router.navigateByUrl("list-users"),
+        rs => this.router.navigate(['user',rs.singleData]),
         err => console.log(err)
       )
   }

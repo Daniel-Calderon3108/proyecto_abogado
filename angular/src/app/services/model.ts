@@ -102,6 +102,7 @@ export interface ApiResponse<T> {
     success: boolean;
     message: string;
     data: T;
+    singleData: string;
 }
 export interface Document {
     id_document: string;

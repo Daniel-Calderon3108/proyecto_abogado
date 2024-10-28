@@ -17,9 +17,9 @@ export class LawyersService {
 
   saveLawyer(lawyer : Lawyers, edit : boolean, id : string) {
     if(edit) {
-      return this.http.put(`${this.API_URI}/update/${id}`,lawyer);
+      return this.http.put<ApiResponse<null>>(`${this.API_URI}/update/${id}`,lawyer);
     }
-    return this.http.post(`${this.API_URI}/register`,lawyer);
+    return this.http.post<ApiResponse<null>>(`${this.API_URI}/register`,lawyer);
   }
 
   getLawyerByName(name : string) {

@@ -18,13 +18,13 @@ export class UserService {
   
   saveUser(user : User, edit : boolean, id : string) {
     if(edit) {
-      return this.http.put(`${this.API_URI}update/${id}`,user);
+      return this.http.put<ApiResponse<null>>(`${this.API_URI}update/${id}`,user);
     }
-    return this.http.post(`${this.API_URI}register`,user);
+    return this.http.post<ApiResponse<null>>(`${this.API_URI}register`,user);
   }
 
-  login(session:{ name: string; password: string}): Observable<any> {
-    return this.http.post(`${this.API_URI}login`, session);
+  login(session:{ name: string; password: string}) {
+    return this.http.post<ApiResponse<User>>(`${this.API_URI}login`, session);
   }
 
   getUserByName(name : string) {

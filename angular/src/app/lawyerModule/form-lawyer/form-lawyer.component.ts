@@ -6,6 +6,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { TimeActualService } from 'src/app/services/time-actual/time-actual.service';
 import { debounceTime, distinctUntilChanged, map, Observable, switchMap } from 'rxjs';
 import { UserService } from 'src/app/services/user.service';
+import { AuthServiceService } from 'src/app/services/authService/auth-service.service';
 
 @Component({
   selector: 'app-form-lawyer',
@@ -60,7 +61,8 @@ export class FormLawyerComponent implements OnInit {
   messageSubmit: string = "";
 
   constructor(private lawyerService: LawyersService, private router: Router,
-    private time: TimeActualService, private userService: UserService, private activatedRoute: ActivatedRoute) { }
+    private time: TimeActualService, private userService: UserService, 
+    private activatedRoute: ActivatedRoute, private auth : AuthServiceService) { }
 
   ngOnInit(): void {
 
@@ -319,9 +321,9 @@ export class FormLawyerComponent implements OnInit {
       phoneLawyer: this.form.value.phoneLawyer,
       emailLawyer: this.form.value.emailLawyer,
       typeLawyer: this.form.value.typeLawyer,
-      userRegisterLawyer: this.edit ? undefined : "Administrador",
+      userRegisterLawyer: this.edit ? undefined : this.auth.getUser(),
       dateRegisterLawyer: this.edit ? undefined : this.time.getTime(),
-      userUpdateLawyer: "Administrador",
+      userUpdateLawyer: this.auth.getUser(),
       dateUpdateLawyer: this.time.getTime(),
       typeDocumentLawyer: this.form.value.typeDocumentLawyer,
       documentLawyer: this.form.value.documentLawyer,
@@ -329,9 +331,9 @@ export class FormLawyerComponent implements OnInit {
       user: {
         nameUser: this.form.value.nameUser,
         passwordUser: this.form.value.passwordUser,
-        userRegister: this.edit ? undefined : "Administrador",
+        userRegister: this.edit ? undefined : this.auth.getUser(),
         dateRegister: this.edit ? undefined : this.time.getTime(),
-        userUpdate: "Administrador",
+        userUpdate: this.auth.getUser(),
         lastUpdate: this.time.getTime(),
         photoUser: "Ninguna",
         statusUser: this.edit ? this.form.value.statusUser : true,
@@ -341,7 +343,7 @@ export class FormLawyerComponent implements OnInit {
 
     this.lawyerService.saveLawyer(lawyer, this.edit, this.idLawyer)
       .subscribe(
-        rs => this.router.navigateByUrl("list-lawyers"),
+        rs => this.router.navigate(['/lawyer',rs.singleData]),
         err => console.log(err)
       )
   }
