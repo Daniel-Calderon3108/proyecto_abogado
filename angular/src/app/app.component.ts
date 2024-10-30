@@ -164,6 +164,14 @@ export class AppComponent implements OnInit, OnDestroy {
     });
   }
 
+  // Cerrar Resultados de la busqueda cuando se pierde el foco
+  closeSearch() { 
+    setTimeout(() => {
+      this.showResults = false;
+    }, 200);
+   }
+
+  // Cerrar sesión
   closeSesion() {
     if(localStorage.getItem("nameUser")) {
       localStorage.removeItem("nameUser");

@@ -10,7 +10,7 @@
       <h1>Abogados Valbuena</h1>
       <section class="search">
         <input type="text" name="search" id="search"
-          [formControl]="searchControl" placeholder="Buscar..." autocomplete="off">
+          [formControl]="searchControl" placeholder="Buscar..." autocomplete="off" (blur)="closeSearch()">
         <i class="fa-solid fa-magnifying-glass"></i>
         <div *ngIf="showResults" class="search-results">
           <ul *ngIf="showCase">

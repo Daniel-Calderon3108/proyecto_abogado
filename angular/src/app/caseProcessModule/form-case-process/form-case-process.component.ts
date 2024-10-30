@@ -226,7 +226,7 @@ export class FormCaseProcessComponent implements OnInit {
       dateRegisterCase: this.time.getTime(),
       updateUserCase: this.auth.getUser(),
       updateDateCase: this.time.getTime(),
-      typeCase: "Penal",
+      typeCase: this.form.value.typeCase,
       customer: {
         idClient: this.form.value.idClient
       }
