@@ -112,6 +112,11 @@ const routes: Routes = [
     component : ViewCaseComponent,
     canActivate: [AuthGuardService]
   },
+  {
+    path : "edit-case/:id",
+    component : FormCaseProcessComponent,
+    canActivate : [AuthGuardService]
+  },
   // Documentos
   {
     path : "list-document",

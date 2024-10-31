@@ -15,7 +15,10 @@ export class CaseProcessService {
     return this.http.get(`${this.API_URI}`);
   }
 
-  saveCases(caseProcess : Case) {
+  saveCases(caseProcess : Case, edit : boolean, id : string) {
+    if(edit) {
+      return this.http.put<ApiResponse<number[]>>(`${this.API_URI}/update/${id}`, caseProcess);
+    }
     return this.http.post<ApiResponse<number[]>>(`${this.API_URI}/register`, caseProcess);
   }
 
@@ -24,7 +27,7 @@ export class CaseProcessService {
   }
 
   getCaseProcessById(id : number) {
-    return this.http.get(`${this.API_URI}/searchById/${id}`);
+    return this.http.get<Case>(`${this.API_URI}/searchById/${id}`);
   }
 
   addCaseLawyer(caseLawyer : CaseLawyer) {
@@ -36,6 +39,10 @@ export class CaseProcessService {
   }
 
   getCaseLawyerByIdCase(id : number) {
-    return this.http.get(`${this.API_URI}Lawyer/search/case/${id}`);
+    return this.http.get<CaseLawyer[]>(`${this.API_URI}Lawyer/search/case/${id}`);
+  }
+
+  deleteCaseLawyerByIdCase(id : number) {
+    return this.http.delete(`${this.API_URI}Lawyer/delete/${id}`);
   }
 }

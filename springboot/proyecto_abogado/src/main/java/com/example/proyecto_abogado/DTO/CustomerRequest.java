@@ -11,6 +11,7 @@ import lombok.ToString;
 public class CustomerRequest {
     private Long idClient;
     private String nameClient;
+    private String documentClient;
 
     public CustomerRequest() {
 
@@ -19,5 +20,6 @@ public class CustomerRequest {
     public CustomerRequest(Customer customer) {
         this.idClient = customer.getId_client();
         this.nameClient = customer.getNameClient();
+        this.documentClient = customer.getDocumentClient();
     }
 }

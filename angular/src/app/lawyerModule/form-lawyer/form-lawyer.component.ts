@@ -7,6 +7,7 @@ import { TimeActualService } from 'src/app/services/time-actual/time-actual.serv
 import { debounceTime, distinctUntilChanged, map, Observable, switchMap } from 'rxjs';
 import { UserService } from 'src/app/services/user.service';
 import { AuthServiceService } from 'src/app/services/authService/auth-service.service';
+import { DataService } from 'src/app/services/shared/data.service';
 
 @Component({
   selector: 'app-form-lawyer',
@@ -62,7 +63,8 @@ export class FormLawyerComponent implements OnInit {
 
   constructor(private lawyerService: LawyersService, private router: Router,
     private time: TimeActualService, private userService: UserService, 
-    private activatedRoute: ActivatedRoute, private auth : AuthServiceService) { }
+    private activatedRoute: ActivatedRoute, private auth : AuthServiceService,
+    private dataService : DataService) { }
 
   ngOnInit(): void {
 
@@ -343,7 +345,11 @@ export class FormLawyerComponent implements OnInit {
 
     this.lawyerService.saveLawyer(lawyer, this.edit, this.idLawyer)
       .subscribe(
-        rs => this.router.navigate(['/lawyer',rs.singleData]),
+        rs => {
+          let message = this.edit ? "actualizo" : "registro"
+          this.dataService.changeMessage(true, `Se ${message} el abogado con exito.`);
+          this.router.navigate(['/lawyer',rs.singleData]);
+        },
         err => console.log(err)
       )
   }

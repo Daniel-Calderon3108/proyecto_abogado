@@ -79,17 +79,10 @@ export class ViewLawyerComponent implements OnInit {
       (rs) => {
         if (rs.success == true) {
           this.statusActual = !this.statusActual;
-          let status = this.statusActual ? 'Activo' : 'Inactivo';
-          this.renderer.setProperty(
-            this.status.nativeElement,
-            'innerHTML',
-            status
-          );
-          this.renderer.setProperty(
-            this.lastUpdate.nativeElement,
-            'innerHTML',
-            this.time.getTime()
-          );
+          let status = this.statusActual ? "Activo" : "Inactivo";
+          this.renderer.setProperty(this.status.nativeElement, 'innerHTML', status);
+          this.renderer.setProperty(this.lastUpdate.nativeElement, 'innerHTML', this.time.getTime());
+          this.dataService.changeMessage(true, `Se cambio el estado a ${status.toLowerCase()} con exito.`);
         } else {
           console.log(rs.message);
         }

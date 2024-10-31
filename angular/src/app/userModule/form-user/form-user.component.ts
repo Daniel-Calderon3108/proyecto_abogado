@@ -6,6 +6,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { TimeActualService } from 'src/app/services/time-actual/time-actual.service';
 import { debounceTime, distinctUntilChanged, map, Observable, switchMap } from 'rxjs';
 import { AuthServiceService } from 'src/app/services/authService/auth-service.service';
+import { DataService } from 'src/app/services/shared/data.service';
 
 @Component({
   selector: 'app-form-user',
@@ -38,7 +39,7 @@ export class FormUserComponent implements OnInit {
 
   constructor(private userService: UserService, private router: Router,
     private time: TimeActualService, private activatedRoute: ActivatedRoute,
-    private auth : AuthServiceService) { }
+    private auth : AuthServiceService, private dataService : DataService) { }
 
   ngOnInit(): void {
     this.heightInfo();
@@ -171,7 +172,11 @@ export class FormUserComponent implements OnInit {
 
     this.userService.saveUser(user, this.edit, this.idUser)
       .subscribe(
-        rs => this.router.navigate(['user',rs.singleData]),
+        rs => {
+          let message = this.edit ? "actualizo" : "registro";
+          this.dataService.changeMessage(true, `Se ${message} el usuario con exito.`);
+          this.router.navigate(['user',rs.singleData])
+        },
         err => console.log(err)
       )
   }

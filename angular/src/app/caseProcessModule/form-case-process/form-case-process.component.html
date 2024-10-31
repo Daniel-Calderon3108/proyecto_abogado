@@ -91,6 +91,10 @@
                 <input type="hidden" formControlName="idClient">
             </div>
         </div>
+        <div class="add-lawyer-confirm" *ngIf="edit">
+            <input type="checkbox" name="" #confirm formControlName="confirmLawyer">
+            <p>¿Desea realizar modificaciones a los abogados asignados? Si no se marca la opción, no se guardaran cambios con respecto a los abogados.</p>
+        </div>
         <div class="lawyer-add">
             <p>Asignar Abogados</p>
             <div>

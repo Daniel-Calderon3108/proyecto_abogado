@@ -1,5 +1,6 @@
 import { Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AuthServiceService } from 'src/app/services/authService/auth-service.service';
 import { CustomersService } from 'src/app/services/customers.service';
 import { Customers } from 'src/app/services/model';
 import { DataService } from 'src/app/services/shared/data.service';
@@ -14,19 +15,15 @@ export class ViewCustomerComponent implements OnInit {
   idClient: string = '';
   data: any = [];
   currentTheme: string = localStorage.getItem('theme') || ''; // Cargar el tema desde localStorage o usar "light" como predeterminado
-  isCase: boolean = false;
-  statusActual: boolean = true;
-  @ViewChild('status') status!: ElementRef;
-  @ViewChild('lastUpdate') lastUpdate!: ElementRef;
+  isCase : boolean = false;
+  statusActual : boolean = true;
+  @ViewChild("status") status! : ElementRef;
+  @ViewChild("lastUpdate") lastUpdate! : ElementRef;
+  @ViewChild("userUpdate") userUpdate! : ElementRef;
 
-  constructor(
-    private activatedRoute: ActivatedRoute,
-    private customerService: CustomersService,
-    private dataService: DataService,
-    private time: TimeActualService,
-    private router: Router,
-    private renderer: Renderer2
-  ) {}
+  constructor(private activatedRoute : ActivatedRoute, private customerService : CustomersService,
+    private dataService : DataService, private time : TimeActualService, 
+    private router : Router, private renderer : Renderer2, private auth : AuthServiceService) { }
 
   ngOnInit(): void {
     this.activatedRoute.paramMap.subscribe((params) => {
@@ -66,30 +63,24 @@ export class ViewCustomerComponent implements OnInit {
   }
 
   changeStatus() {
-    let customer: Customers = {
-      updateUserClient: 'Administrador',
+    let customer : Customers = {
+      updateUserClient: this.auth.getUser(),
       dateUpdateClient: this.time.getTime(),
       user: {
-        userUpdate: 'Administrador',
-        lastUpdate: this.time.getTime(),
-      },
-    };
+        userUpdate : this.auth.getUser(),
+        lastUpdate: this.time.getTime()
+      }
+    }
 
     this.customerService.changeStatus(this.data.id_client, customer).subscribe(
       (rs) => {
         if (rs.success == true) {
           this.statusActual = !this.statusActual;
-          let status = this.statusActual ? 'Activo' : 'Inactivo';
-          this.renderer.setProperty(
-            this.status.nativeElement,
-            'innerHTML',
-            status
-          );
-          this.renderer.setProperty(
-            this.lastUpdate.nativeElement,
-            'innerHTML',
-            this.time.getTime()
-          );
+          let status = this.statusActual ? "Activo" : "Inactivo";
+          this.renderer.setProperty(this.status.nativeElement, 'innerHTML', status);
+          this.renderer.setProperty(this.lastUpdate.nativeElement, 'innerHTML', this.time.getTime());
+          this.renderer.setProperty(this.userUpdate.nativeElement, 'innerHTML', this.auth.getUser());
+          this.dataService.changeMessage(true, `Se cambio el estado a ${status.toLowerCase()} con exito.`);
         } else {
           console.log(rs.message);
         }

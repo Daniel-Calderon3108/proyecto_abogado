@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CaseProcessService } from 'src/app/services/case-process.service';
+import { Case } from 'src/app/services/model';
 import { DataService } from 'src/app/services/shared/data.service';
 
 @Component({
@@ -14,11 +15,8 @@ export class ViewCaseComponent implements OnInit {
   dataCaseLawyer: any = [];
   currentTheme: string = localStorage.getItem('theme') || ''; // Cargar el tema desde localStorage o usar "light" como predeterminado
 
-  constructor(
-    private activatedRoute: ActivatedRoute,
-    private caseService: CaseProcessService,
-    private dataService: DataService
-  ) {}
+  constructor(private activatedRoute : ActivatedRoute, private caseService : CaseProcessService,
+    private dataService : DataService, private router : Router) { }
 
   ngOnInit(): void {
     this.activatedRoute.paramMap.subscribe((params) => {
@@ -57,4 +55,6 @@ export class ViewCaseComponent implements OnInit {
     if (operationsElement)
       operationsElement.style.maxHeight = `${height - 140}px`;
   }
+
+  editCase() { this.router.navigate(['edit-case', this.dataCaseProcess.idCase]); }
 }

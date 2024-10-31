@@ -214,10 +214,20 @@ form p {
     font-size: var(--size-text);
 }
 
-.form-items {
+.form-items,
+.add-lawyer-confirm {
     margin: 30px;
     display: flex;
     gap: 10px;
+}
+
+.add-lawyer-confirm {
+    align-items: center;
+}
+
+.add-lawyer-confirm p {
+    margin: 0;
+    font-size: 14px;
 }
 
 .form-item {

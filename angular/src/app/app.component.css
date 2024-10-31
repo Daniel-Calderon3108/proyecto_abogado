@@ -144,6 +144,26 @@ header h1 {
     padding: 0;
     padding-top: 54px;
     max-width: none;
+    position: relative;
+}
+
+.container .message-success {
+    position: absolute;
+    z-index: 9999;
+    color: var(--color-success);
+    top: 55px;
+    right: 6px;
+    background: var(--background-success);
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: var(--size-text);
+    transition: clip-path .5s;
+    clip-path: inset(0 0 0 100%);
+    font-family: var(--letter);
+}
+
+.container .message-success.show {
+    clip-path: inset(0 0 0 0);
 }
 
 /* Estilos barra de navegación */

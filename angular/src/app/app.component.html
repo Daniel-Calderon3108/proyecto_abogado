@@ -82,6 +82,7 @@
       </section>
     </header>
     <div class="container" *ngIf="showMenu">
+      <div class="message-success" [ngClass]="{'show' : isMessageSuccess}">{{messageSuccess}}</div>
       <nav class="open">
         <div class="btn-menu"><i class="fa-solid fa-chevron-left"
             id="collapse-menu" (click)="collapseMenu()"></i></div>

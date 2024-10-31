@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, map, Observable, startWith, switchMap } from 'rxjs';
 import { CaseProcessService } from 'src/app/services/case-process.service';
@@ -8,6 +8,7 @@ import { LawyersService } from 'src/app/services/lawyers.service';
 import { Case, CaseLawyer } from 'src/app/services/model';
 import { TimeActualService } from 'src/app/services/time-actual/time-actual.service';
 import { AuthServiceService } from 'src/app/services/authService/auth-service.service';
+import { DataService } from 'src/app/services/shared/data.service';
 
 
 @Component({
@@ -26,8 +27,12 @@ export class FormCaseProcessComponent implements OnInit {
     typeCase: new FormControl("Penal"),
     nameClientSelect: new FormControl(""),
     idClient: new FormControl("",[Validators.required]),
-    lawyers: new FormArray([])
+    lawyers: new FormArray([]),
+    confirmLawyer : new FormControl(false)
   });
+
+  idCaseParam : string = ""; // Id Caso si es actualizar
+  edit : boolean = false; // ¿Actualizar?
 
   inputType: string = "text";
   inputValue: string = "Sin definir";
@@ -48,11 +53,20 @@ export class FormCaseProcessComponent implements OnInit {
 
   constructor(private casesService: CaseProcessService, private router: Router,
     private customerService: CustomersService, private lawyerService: LawyersService, 
-    private time: TimeActualService, private auth : AuthServiceService) { }
+    private time: TimeActualService, private auth : AuthServiceService, 
+    private dataService : DataService, private activatedRoute : ActivatedRoute) { }
 
   ngOnInit(): void {
     this.heightInfo();
-    this.addLawyer();
+
+    this.activatedRoute.paramMap.subscribe(params => {
+      if (params.has("id")) {
+        this.idCaseParam = params.get("id") || "";
+        this.searchEditCase(this.idCaseParam);
+      } else {
+        this.addLawyer();
+      }
+    })
 
     const textarea = document.getElementById('descriptionCase') as HTMLTextAreaElement | null;
 
@@ -139,6 +153,48 @@ export class FormCaseProcessComponent implements OnInit {
     return this.form.get('lawyers') as FormArray;
   }
 
+  searchEditCase(id : string) {
+    if (id) {
+      this.casesService.getCaseProcessById(parseInt(id)).subscribe(
+        rs => {
+          this.form.get("nameCase")?.setValue(rs.nameCase);
+          this.form.get("descriptionCase")?.setValue(rs.descriptionCase);
+          this.form.get("dateInitCase")?.setValue(rs.dateInitCase);
+          if (rs.statusCase == "Abierto" || rs.statusCase == "Re Abierto") {
+            this.inputType = "text";
+            this.inputValue = "Sin definir";
+            this.readonly = true;
+          } else {
+            this.inputType = "date";
+            this.inputValue = rs.dateEndCase || "";
+            this.readonly = false;
+          }
+          this.form.get("statusCase")?.setValue(rs.statusCase);
+          this.form.get("typeCase")?.setValue(rs.typeCase);
+          this.form.get("nameClientSelect")?.setValue(`${rs.customer?.documentClient} - ${rs.customer?.nameClient}`);
+          this.form.get("idClient")?.setValue(rs.customer?.idClient);
+          this.edit = true;
+        },
+        err => console.log("Hubo un error al traer la información del caso" + err)
+      )
+
+      this.casesService.getCaseLawyerByIdCase(parseInt(id)).subscribe(
+        rs => {
+          let i = 0;
+          if (rs.length === 0) { this.addLawyer(); } 
+          for(let caseLawyer of rs) {
+            this.addLawyer();
+            let lawyersArray = this.form.get("lawyers") as FormArray;
+            lawyersArray.at(i).get('selectLawyer')?.setValue(`${caseLawyer.documentLawyer} - ${caseLawyer.nameLawyer}`);
+            lawyersArray.at(i).get('idLawyer')?.setValue(caseLawyer.idLawyer);
+            i++;
+          }
+        },
+        err => console.log("Hubo un error al traer la información de los abogado asignados al caso" + err)
+      )
+    }
+  }
+
   searchCustomer(name: string): Observable<any[]> {
     if (name.length < 3) {
       this.showSearchClient = false; // No mostrar resultados si menos de 3 caracteres
@@ -222,8 +278,8 @@ export class FormCaseProcessComponent implements OnInit {
       dateInitCase: this.form.value.dateInitCase,
       dateEndCase: this.form.value.dateEndCase === "Sin definir" ? undefined : this.form.value.dateEndCase,
       statusCase: this.form.value.statusCase,
-      userRegisterCase: this.auth.getUser(),
-      dateRegisterCase: this.time.getTime(),
+      userRegisterCase: !this.edit ? this.auth.getUser() : undefined,
+      dateRegisterCase: !this.edit ? this.time.getTime() : undefined,
       updateUserCase: this.auth.getUser(),
       updateDateCase: this.time.getTime(),
       typeCase: this.form.value.typeCase,
@@ -232,10 +288,24 @@ export class FormCaseProcessComponent implements OnInit {
       }
     }
 
-    this.casesService.saveCases(dataCase)
+    this.casesService.saveCases(dataCase, this.edit, this.idCaseParam)
       .subscribe(
         rs => {
-          this.idCase = rs.data[0];
+          let message = this.edit ? "actualizo" : "registro";
+          if(!this.edit || this.form.value.confirmLawyer) {
+            this.idCase = this.edit ? parseInt(this.idCaseParam) : rs.data[0];
+            console.log(this.idCaseParam);
+            console.log(this.idCase);
+
+            if(this.edit) {
+              this.casesService.deleteCaseLawyerByIdCase(this.idCase).subscribe(
+                rs => { console.log("Se eliminaron los abogados asignados al caso.") },
+                err => {
+                  console.log("Hubo un error al eliminar los abogados del caso" + err);
+                  return;
+                }
+              );
+            }
 
           const lawyersData = this.form.value.lawyers;
 
@@ -252,11 +322,18 @@ export class FormCaseProcessComponent implements OnInit {
 
           Promise.all(saveLawyersRequest)
             .then(
-              rs => this.router.navigate(['/case',this.idCase])
+              rs => {
+                this.dataService.changeMessage(true, `Se ${message} el caso con exito.`);
+                this.router.navigate(['/case',this.idCase]);
+              }
             )
             .catch(
               err => console.log("Error al asignar abogados", err)
             )
+          } else {
+            this.dataService.changeMessage(true, `Se ${message} el caso con exito.`);
+            this.router.navigate(['/case',this.idCase]);
+          }
         },
         err => console.log(err)
       );

@@ -37,15 +37,25 @@ export class AppComponent implements OnInit, OnDestroy {
   dataCustomer: any = [];
   nameUser: string = localStorage.getItem('nameUser') || 'Usuario';
 
-  constructor(
-    private router: Router,
-    private dataService: DataService,
-    private caseService: CaseProcessService,
-    private customerService: CustomersService,
-    private lawyerService: LawyersService
-  ) {}
+  isMessageSuccess : boolean = false;
+  messageSuccess : string = "";
+
+  constructor(private router: Router, private dataService: DataService,
+    private caseService: CaseProcessService, private customerService: CustomersService,
+    private lawyerService: LawyersService) { }
 
   ngOnInit(): void {
+
+    this.dataService.currentIsMessageSuccess.subscribe(value => { 
+      this.isMessageSuccess = value;
+      setTimeout(() => {
+        if (this.isMessageSuccess) {
+          this.dataService.changeMessage(false, this.messageSuccess);
+        }
+      }, 4000)
+    })
+    this.dataService.currrentMessageSuccess.subscribe(value => { this.messageSuccess = value; })
+
     // Obtener la URL completa de la ruta actual
     this.router.events.subscribe(() => {
       this.showResults = false;

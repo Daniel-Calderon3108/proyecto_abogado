@@ -1,6 +1,7 @@
 import { Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { User } from 'src/app/services/model';
+import { DataService } from 'src/app/services/shared/data.service';
 import { TimeActualService } from 'src/app/services/time-actual/time-actual.service';
 import { UserService } from 'src/app/services/user.service';
 
@@ -18,7 +19,8 @@ export class ViewUserComponent implements OnInit {
   @ViewChild("lastUpdate") lastUpdate! : ElementRef;
 
   constructor(private activatedRoute : ActivatedRoute, private userService : UserService, 
-    private router : Router, private time : TimeActualService, private renderer : Renderer2) { }
+    private router : Router, private time : TimeActualService, private renderer : Renderer2,
+    private dataService : DataService) { }
   ngOnInit(): void {
    this.activatedRoute.paramMap.subscribe(params =>{
     this.nameUser = params.get("name") || "";
@@ -62,6 +64,7 @@ export class ViewUserComponent implements OnInit {
           let status = this.statusActual ? "Activo" : "Inactivo"
           this.renderer.setProperty(this.status.nativeElement, 'innerHTML', status);
           this.renderer.setProperty(this.lastUpdate.nativeElement, 'innerHTML', this.time.getTime());
+          this.dataService.changeMessage(true, `Se cambio el estado a ${status.toLowerCase()} con exito.`);
         } else {
           console.log(rs.message);
         }

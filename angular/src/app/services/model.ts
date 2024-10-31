@@ -81,6 +81,7 @@ export interface Case {
     customer: {
         idClient?: string;
         nameClient?: string;
+        documentClient?: string;
     }
 }
 
@@ -93,6 +94,7 @@ export interface CaseLawyer {
     nameLawyer?: string;
     phoneLawyer?: string;
     emailLawyer?: string;
+    documentLawyer?: string;
     idCase?: string;
     nameCase?: string;
     descriptionCase?: string;
