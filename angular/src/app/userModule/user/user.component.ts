@@ -5,37 +5,43 @@ import { UserService } from 'src/app/services/user.service';
 @Component({
   selector: 'app-user',
   templateUrl: './user.component.html',
-  styleUrls: ['./user.component.css']
+  styleUrls: ['./user.component.css'],
 })
 export class UserComponent implements OnInit {
+  data: any = [];
+  currentTheme: string = localStorage.getItem('theme') || ''; // Cargar el tema desde localStorage o usar "light" como predeterminado
 
-  data : any = [];
-  isDarkMode : boolean = localStorage.getItem("darkMode") == "true";
-
-  constructor(private userService : UserService, private dataService : DataService) { }
+  constructor(
+    private userService: UserService,
+    private dataService: DataService
+  ) {}
 
   ngOnInit(): void {
     this.list();
     this.heightInfo();
 
-    this.dataService.currentDarKMode.subscribe( value => { this.isDarkMode = value; });
+    // Suscribirse al tema actual del servicio
+    this.dataService.currentTheme.subscribe((value) => {
+      this.currentTheme = value;
+      // Aquí podrías aplicar lógica específica para cada tema si fuera necesario
+    });
   }
 
   list() {
     this.userService.getUsers().subscribe(
-      rs => {
+      (rs) => {
         this.data = rs;
       },
-      err => console.log(err)
-    )
+      (err) => console.log(err)
+    );
   }
 
   heightInfo() {
     let height: number = document.documentElement.clientHeight;
 
-    const operationsElement = document.getElementById("info");
+    const operationsElement = document.getElementById('info');
 
-    if (operationsElement) operationsElement.style.maxHeight = `${height - 140}px`;
+    if (operationsElement)
+      operationsElement.style.maxHeight = `${height - 140}px`;
   }
-
 }

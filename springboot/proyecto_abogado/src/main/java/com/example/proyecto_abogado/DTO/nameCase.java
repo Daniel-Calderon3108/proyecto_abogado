@@ -4,9 +4,7 @@ package com.example.proyecto_abogado.DTO;
 import com.example.proyecto_abogado.entities.CaseProcess;
 import lombok.*;
 
-@Getter
-@Setter
-@ToString
+@Data
 public class nameCase {
     private Long idCase;
     private String nameCase;

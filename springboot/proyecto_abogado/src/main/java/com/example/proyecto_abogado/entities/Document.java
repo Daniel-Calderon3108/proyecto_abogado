@@ -1,19 +1,16 @@
 package com.example.proyecto_abogado.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "document")
-@Getter
-@Setter
-@ToString
+@Data
 @EqualsAndHashCode
+@NoArgsConstructor
+@AllArgsConstructor
 public class Document {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,6 +31,8 @@ public class Document {
     private String userUpdateDocument;
     @Column(name = "date_update_document")
     private String dateUpdateDocument;
+    @Lob
+    private byte[] data;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_case", referencedColumnName = "id_case")

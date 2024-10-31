@@ -6,50 +6,55 @@ import { DataService } from 'src/app/services/shared/data.service';
 @Component({
   selector: 'app-view-case',
   templateUrl: './view-case.component.html',
-  styleUrls: ['./view-case.component.css']
+  styleUrls: ['./view-case.component.css'],
 })
 export class ViewCaseComponent implements OnInit {
-
-  idCase : string = "";
+  idCase: string = '';
   dataCaseProcess: any = [];
-  dataCaseLawyer : any = [];
-  isDarkMode: boolean = localStorage.getItem("darkMode") === "true";
+  dataCaseLawyer: any = [];
+  currentTheme: string = localStorage.getItem('theme') || ''; // Cargar el tema desde localStorage o usar "light" como predeterminado
 
-  constructor(private activatedRoute : ActivatedRoute, private caseService : CaseProcessService,
-    private dataService : DataService) { }
+  constructor(
+    private activatedRoute: ActivatedRoute,
+    private caseService: CaseProcessService,
+    private dataService: DataService
+  ) {}
 
   ngOnInit(): void {
-    this.activatedRoute.paramMap.subscribe(params =>{
-      this.idCase = params.get("id") || "";
+    this.activatedRoute.paramMap.subscribe((params) => {
+      this.idCase = params.get('id') || '';
       this.caseProcess();
       this.caseLawyer();
-    })
+    });
     this.heightInfo();
 
-    this.dataService.currentDarKMode.subscribe( value => { this.isDarkMode = value; });
+    // Suscribirse al tema actual del servicio
+    this.dataService.currentTheme.subscribe((value) => {
+      this.currentTheme = value;
+      // Aquí podrías aplicar lógica específica para cada tema si fuera necesario
+    });
   }
 
   caseProcess() {
-    this.caseService.getCaseProcessById(parseInt(this.idCase))
-    .subscribe(
-      rs => this.dataCaseProcess = rs,
-      err => console.log(err)
-    )
+    this.caseService.getCaseProcessById(parseInt(this.idCase)).subscribe(
+      (rs) => (this.dataCaseProcess = rs),
+      (err) => console.log(err)
+    );
   }
 
   caseLawyer() {
-    this.caseService.getCaseLawyerByIdCase(parseInt(this.idCase))
-    .subscribe(
-      rs => this.dataCaseLawyer = rs,
-      err => console.log(err)
-    )
+    this.caseService.getCaseLawyerByIdCase(parseInt(this.idCase)).subscribe(
+      (rs) => (this.dataCaseLawyer = rs),
+      (err) => console.log(err)
+    );
   }
 
   heightInfo() {
     let height: number = document.documentElement.clientHeight;
 
-    const operationsElement = document.getElementById("info");
+    const operationsElement = document.getElementById('info');
 
-    if (operationsElement) operationsElement.style.maxHeight = `${height - 140}px`;
+    if (operationsElement)
+      operationsElement.style.maxHeight = `${height - 140}px`;
   }
 }

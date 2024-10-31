@@ -34,16 +34,44 @@
         </div>
       </section>
       <section class="header-extra">
-        <section class="extra-color left">
-          <i class="fa-solid fa-sun"></i>
-        </section>
-        <label id="switch">
-          <input type="checkbox" id="dark-mode" (click)="toggleDarkMode(false)"
-            [(ngModel)]="isDarkMode">
-          <span class="slider round"></span>
-        </label>
-        <div class="extra-color right">
-          <i class="fa-solid fa-moon"></i>
+        <div class="theme-container" [class.active]="showThemeOptions">
+          <button (click)="toggleThemeOptions()" title="Cambiar tema">
+            <i class="fa-solid fa-palette"></i>
+          </button>
+          <div *ngIf="showThemeOptions" class="theme-options">
+            <label>
+              <input
+                type="checkbox"
+                (change)="changeTheme('dark-mode')"
+                [checked]="themes['dark-mode']"
+              />
+              Black
+            </label>
+            <label>
+              <input
+                type="checkbox"
+                (change)="changeTheme('blue-mode')"
+                [checked]="themes['blue-mode']"
+              />
+              Blue
+            </label>
+            <label>
+              <input
+                type="checkbox"
+                (change)="changeTheme('law-mode')"
+                [checked]="themes['law-mode']"
+              />
+              law
+            </label>
+            <label>
+              <input
+                type="checkbox"
+                (change)="changeTheme('green-mode')"
+                [checked]="themes['green-mode']"
+              />
+              green
+            </label>
+          </div>
         </div>
         <span id="date-actual">{{ date_actual | date : 'dd-MM-yyyy HH:mm:ss'
           }}</span>
@@ -59,7 +87,7 @@
             id="collapse-menu" (click)="collapseMenu()"></i></div>
         <p class="user">
           <img
-            src="assets/no-user.webp">
+            src="assets/no-user.webp" alt="">
           {{nameUser}}
         </p>
         <ul class="menu">

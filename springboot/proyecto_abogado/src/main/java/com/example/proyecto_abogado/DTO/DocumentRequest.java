@@ -4,9 +4,10 @@ import com.example.proyecto_abogado.entities.Document;
 import lombok.*;
 
 
-@Getter
-@Setter
-@ToString
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class DocumentRequest {
 
     private Long idDocument;
@@ -19,20 +20,9 @@ public class DocumentRequest {
     private String userUpdateDocument;
     private String dateUpdateDocument;
     private nameCase nameIdCase;
+    private long sizeDocument;
 
-    public DocumentRequest() {
-    }
-
+    // Constructor que recibe un objeto Document
     public DocumentRequest(Document document) {
-        this.idDocument = document.getId_document();
-        this.urlDocument = document.getUrlDocument();
-        this.nameDocument = document.getNameDocument();
-        this.typeDocument = document.getTypeDocument();
-        this.statusDocument = document.getStatusDocument();
-        this.userRegisterDocument = document.getUserRegisterDocument();
-        this.dateDocument = document.getDateDocument();
-        this.userUpdateDocument = document.getUserUpdateDocument();
-        this.dateUpdateDocument = document.getDateUpdateDocument();
-        this.nameIdCase = new nameCase(document.getCaseProcess());
     }
 }

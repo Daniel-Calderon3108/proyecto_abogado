@@ -1,79 +1,100 @@
 <div class="info" id="info">
-    <h2>Caso #{{idCase}}</h2>
-    <section class="view">
-        <div class="info-view-container">
-            <div class="info-view">
-                <h2>Nombre: </h2>
-                <p>{{dataCaseProcess.nameCase}}</p>
-            </div>
-            <div class="info-view">
-                <h2>Descripción: </h2>
-                <p>{{dataCaseProcess.descriptionCase}}</p>
-            </div>
-            <div class="info-view">
-                <h2>Tipo: </h2>
-                <p>{{dataCaseProcess.typeCase}}</p>
-            </div>
-            <div class="info-view">
-                <h2>Cliente:</h2>
-                <p><a [routerLink]="['/customer',dataCaseProcess.customer?.idClient]">{{dataCaseProcess.customer?.nameClient}}</a></p>
-            </div>
-            <div class="info-view">
-                <h2>Fecha Inicio:</h2>
-                <p>{{dataCaseProcess.dateInitCase}}</p>
-            </div>
-            <div class="info-view">
-                <h2>Fecha Fin:</h2>
-                <p>{{dataCaseProcess.dateEndCase ? dataCaseProcess.dateEndCase :
-                    "Sin definir"}}</p>
-            </div>
-            <div class="info-view">
-                <h2>Estado:</h2>
-                <p>{{dataCaseProcess.statusCase}}</p>
-            </div>
-            <div class="info-view">
-                <h2>Registrado Por:</h2>
-                <p>{{dataCaseProcess.userRegisterCase}}</p>
-            </div>
-            <div class="info-view">
-                <h2>Fecha Registro:</h2>
-                <p>{{dataCaseProcess.dateRegisterCase}}</p>
-            </div>
-            <div class="info-view">
-                <h2>Última Vez Actualizado Por:</h2>
-                <p>{{dataCaseProcess.updateUserCase}}</p>
-            </div>
-            <div class="info-view">
-                <h2>Fecha Última Actualización:</h2>
-                <p>{{dataCaseProcess.updateDateCase}}</p>
-            </div>
-        </div>
-    </section>
-    <section class="info-extra">
-        <h2>Abogados Asignados</h2>
-        <table class="table table-striped table-bordered"
-            [ngClass]="{'table-dark' : isDarkMode}">
-            <thead>
-                <tr>
-                    <th>Nombre</th>
-                    <th>Teléfono</th>
-                    <th>Correo</th>
-                    <th>Estado</th>
-                </tr>
-            </thead>
-            <tbody *ngIf="dataCaseLawyer.length > 0">
-                <tr *ngFor="let caseLawyer of dataCaseLawyer">
-                    <td><a [routerLink]="['/lawyer', caseLawyer.idLawyer]">{{caseLawyer.nameLawyer}}</a></td>
-                    <td>{{caseLawyer.phoneLawyer}}</td>
-                    <td>{{caseLawyer.emailLawyer}}</td>
-                    <td>{{caseLawyer.statusLawyerCase == 1 ? "Activo" : "Inactivo"}}</td>
-                </tr>
-            </tbody>
-            <tbody *ngIf="dataCaseLawyer.length <= 0">
-                <tr>
-                    <td colspan="4">No se han asignado abogados.</td>
-                </tr>
-            </tbody>
-        </table>
-    </section>
+  <h2>Caso #{{ idCase }}</h2>
+  <section class="view">
+    <div class="info-view-container">
+      <div class="info-view">
+        <h2>Nombre:</h2>
+        <p>{{ dataCaseProcess.nameCase }}</p>
+      </div>
+      <div class="info-view">
+        <h2>Descripción:</h2>
+        <p>{{ dataCaseProcess.descriptionCase }}</p>
+      </div>
+      <div class="info-view">
+        <h2>Tipo:</h2>
+        <p>{{ dataCaseProcess.typeCase }}</p>
+      </div>
+      <div class="info-view">
+        <h2>Cliente:</h2>
+        <p>
+          <a [routerLink]="['/customer', dataCaseProcess.customer?.idClient]">{{
+            dataCaseProcess.customer?.nameClient
+          }}</a>
+        </p>
+      </div>
+      <div class="info-view">
+        <h2>Fecha Inicio:</h2>
+        <p>{{ dataCaseProcess.dateInitCase }}</p>
+      </div>
+      <div class="info-view">
+        <h2>Fecha Fin:</h2>
+        <p>
+          {{
+            dataCaseProcess.dateEndCase
+              ? dataCaseProcess.dateEndCase
+              : "Sin definir"
+          }}
+        </p>
+      </div>
+      <div class="info-view">
+        <h2>Estado:</h2>
+        <p>{{ dataCaseProcess.statusCase }}</p>
+      </div>
+      <div class="info-view">
+        <h2>Registrado Por:</h2>
+        <p>{{ dataCaseProcess.userRegisterCase }}</p>
+      </div>
+      <div class="info-view">
+        <h2>Fecha Registro:</h2>
+        <p>{{ dataCaseProcess.dateRegisterCase }}</p>
+      </div>
+      <div class="info-view">
+        <h2>Última Vez Actualizado Por:</h2>
+        <p>{{ dataCaseProcess.updateUserCase }}</p>
+      </div>
+      <div class="info-view">
+        <h2>Fecha Última Actualización:</h2>
+        <p>{{ dataCaseProcess.updateDateCase }}</p>
+      </div>
+    </div>
+  </section>
+  <section class="info-extra">
+    <h2>Abogados Asignados</h2>
+    <table
+      class="table table-striped table-bordered"
+      [ngClass]="{
+        'table-dark': currentTheme === 'dark-mode',
+        'table-blue': currentTheme === 'blue-mode'
+      }"
+    >
+      >
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Teléfono</th>
+          <th>Correo</th>
+          <th>Estado</th>
+        </tr>
+      </thead>
+      <tbody *ngIf="dataCaseLawyer.length > 0">
+        <tr *ngFor="let caseLawyer of dataCaseLawyer">
+          <td>
+            <a [routerLink]="['/lawyer', caseLawyer.idLawyer]">{{
+              caseLawyer.nameLawyer
+            }}</a>
+          </td>
+          <td>{{ caseLawyer.phoneLawyer }}</td>
+          <td>{{ caseLawyer.emailLawyer }}</td>
+          <td>
+            {{ caseLawyer.statusLawyerCase == 1 ? "Activo" : "Inactivo" }}
+          </td>
+        </tr>
+      </tbody>
+      <tbody *ngIf="dataCaseLawyer.length <= 0">
+        <tr>
+          <td colspan="4">No se han asignado abogados.</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
 </div>

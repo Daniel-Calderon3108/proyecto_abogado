@@ -2,17 +2,15 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class DataService {
+  private theme = new BehaviorSubject<string>('');
+  currentTheme = this.theme.asObservable();
 
-  private isDarkMode = new BehaviorSubject<boolean>(false); 
-  
-  currentDarKMode = this.isDarkMode.asObservable();
+  constructor() {}
 
-  constructor() { }
-
-  changeDarkMode(newValue : boolean) : void {
-    this.isDarkMode.next(newValue);
+  changeTheme(newTheme: string): void {
+    this.theme.next(newTheme);
   }
 }

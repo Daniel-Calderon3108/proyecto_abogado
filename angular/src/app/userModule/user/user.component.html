@@ -1,7 +1,8 @@
 <h2>Listado De Usuarios</h2>
 <div class="info" id="info">
     <table class="table table-striped table-bordered"
-        [ngClass]="{'table-dark' : isDarkMode}">
+        [ngClass]="{'table-dark': currentTheme === 'dark-mode',
+                    'table-blue': currentTheme === 'blue-mode'}">
         <thead>
             <tr>
                 <th>Usuario</th>

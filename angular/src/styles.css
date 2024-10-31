@@ -44,6 +44,33 @@
     --color-body: #000000;
     --color-letter: #FFFF;
 }
+/* Tema azul */
+[theme="blue-mode"] {
+    --color-one: #2E86C1;
+    --color-six: #2874A6;
+    --color-four: var(--color-six);
+    --color-switch: #FFFFFF;
+    --color-body: #EAF2F8;
+    --color-letter: #000000;
+}
+/* Tema marron */
+[theme="law-mode"] {
+    --color-one: #8b5e3cd0;
+    --color-six: #212529;
+    --color-four: var(--color-seven);
+    --color-switch: #F9F6F2;
+    --color-body: #F4EDE3;
+    --color-letter:  #000000;
+}
+/* Tema verde */
+[theme="green-mode"] {
+    --color-one: #28B463;
+    --color-six: #239B56;
+    --color-four: var(--color-six);
+    --color-switch: #FFFFFF;
+    --color-body: #E9F7EF;
+    --color-letter: #000000;
+}
 
 body {
     background: var(--color-body);

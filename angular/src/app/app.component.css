@@ -64,65 +64,54 @@ header h1 {
 }
 
 
-/* Estilos switch (Claro / Oscuro) */
-
-#switch {
-    position: relative;
-    display: inline-block;
-    width: 35px;
-    height: 15px;
+/* Estilos para el contenedor principal */
+.theme-container {
+  position: relative;
+  display: inline-block;
 }
 
-#switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
+/* Muestra el contenedor cuando `showThemeOptions` esté activo */
+.theme-container.active .theme-options {
+    display: block;
+}
+/* Estilos para el botón solo con icono */
+.theme-container button {
+  background-color: transparent; /* Fondo transparente */
+  border: none; /* Sin borde */
+  cursor: pointer;
+  font-size: 24px; /* Tamaño del icono */
+  padding: 8px;
+  color: #b33131; /* Color del icono - asegúrate de que sea visible en el fondo */
 }
 
-#switch .slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: var(--color-switch);
-    -webkit-transition: .4s;
-    transition: .4s;
+/* Cambia el color del icono al hacer hover */
+.theme-container button:hover i {
+  color: #f1a661; /* Cambia a un color diferente al pasar el cursor */
 }
 
-#switch .slider::before {
-    position: absolute;
-    content: "";
-    height: 8px;
-    width: 8px;
-    left: 4px;
-    bottom: 4px;
-    background-color: var(--color-body);
-    -webkit-transition: .4s;
-    transition: .4s;
+/* Estilos para el contenedor de opciones de tema */
+.theme-options {
+    display: none; /* Oculta las opciones de tema inicialmente */
+    position: absolute; /* Ajusta la posición */
+    background-color: white; /* Fondo blanco para las opciones */
+    border: 1px solid #ccc;
+    padding: 10px;
+    z-index: 1000; /* Para asegurar que aparezca sobre otros elementos */
 }
 
-input:checked+.slider {
-    background-color: var(--color-switch);
+/* Mostrar el contenedor de opciones de tema cuando esté activo */
+.theme-container.show .theme-options {
+  display: block;
 }
 
-input:focus+.slider {
-    box-shadow: 0 0 1px var(--color-switch);
-}
-
-input:checked+.slider:before {
-    -webkit-transform: translateX(20px);
-    -ms-transform: translateX(20px);
-    transform: translateX(20px);
-}
-
-#switch .slider.round {
-    border-radius: 34px;
-}
-
-#switch .slider.round:before {
-    border-radius: 50%;
+/* Estilos para los labels y checkboxes */
+.theme-options label {
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  margin: 5px 0;
+  cursor: pointer;
+  color: #000; /* Color del texto de los labels */
 }
 
 #date-actual {

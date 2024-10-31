@@ -8,77 +8,93 @@ import { TimeActualService } from 'src/app/services/time-actual/time-actual.serv
 @Component({
   selector: 'app-view-customer',
   templateUrl: './view-customer.component.html',
-  styleUrls: ['./view-customer.component.css']
+  styleUrls: ['./view-customer.component.css'],
 })
 export class ViewCustomerComponent implements OnInit {
-
-  idClient : string = "";
+  idClient: string = '';
   data: any = [];
-  isDarkMode: boolean = localStorage.getItem("darkMode") === "true";
-  isCase : boolean = false;
-  statusActual : boolean = true;
-  @ViewChild("status") status! : ElementRef;
-  @ViewChild("lastUpdate") lastUpdate! : ElementRef;
+  currentTheme: string = localStorage.getItem('theme') || ''; // Cargar el tema desde localStorage o usar "light" como predeterminado
+  isCase: boolean = false;
+  statusActual: boolean = true;
+  @ViewChild('status') status!: ElementRef;
+  @ViewChild('lastUpdate') lastUpdate!: ElementRef;
 
-  constructor(private activatedRoute : ActivatedRoute, private customerService : CustomersService,
-    private dataService : DataService, private time : TimeActualService, 
-    private router : Router, private renderer : Renderer2) { }
+  constructor(
+    private activatedRoute: ActivatedRoute,
+    private customerService: CustomersService,
+    private dataService: DataService,
+    private time: TimeActualService,
+    private router: Router,
+    private renderer: Renderer2
+  ) {}
 
   ngOnInit(): void {
-    this.activatedRoute.paramMap.subscribe(params => {
-       this.idClient = params.get("id") || "";
-       this.customer();
-      }
-    )
+    this.activatedRoute.paramMap.subscribe((params) => {
+      this.idClient = params.get('id') || '';
+      this.customer();
+    });
     this.heightInfo();
-    
-    this.dataService.currentDarKMode.subscribe( value => { this.isDarkMode = value; });
-    
+
+    // Suscribirse al tema actual del servicio
+    this.dataService.currentTheme.subscribe((value) => {
+      this.currentTheme = value;
+      // Aquí podrías aplicar lógica específica para cada tema si fuera necesario
+    });
   }
 
   customer() {
-    this.customerService.getCustomerByID(parseInt(this.idClient))
-    .subscribe(
-      rs => {
-        this.data = rs
+    this.customerService.getCustomerByID(parseInt(this.idClient)).subscribe(
+      (rs) => {
+        this.data = rs;
         this.isCase = this.data.caseProcess?.length <= 0;
       },
-      err => console.log(err)
-    )
+      (err) => console.log(err)
+    );
   }
 
   heightInfo() {
     let height: number = document.documentElement.clientHeight;
 
-    const operationsElement = document.getElementById("info");
+    const operationsElement = document.getElementById('info');
 
-    if (operationsElement) operationsElement.style.maxHeight = `${height - 140}px`;
+    if (operationsElement)
+      operationsElement.style.maxHeight = `${height - 140}px`;
   }
 
-  editCustomer() { this.router.navigate(['edit-customer', this.data.id_client]) }
+  editCustomer() {
+    this.router.navigate(['edit-customer', this.data.id_client]);
+  }
 
   changeStatus() {
-    let customer : Customers = {
-      updateUserClient: "Administrador",
+    let customer: Customers = {
+      updateUserClient: 'Administrador',
       dateUpdateClient: this.time.getTime(),
       user: {
-        userUpdate : "Administrador",
-        lastUpdate: this.time.getTime()
-      }
-    }
+        userUpdate: 'Administrador',
+        lastUpdate: this.time.getTime(),
+      },
+    };
 
     this.customerService.changeStatus(this.data.id_client, customer).subscribe(
-      rs => {
-        if(rs.success == true) {
+      (rs) => {
+        if (rs.success == true) {
           this.statusActual = !this.statusActual;
-          let status = this.statusActual ? "Activo" : "Inactivo";
-          this.renderer.setProperty(this.status.nativeElement, 'innerHTML', status);
-          this.renderer.setProperty(this.lastUpdate.nativeElement, 'innerHTML', this.time.getTime());
+          let status = this.statusActual ? 'Activo' : 'Inactivo';
+          this.renderer.setProperty(
+            this.status.nativeElement,
+            'innerHTML',
+            status
+          );
+          this.renderer.setProperty(
+            this.lastUpdate.nativeElement,
+            'innerHTML',
+            this.time.getTime()
+          );
         } else {
-          console.log(rs.message)
+          console.log(rs.message);
         }
       },
-      err => console.log("Hubo un error al cambiar el estado" + err)
+      (err) => console.log('Hubo un error al cambiar el estado' + err)
     );
   }
 }
