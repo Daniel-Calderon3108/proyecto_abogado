@@ -25,6 +25,7 @@ export class AppComponent implements OnInit, OnDestroy {
     'blue-mode': false,
     'law-mode': false,
     'green-mode': false,
+    'default' : false
     // Agrega más temas aquí si es necesario
   };
   searchControl = new FormControl('');
@@ -46,6 +47,8 @@ export class AppComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
 
+    this.dataService.changeTheme(localStorage.getItem("theme") || "");
+
     this.dataService.currentIsMessageSuccess.subscribe(value => { 
       this.isMessageSuccess = value;
       setTimeout(() => {
@@ -61,6 +64,7 @@ export class AppComponent implements OnInit, OnDestroy {
       this.showResults = false;
       this.searchControl.setValue('');
       this.currentRoute = this.router.url;
+      this.showThemeOptions = false;
 
       this.showMenu = this.router.url !== '/login'; // Cuando se debe mostrar el nav y el menú
 
@@ -172,8 +176,7 @@ export class AppComponent implements OnInit, OnDestroy {
   // Cambiar el tema basado en el diccionario de booleanos
   changeTheme(theme: string): void {
     if (this.themes.hasOwnProperty(theme)) {
-      if (this.themes[theme]) {
-        // Si el tema ya está activo, lo desactivamos
+      if (theme === "default") {
         this.themes[theme] = false;
         this.currentTheme = '';
         localStorage.removeItem('theme');

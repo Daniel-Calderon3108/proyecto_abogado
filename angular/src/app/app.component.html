@@ -35,17 +35,17 @@
       </section>
       <section class="header-extra">
         <div class="theme-container" [class.active]="showThemeOptions">
-          <button (click)="toggleThemeOptions()" title="Cambiar tema">
-            <i class="fa-solid fa-palette"></i>
-          </button>
+          <i (click)="toggleThemeOptions()" class="fa-solid fa-palette theme-button" data-toggle="tooltip"
+          data-placement="right" title="Cambiar Temas"></i>
           <div *ngIf="showThemeOptions" class="theme-options">
+            <p>Cambiar Temas</p>
             <label>
               <input
                 type="checkbox"
-                (change)="changeTheme('dark-mode')"
-                [checked]="themes['dark-mode']"
+                (change)="changeTheme('default')"
+                [checked]="themes['default']"
               />
-              Black
+              Azul
             </label>
             <label>
               <input
@@ -53,7 +53,7 @@
                 (change)="changeTheme('blue-mode')"
                 [checked]="themes['blue-mode']"
               />
-              Blue
+              Azul Claro
             </label>
             <label>
               <input
@@ -61,7 +61,7 @@
                 (change)="changeTheme('law-mode')"
                 [checked]="themes['law-mode']"
               />
-              law
+              Marron
             </label>
             <label>
               <input
@@ -69,7 +69,15 @@
                 (change)="changeTheme('green-mode')"
                 [checked]="themes['green-mode']"
               />
-              green
+              Verde
+            </label>
+            <label>
+              <input
+                type="checkbox"
+                (change)="changeTheme('dark-mode')"
+                [checked]="themes['dark-mode']"
+              />
+              Oscuro
             </label>
           </div>
         </div>

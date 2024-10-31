@@ -74,29 +74,16 @@ header h1 {
 .theme-container.active .theme-options {
     display: block;
 }
-/* Estilos para el botón solo con icono */
-.theme-container button {
-  background-color: transparent; /* Fondo transparente */
-  border: none; /* Sin borde */
-  cursor: pointer;
-  font-size: 24px; /* Tamaño del icono */
-  padding: 8px;
-  color: #b33131; /* Color del icono - asegúrate de que sea visible en el fondo */
-}
-
-/* Cambia el color del icono al hacer hover */
-.theme-container button:hover i {
-  color: #f1a661; /* Cambia a un color diferente al pasar el cursor */
-}
 
 /* Estilos para el contenedor de opciones de tema */
 .theme-options {
-    display: none; /* Oculta las opciones de tema inicialmente */
-    position: absolute; /* Ajusta la posición */
-    background-color: white; /* Fondo blanco para las opciones */
-    border: 1px solid #ccc;
-    padding: 10px;
-    z-index: 1000; /* Para asegurar que aparezca sobre otros elementos */
+    display: none;
+    position: absolute;
+    background-color: var(--color-six);
+    width: 200px;
+    z-index: 1000;
+    top: 43px;
+    right: 0;
 }
 
 /* Mostrar el contenedor de opciones de tema cuando esté activo */
@@ -104,37 +91,66 @@ header h1 {
   display: block;
 }
 
+.theme-options p {
+    margin: 5px;
+    padding: 5px 5px;
+    border-bottom: 1px solid var(--color-white);
+    color: var(--color-white);
+}
+
 /* Estilos para los labels y checkboxes */
 .theme-options label {
-  display: flex;
-  align-items: center;
-  font-size: 16px;
-  margin: 5px 0;
-  cursor: pointer;
-  color: #000; /* Color del texto de los labels */
+    display: block;
+    font-size: var(--size-text);
+    cursor: pointer;
+    color: var(--color-white);
+    padding: 10px;
+    width: 100%;
+    text-align: right;
+    transition: all .5s;
+}
+
+.theme-options label:hover {
+    background: var(--color-one);
+}
+
+.theme-options input[type="checkbox"] {
+    display: none;
 }
 
 #date-actual {
-    padding: 4px 0;
-    padding-left: 10px;
+    padding: 4px 10px;
     border-left: 1px solid var(--color-white);
+    border-right: 1px solid var(--color-white);
     font-size: var(--size-text1);
     min-width: 135px;
     text-align: center;
 }
 
-.sign-out {
-    padding-left: 10px;
-    border-left: 1px solid var(--color-white);
-    color: var(--color-red);
+.sign-out,
+.theme-button {
     text-decoration: none;
-    font-size: 18px;
     font-weight: bold;
+    cursor: pointer;
+    padding: 5px;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.sign-out i {
-    color: var(--color-red);
+.sign-out i,
+.theme-button i {
+    color: var(--color-white);
     text-decoration: none;
+    font-size: 18px;
+}
+
+.sign-out:hover,
+.theme-button:hover {
+    background: var(--color-six);
+    border-radius: 50%;
 }
 
 /* Estilos contenedor (Nav y Article) */

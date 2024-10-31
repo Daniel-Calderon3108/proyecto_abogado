@@ -70,10 +70,7 @@
     </section>
     <section class="info-extra">
         <h2>Casos</h2>
-        <table class="table table-striped table-bordered"  [ngClass]="{
-          'table-dark': currentTheme === 'dark-mode',
-          'table-blue': currentTheme === 'blue-mode'
-        }">
+        <table class="table table-striped table-bordered"  [ngClass]="{ 'table-dark': currentTheme === 'dark-mode' }">
             <thead>
                 <tr>
                     <th>Nombre</th>

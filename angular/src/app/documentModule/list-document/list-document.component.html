@@ -2,10 +2,7 @@
 <div class="info" id="info">
   <table
     class="table table-striped table-bordered"
-    [ngClass]="{
-      'table-dark': currentTheme === 'dark-mode',
-      'table-blue': currentTheme === 'blue-mode'
-    }"
+    [ngClass]="{ 'table-dark': currentTheme === 'dark-mode' }"
   >
     <thead>
       <tr>

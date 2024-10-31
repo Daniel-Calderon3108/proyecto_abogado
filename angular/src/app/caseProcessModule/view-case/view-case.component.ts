@@ -29,7 +29,6 @@ export class ViewCaseComponent implements OnInit {
     // Suscribirse al tema actual del servicio
     this.dataService.currentTheme.subscribe((value) => {
       this.currentTheme = value;
-      // Aquí podrías aplicar lógica específica para cada tema si fuera necesario
     });
   }
 
