@@ -292,12 +292,10 @@ export class FormCaseProcessComponent implements OnInit {
       .subscribe(
         rs => {
           let message = this.edit ? "actualizo" : "registro";
+          this.idCase = this.edit ? parseInt(this.idCaseParam) : rs.data[0];
           if(!this.edit || this.form.value.confirmLawyer) {
-            this.idCase = this.edit ? parseInt(this.idCaseParam) : rs.data[0];
-            console.log(this.idCaseParam);
-            console.log(this.idCase);
 
-            if(this.edit) {
+            if(this.form.value.confirmLawyer) {
               this.casesService.deleteCaseLawyerByIdCase(this.idCase).subscribe(
                 rs => { console.log("Se eliminaron los abogados asignados al caso.") },
                 err => {

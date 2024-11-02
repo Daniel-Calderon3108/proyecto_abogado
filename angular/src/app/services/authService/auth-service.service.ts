@@ -12,4 +12,6 @@ export class AuthServiceService {
   }
 
   getUser() : string { return localStorage.getItem("nameUser") || "Usuario Indefinido"; }
+
+  getIdUser() : string { return localStorage.getItem("idUser") || "Id Usuario Indefinido";  }
 }

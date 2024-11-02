@@ -248,6 +248,7 @@ export class AppComponent implements OnInit, OnDestroy {
   // Cerrar sesión
   closeSesion() {
     if (localStorage.getItem('nameUser')) {
+      localStorage.removeItem('idUser');
       localStorage.removeItem('nameUser');
       localStorage.removeItem('rolUser');
       this.router.navigate(['/login']);

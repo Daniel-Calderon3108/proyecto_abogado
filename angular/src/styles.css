@@ -17,7 +17,7 @@
     --color-three: #4F46DB;
     --color-four: #449ADB;
     --color-five: #B144DB;
-    --color-six: #05061A;
+    --color-six: #0e152b;
 
     --color-black: #000000;
     --color-red: #c93131;
@@ -47,7 +47,7 @@
 /* Tema azul */
 [theme="blue-mode"] {
     --color-one: #2E86C1;
-    --color-six: #2874A6;
+    --color-six: #0E2635;
     --color-four: var(--color-six);
     --color-switch: #FFFFFF;
     --color-body: #EAF2F8;
@@ -56,7 +56,7 @@
 /* Tema marron */
 [theme="law-mode"] {
     --color-one: #8b5e3cd0;
-    --color-six: #212529;
+    --color-six: #25180e;
     --color-four: var(--color-seven);
     --color-switch: #F9F6F2;
     --color-body: #F4EDE3;
@@ -65,7 +65,7 @@
 /* Tema verde */
 [theme="green-mode"] {
     --color-one: #28B463;
-    --color-six: #239B56;
+    --color-six: #092716;
     --color-four: var(--color-six);
     --color-switch: #FFFFFF;
     --color-body: #E9F7EF;
@@ -185,6 +185,10 @@ table {
     margin: 0;
 }
 
+.table { /* Quitar la margen que ofrece bootstrap */
+    margin: 0;
+}
+
 table td,
 table tr {
     vertical-align: middle;
@@ -244,7 +248,8 @@ form p {
 .form-item input,
 .form-item button,
 .form-item select,
-.form-item textarea {
+.form-item textarea,
+.add-comment input {
     width: 100%;
     height: 30px;
     background: var(--color-body);
@@ -262,7 +267,8 @@ form p {
     padding: 10px;
 }
 
-.form-item button {
+.form-item button,
+.add-comment button {
     background: var(--color-one);
     font-size: 16px;
     font-weight: bold;

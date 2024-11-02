@@ -68,6 +68,7 @@ export class LoginComponent {
             localStorage.removeItem("passRemember");
           }
           // Establecer variable de sesión
+          localStorage.setItem("idUser", res.data.id_user || "");
           localStorage.setItem("nameUser", res.data.nameUser || "");
           localStorage.setItem("rolUser", res.data.rolUser || "");
 

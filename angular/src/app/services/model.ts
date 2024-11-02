@@ -126,3 +126,16 @@ export interface SearchResults {
     customers?: any[];
     lawyers?: any[];
 }
+
+export interface CommentCase {
+    idComment?: string;
+    description?: string;
+    dateRegister?: string;
+    lastUpdate?: string;
+    idCase?: string;
+    nameCase?: string;
+    idUser?: string;
+    nameUser?: string;
+    photoUser?: string;
+    important?: boolean;
+}
