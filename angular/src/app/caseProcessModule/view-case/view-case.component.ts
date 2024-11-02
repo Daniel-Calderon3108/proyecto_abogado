@@ -28,14 +28,15 @@ export class ViewCaseComponent implements OnInit, OnDestroy {
   isCommentNew: boolean = false; // Manejar el boton que permite agregar nuevo comentario
   timeActual: string = this.time.getTime().slice(0, -3); // Obtener fecha, hora y minuto
   private interval_id: any;
-  edit : boolean = false; // ¿Actualizar?
+  edit: boolean = false; // ¿Actualizar?
   editCommentControl = new FormControl(''); // Input para editar comentario
-  positionCommentEdit : number = -1; // Obtener la posición del comentario que se va editar
-  private interval_idComment : any;
+  positionCommentEdit: number = -1; // Obtener la posición del comentario que se va editar
+  private interval_idComment: any;
+  commentEdit: string = "";
 
   constructor(private activatedRoute: ActivatedRoute, private caseService: CaseProcessService,
-    private dataService: DataService, private router: Router, private commentsService: CommentCaseService, 
-    private time: TimeActualService, private auth : AuthServiceService) { }
+    private dataService: DataService, private router: Router, private commentsService: CommentCaseService,
+    private time: TimeActualService, private auth: AuthServiceService) { }
 
   ngOnInit(): void {
     this.activatedRoute.paramMap.subscribe((params) => {
@@ -60,7 +61,7 @@ export class ViewCaseComponent implements OnInit, OnDestroy {
     });
 
     // Dejar de actulizar los comentarios, cuando se va a editar uno
-    if(!this.edit) { this.activateInterval(); }
+    if (!this.edit) { this.activateInterval(); }
 
     this.interval_id = setInterval(() => {
       this.timeActual = this.time.getTime().slice(0, -3);
@@ -113,50 +114,65 @@ export class ViewCaseComponent implements OnInit, OnDestroy {
   }
 
   // ---- Metodos para los comentarios ----
-  
+
   // Crear / Actualizar Comentario
-  saveComment(idComment? : string) {
-    let comment: CommentCase = {
-      idComment : this.edit ? idComment : undefined,
-      description: this.edit ? this.editCommentControl.value : this.addCommentControl.value,
-      dateRegister: this.edit ? undefined : this.time.getTime(),
-      lastUpdate: this.time.getTime(),
-      idCase: this.edit ? undefined : this.idCase,
-      idUser: this.edit ? undefined : this.auth.getIdUser()
+  saveComment(idComment?: string) {
+    let commentDescription = this.edit ? this.editCommentControl.value : this.addCommentControl.value;
+    // Solo actualizar comentario si este tiene un valor diferente
+    if (commentDescription !== this.commentEdit) {
+      let comment: CommentCase = {
+        idComment: this.edit ? idComment : undefined,
+        description: commentDescription,
+        dateRegister: this.edit ? undefined : this.time.getTime(),
+        lastUpdate: this.time.getTime(),
+        idCase: this.edit ? undefined : this.idCase,
+        idUser: this.edit ? undefined : this.auth.getIdUser()
+      }
+
+      this.commentsService.saveComment(comment, this.edit, idComment || "").subscribe(
+        rs => {
+          if (rs.success) {
+            let message = this.edit ? "actualizo" : "registro";
+            this.dataService.changeMessage(true, `Se ${message} el comentario con exito.`)
+            if (this.edit) {
+              this.edit = false;
+              this.positionCommentEdit = -1;
+              this.activateInterval();
+            }
+            this.addCommentControl.setValue("");
+            this.editCommentControl.setValue("");
+            this.commentEdit = "";
+            // Se recarga la lista con los comentarios
+            this.commentsService.getCommentsCaseById(this.idCase).subscribe(
+              rs1 => this.dataCommentsCase = rs1,
+              err => console.log(err)
+            )
+          } else {
+            console.log(rs.message)
+          }
+        },
+        err => console.log("Hubo un error" + err)
+      )
     }
 
-    this.commentsService.saveComment(comment, this.edit, idComment || "").subscribe(
-      rs => {
-        if(rs.success) {
-          let message = this.edit ? "actualizo" : "registro";
-          this.dataService.changeMessage(true, `Se ${message} el comentario con exito.`)
-          if(this.edit) {
-            this.edit = false;
-            this.positionCommentEdit = -1;
-            this.activateInterval();
-          }
-          // Se recarga la lista con los comentarios
-          this.commentsService.getCommentsCaseById(this.idCase).subscribe(
-            rs1 => this.dataCommentsCase = rs1,
-            err => console.log(err)
-          )
-        } else {
-          console.log(rs.message)
-        }
-      },
-      err => console.log("Hubo un error" + err)
-    )
+    if (this.edit) {
+      this.edit = false;
+      this.editCommentControl.setValue("");
+      this.commentEdit = "";
+      this.positionCommentEdit = -1;
+      this.activateInterval();
+    }
   }
 
   // Marcar / Desmarcar como importante comentario
-  importanceComment(id : string, important : boolean) {
-    let comment : CommentCase = {
+  importanceComment(id: string, important: boolean) {
+    let comment: CommentCase = {
       lastUpdate: this.time.getTime()
     }
 
     this.commentsService.changeImportance(id, comment).subscribe(
       rs => {
-        if(rs.success) {
+        if (rs.success) {
           let importance = important ? "desmarco" : "marco";
           this.dataService.changeMessage(true, `Se ${importance} como importante el comentario.`);
           // Recargar lista con los comentarios
@@ -172,10 +188,10 @@ export class ViewCaseComponent implements OnInit, OnDestroy {
     )
   }
   // Eliminar comentarios
-  deleteComment(id : string) {
+  deleteComment(id: string) {
     this.commentsService.deleteComment(id).subscribe(
       rs => {
-        if(rs.success) {
+        if (rs.success) {
           this.dataService.changeMessage(true, "Se elimino el comentario con exito.");
           // Recargar lista de comentarios
           this.commentsService.getCommentsCaseById(this.idCase).subscribe(
@@ -192,7 +208,7 @@ export class ViewCaseComponent implements OnInit, OnDestroy {
 
   // Activar Intervalo Comentario
   activateInterval() {
-    this.interval_idComment = interval(5000) // Cada 5 segundos se obtienen todos los comentarios
+    this.interval_idComment = interval(10000) // Cada 10 segundos se obtienen todos los comentarios
       .pipe(switchMap(() => this.commentsService.getCommentsCaseById(this.idCase)))
       .subscribe((rs) => {
         this.dataCommentsCase = rs
@@ -202,19 +218,20 @@ export class ViewCaseComponent implements OnInit, OnDestroy {
 
   // Desactivar Intervalo Comentario
   deactivateInterval() {
-    if(this.interval_idComment) {
+    if (this.interval_idComment) {
       this.interval_idComment.unsubscribe();
       this.interval_idComment = null;
     }
   }
 
   // Activar modo editar y agregar el input para modificar comentario
-  showEditComment(i : number, comment : string) {
+  showEditComment(i: number, comment: string) {
     if (!this.edit) {
       this.edit = true;
       this.positionCommentEdit = i;
       this.editCommentControl.setValue(comment);
       this.deactivateInterval();
+      this.commentEdit = comment;
     }
   }
 }

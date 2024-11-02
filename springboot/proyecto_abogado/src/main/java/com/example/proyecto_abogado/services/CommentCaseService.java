@@ -44,7 +44,7 @@ public class CommentCaseService implements ICommentCaseService {
 
         newCommentCase.setCaseProcess(caseProcess);
 
-        User user = userRepository.findById(commentCaseRequest.getIdCase())
+        User user = userRepository.findById(commentCaseRequest.getIdUser())
                 .orElseThrow(() -> new RuntimeException("No se encontro el usuario"));
 
         newCommentCase.setUser(user);
