@@ -1,5 +1,5 @@
 export interface User {
-    id_user?: string;
+    idUser?: string;
     nameUser?: string;
     passwordUser?: string;
     userRegister?: string;
@@ -138,4 +138,16 @@ export interface CommentCase {
     nameUser?: string;
     photoUser?: string;
     important?: boolean;
+}
+
+export interface Notify {
+    idNotify?: string;
+    descriptionNotify?: string;
+    urlNotify?: string;
+    typeNotify?: string;
+    dateRegister?: string;
+    userRegister?: string;
+    idUser?: string;
+    nameUser?: string;
+    notify?: boolean;
 }

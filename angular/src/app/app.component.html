@@ -34,6 +34,26 @@
         </div>
       </section>
       <section class="header-extra">
+        <div class="notify-container" [class.active]="showNotify">
+          <div class="notify-button" (click)="toggleNotifyOptions()">
+            <i class="fa-solid fa-bell" data-toggle="tooltip"
+          data-placement="right" title="Notificaciones"></i>
+          <p class="count-notify" *ngIf="countNotify > 0"><span>{{countNotify > 99 ? "+99" : countNotify}}</span></p>
+          </div>
+          <div *ngIf="showNotify" class="notify-options">
+            <h2>Notificaciones</h2>
+            <div *ngIf="dataNotify.length > 0">
+              <div *ngFor="let notify of dataNotify" [routerLink]="notify.urlNotify" class="notify-list">
+                <h3>{{notify.userRegister}} realizo una actualización</h3>
+                <p>{{notify.descriptionNotify}}</p>
+                <p class="time-notify">{{notify.dateRegister}}</p>
+              </div>
+            </div>
+            <div *ngIf="dataNotify.length <= 0">
+              <p style="padding: 10px; text-align: center;">Sin notificaciones</p>
+            </div>
+          </div>
+        </div>
         <div class="theme-container" [class.active]="showThemeOptions">
           <i (click)="toggleThemeOptions()" class="fa-solid fa-palette theme-button" data-toggle="tooltip"
           data-placement="right" title="Cambiar Temas"></i>

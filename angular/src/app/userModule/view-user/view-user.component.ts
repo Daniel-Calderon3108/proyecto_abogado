@@ -1,5 +1,6 @@
 import { Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AuthServiceService } from 'src/app/services/authService/auth-service.service';
 import { User } from 'src/app/services/model';
 import { DataService } from 'src/app/services/shared/data.service';
 import { TimeActualService } from 'src/app/services/time-actual/time-actual.service';
@@ -20,7 +21,7 @@ export class ViewUserComponent implements OnInit {
 
   constructor(private activatedRoute : ActivatedRoute, private userService : UserService, 
     private router : Router, private time : TimeActualService, private renderer : Renderer2,
-    private dataService : DataService) { }
+    private dataService : DataService, private auth : AuthServiceService) { }
   ngOnInit(): void {
    this.activatedRoute.paramMap.subscribe(params =>{
     this.nameUser = params.get("name") || "";
@@ -49,15 +50,15 @@ export class ViewUserComponent implements OnInit {
     if (operationsElement) operationsElement.style.maxHeight = `${height - 140}px`;
   }
 
-  editUser() { this.router.navigate(['edit-user',this.data.id_user]); }
+  editUser() { this.router.navigate(['edit-user',this.data.idUser]); }
 
   changeStatus() {
     let user : User = {
-      userUpdate: "Administrador",
+      userUpdate: this.auth.getUser(),
       lastUpdate: this.time.getTime()
     }
 
-    this.userService.changeStatus(this.data.id_user,user).subscribe(
+    this.userService.changeStatus(this.data.idUser,user).subscribe(
       rs => {
         if(rs.success === true) {
           this.statusActual = !this.statusActual;

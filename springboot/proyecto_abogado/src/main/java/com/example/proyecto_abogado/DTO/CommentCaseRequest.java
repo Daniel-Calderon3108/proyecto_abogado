@@ -33,7 +33,7 @@ public class CommentCaseRequest {
         this.isUpdate = commentCase.isUpdate();
         this.idCase = commentCase.getCaseProcess().getIdCase();
         this.nameCase = commentCase.getCaseProcess().getNameCase();
-        this.idUser = commentCase.getUser().getId_user();
+        this.idUser = commentCase.getUser().getIdUser();
         this.nameUser = commentCase.getUser().getNameUser();
         this.photoUser = commentCase.getUser().getPhotoUser();
     }

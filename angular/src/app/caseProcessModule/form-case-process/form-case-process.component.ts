@@ -5,10 +5,11 @@ import { debounceTime, distinctUntilChanged, map, Observable, startWith, switchM
 import { CaseProcessService } from 'src/app/services/case-process.service';
 import { CustomersService } from 'src/app/services/customers.service';
 import { LawyersService } from 'src/app/services/lawyers.service';
-import { Case, CaseLawyer } from 'src/app/services/model';
+import { Case, CaseLawyer, Notify } from 'src/app/services/model';
 import { TimeActualService } from 'src/app/services/time-actual/time-actual.service';
 import { AuthServiceService } from 'src/app/services/authService/auth-service.service';
 import { DataService } from 'src/app/services/shared/data.service';
+import { NotifyService } from 'src/app/services/notify.service';
 
 
 @Component({
@@ -51,10 +52,14 @@ export class FormCaseProcessComponent implements OnInit {
 
   messageSubmit: string = "";
 
+  nameCase : string = "";
+  statusCase : string = "";
+
   constructor(private casesService: CaseProcessService, private router: Router,
     private customerService: CustomersService, private lawyerService: LawyersService, 
     private time: TimeActualService, private auth : AuthServiceService, 
-    private dataService : DataService, private activatedRoute : ActivatedRoute) { }
+    private dataService : DataService, private activatedRoute : ActivatedRoute,
+    private notifyService : NotifyService) { }
 
   ngOnInit(): void {
     this.heightInfo();
@@ -174,6 +179,10 @@ export class FormCaseProcessComponent implements OnInit {
           this.form.get("nameClientSelect")?.setValue(`${rs.customer?.documentClient} - ${rs.customer?.nameClient}`);
           this.form.get("idClient")?.setValue(rs.customer?.idClient);
           this.edit = true;
+
+          // Variables para notificación
+          this.nameCase = rs.nameCase || "";
+          this.statusCase = rs.statusCase || "";
         },
         err => console.log("Hubo un error al traer la información del caso" + err)
       )
@@ -293,6 +302,46 @@ export class FormCaseProcessComponent implements OnInit {
         rs => {
           let message = this.edit ? "actualizo" : "registro";
           this.idCase = this.edit ? parseInt(this.idCaseParam) : rs.data[0];
+          
+          // -------------------- Crear Notificación ----------------
+
+          let typeNotify = this.edit ? "Editar" : "Nuevo";
+          let descriptionNotify = "";
+
+          if (!this.edit) {
+            descriptionNotify = `Creó el caso ${this.form.value.nameCase} donde usted fue asignado.`
+          }
+
+          // Crear Descripción Notificación
+          if(this.edit) {
+
+            if (this.form.value.nameCase !== this.nameCase) {
+              descriptionNotify = `Se cambió el nombre del caso ${this.nameCase} a ${this.form.value.nameCase}`;
+              if (this.form.value.statusCase !== this.statusCase) {
+                descriptionNotify += ` y cambió el estado de ${this.statusCase} a ${this.form.value.statusCase}`;
+              }
+            } else if (this.form.value.statusCase !== this.statusCase) {
+              descriptionNotify = `Se cambió el estado del caso ${this.nameCase} de ${this.statusCase} a ${this.form.value.statusCase}`;
+            } else {
+              descriptionNotify = `Se modifico el caso ${this.nameCase}`;
+            }
+          }
+          
+          // JSON Notificación Para Enviar API
+          let notify : Notify = {
+            descriptionNotify: descriptionNotify,
+            urlNotify: `case/${this.idCase}`,
+            typeNotify: `${typeNotify} Caso`,
+            dateRegister: this.time.getTime(),
+            userRegister: this.auth.getUser(),
+            notify: false
+          }
+
+          this.notifyService.createNotify(notify, this.idCase).subscribe(
+            rs => console.log("OK"),
+            err => console.log(err) 
+          );
+
           if(!this.edit || this.form.value.confirmLawyer) {
 
             if(this.form.value.confirmLawyer) {
@@ -322,7 +371,24 @@ export class FormCaseProcessComponent implements OnInit {
             .then(
               rs => {
                 this.dataService.changeMessage(true, `Se ${message} el caso con exito.`);
-                this.router.navigate(['/case',this.idCase]);
+
+                if(this.form.value.confirmLawyer) {
+                  notify.descriptionNotify = "Se cambiaron los abogados asignados a: ";
+
+                  lawyersData.map((element : any) => {
+                    notify.descriptionNotify += element.selectLawyer + ",";
+                  });
+
+                  notify.descriptionNotify = notify.descriptionNotify.slice(0,-1);
+                  notify.descriptionNotify += ` del caso ${this.nameCase}`;
+
+                  this.notifyService.createNotify(notify, this.idCase).subscribe(
+                    rs => this.router.navigate(['/case',this.idCase]),
+                    err => console.log(err)
+                  );
+                } else {
+                  this.router.navigate(['/case',this.idCase])
+                }
               }
             )
             .catch(
@@ -332,6 +398,8 @@ export class FormCaseProcessComponent implements OnInit {
             this.dataService.changeMessage(true, `Se ${message} el caso con exito.`);
             this.router.navigate(['/case',this.idCase]);
           }
+
+
         },
         err => console.log(err)
       );

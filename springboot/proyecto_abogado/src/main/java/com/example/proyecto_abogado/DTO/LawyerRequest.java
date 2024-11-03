@@ -48,7 +48,7 @@ public class LawyerRequest {
         this.typeDocumentLawyer = lawyer.getTypeDocumentLawyer();
         this.documentLawyer = lawyer.getDocumentLawyer();
         this.statusLawyer = lawyer.isStatusLawyer();
-        this.idUser = lawyer.getUser().getId_user();
+        this.idUser = lawyer.getUser().getIdUser();
         this.nameUser = lawyer.getUser().getNameUser();
         this.statusUser = lawyer.getUser().isStatusUser();
         this.caseLawyer = lawyer.getCaseLawyer().stream()

@@ -65,18 +65,21 @@ header h1 {
 
 
 /* Estilos para el contenedor principal */
-.theme-container {
+.theme-container,
+.notify-container {
   position: relative;
   display: inline-block;
 }
 
 /* Muestra el contenedor cuando `showThemeOptions` esté activo */
-.theme-container.active .theme-options {
+.theme-container.active .theme-options,
+.notify-container.active .notify-options {
     display: block;
 }
 
 /* Estilos para el contenedor de opciones de tema */
-.theme-options {
+.theme-options,
+.notify-options {
     display: none;
     position: absolute;
     background-color: var(--color-six);
@@ -86,16 +89,24 @@ header h1 {
     right: 0;
 }
 
+.notify-options {
+    width: 400px;
+    min-height: 100px;
+    max-height: 500px;
+}
+
 /* Mostrar el contenedor de opciones de tema cuando esté activo */
 .theme-container.show .theme-options {
   display: block;
 }
 
-.theme-options p {
+.theme-options p,
+.notify-options h2 {
     margin: 5px;
     padding: 5px 5px;
     border-bottom: 1px solid var(--color-white);
     color: var(--color-white);
+    font-size: var(--size-text);
 }
 
 /* Estilos para los labels y checkboxes */
@@ -128,7 +139,8 @@ header h1 {
 }
 
 .sign-out,
-.theme-button {
+.theme-button,
+.notify-button {
     text-decoration: none;
     font-weight: bold;
     cursor: pointer;
@@ -140,17 +152,67 @@ header h1 {
     align-items: center;
 }
 
+.notify-button {
+    position: relative;
+}
+
+.count-notify {
+    margin: 0;
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    background: var(--color-red);
+    font-size: 10px;
+    width: 15px;
+    height: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+}
+
 .sign-out i,
-.theme-button i {
+.theme-button i,
+.notify-button i {
     color: var(--color-white);
     text-decoration: none;
     font-size: 18px;
 }
 
 .sign-out:hover,
-.theme-button:hover {
+.theme-button:hover,
+.notify-button:hover {
     background: var(--color-six);
     border-radius: 50%;
+}
+
+/* Notificaciones */
+
+.notify-list {
+    padding: 10px;
+    font-family: var(--letter);
+    cursor: pointer;
+    transition: all .5s;
+}
+
+.notify-list h3 {
+    font-size: var(--size-text);
+    font-weight: normal;
+    color: var(--color-white);
+}
+
+.notify-list p {
+    font-size: var(--size-text1);
+    color: var(--color-white);
+}
+
+.time-notify {
+    text-align: right;
+    opacity: .5;
+}
+
+.notify-list:hover {
+    background: var(--color-one);
 }
 
 /* Estilos contenedor (Nav y Article) */

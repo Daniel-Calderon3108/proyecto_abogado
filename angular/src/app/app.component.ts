@@ -5,7 +5,10 @@ import { FormControl } from '@angular/forms';
 import { CaseProcessService } from './services/case-process.service';
 import { CustomersService } from './services/customers.service';
 import { LawyersService } from './services/lawyers.service';
-import { debounceTime, forkJoin, map, Observable, startWith, switchMap } from 'rxjs';
+import { debounceTime, forkJoin, interval, map, Observable, startWith, switchMap } from 'rxjs';
+import { AuthServiceService } from './services/authService/auth-service.service';
+import { NotifyService } from './services/notify.service';
+import { Notify } from './services/model';
 
 @Component({
   selector: 'app-root',
@@ -15,10 +18,14 @@ import { debounceTime, forkJoin, map, Observable, startWith, switchMap } from 'r
 export class AppComponent implements OnInit, OnDestroy {
   date_actual: Date = new Date();
   private interval_id: any;
+  private interval_id_notify : any;
+  dataNotify: Notify[] = [];
+  idNotify : any[] = [];
 
   currentRoute: string = '';
   showMenu: boolean = true;
   showThemeOptions: boolean = false; // Controla la visibilidad de las opciones de tema
+  showNotify : boolean = false; // Mostrar notificaciones
   currentTheme: string = '';
   themes: { [key: string]: boolean } = {
     'dark-mode': false,
@@ -36,19 +43,41 @@ export class AppComponent implements OnInit, OnDestroy {
   dataCase: any = [];
   dataLawyer: any = [];
   dataCustomer: any = [];
-  nameUser: string = localStorage.getItem('nameUser') || 'Usuario';
+  nameUser: string = this.auth.getUser();
+  private idUser : string = this.auth.getIdUser();
 
   isMessageSuccess : boolean = false;
   messageSuccess : string = "";
 
+  countNotify : number = 0; // Contar los notificaciones no vistas por el usuario
+
   constructor(private router: Router, private dataService: DataService,
     private caseService: CaseProcessService, private customerService: CustomersService,
-    private lawyerService: LawyersService) { }
+    private lawyerService: LawyersService, private auth : AuthServiceService, 
+    private notifyService : NotifyService) { }
 
   ngOnInit(): void {
 
-    this.dataService.changeTheme(localStorage.getItem("theme") || "");
+    if(this.auth.getIdUser() !== "Id Usuario Indefinido") {
+      this.notifyService.getNotifyByUser(this.idUser).subscribe(
+        rs => { 
+          this.dataNotify = rs;
+          // Contar cuales notificaciones no han sido vistas por el usuario
+          for(let notifySingle of this.dataNotify) {
+            if(!notifySingle.notify) { 
+              this.countNotify++; 
+              this.idNotify.push(notifySingle.idNotify);
+            }
+          }
+        },
+        err => console.log(err)
+      )
+    }
+    
+    if(this.auth.getIdUser() !== "Id Usuario Indefinido") this.activateInterval();
 
+    this.dataService.changeTheme(localStorage.getItem("theme") || "");
+    // Duración de la notificaciones enviadas desde otros componentes
     this.dataService.currentIsMessageSuccess.subscribe(value => { 
       this.isMessageSuccess = value;
       setTimeout(() => {
@@ -57,6 +86,7 @@ export class AppComponent implements OnInit, OnDestroy {
         }
       }, 4000)
     })
+
     this.dataService.currrentMessageSuccess.subscribe(value => { this.messageSuccess = value; })
 
     // Obtener la URL completa de la ruta actual
@@ -65,6 +95,7 @@ export class AppComponent implements OnInit, OnDestroy {
       this.searchControl.setValue('');
       this.currentRoute = this.router.url;
       this.showThemeOptions = false;
+      this.showNotify = false;
 
       this.showMenu = this.router.url !== '/login'; // Cuando se debe mostrar el nav y el menú
 
@@ -121,6 +152,36 @@ export class AppComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     if (this.interval_id) clearInterval(this.interval_id);
+    if (this.interval_id_notify) this.deactivateInterval();
+  }
+
+  // Activar Intervalo Notificaciones
+  activateInterval() {
+    if(this.auth.getIdUser() !== "Id Usuario Indefinido") {
+      this.interval_id_notify = interval(5000) // Cada 5 segundos se obtienen todos las notificaciones
+      .pipe(switchMap(() => this.notifyService.getNotifyByUser(this.idUser)))
+      .subscribe((rs) => {
+        this.dataNotify= rs;
+        this.countNotify = 0;
+        this.idNotify.length = 0;
+        // Contar cuales notificaciones no han sido vistas por el usuario
+        for(let notifySingle of this.dataNotify) {
+          if(!notifySingle.notify) {
+            this.countNotify++;
+            this.idNotify.push(notifySingle.idNotify); 
+          }
+        }
+        if(this.showNotify) this.checkNotify();
+      });
+    }
+  }
+
+  // Desactivar Intervalo Notificaciones
+  deactivateInterval() {
+    if (this.interval_id_notify) {
+      this.interval_id_notify.unsubscribe();
+      this.interval_id_notify = null;
+    }
   }
 
   // Función para desplegar y cerrar menú de navegación
@@ -168,8 +229,30 @@ export class AppComponent implements OnInit, OnDestroy {
     if (operationsElement) operationsElement.style.height = `${height - 60}px`;
   }
 
+  // Abrir/Cerrar Notificaciones
+  toggleNotifyOptions(): void {
+    if(this.showThemeOptions && !this.showNotify) this.showThemeOptions = false;
+    this.showNotify = !this.showNotify;
+    this.checkNotify();
+  }
+
+  // Marcar Notificaciones como vistas
+  checkNotify() {
+    let notify_id = this.idNotify;
+
+    for(let notifySingle of notify_id) {
+      let notifyView : Notify  = { notify : true }
+      this.notifyService.checkNotify(notifySingle, notifyView).subscribe(
+        rs => this.countNotify = 0,
+        err => console.log(err)
+      );
+    }
+
+  }
+
   // Alternar visibilidad de las opciones de tema
   toggleThemeOptions(): void {
+    if(this.showNotify && !this.showThemeOptions) this.showNotify = false;
     this.showThemeOptions = !this.showThemeOptions;
   }
 

@@ -5,7 +5,8 @@ import { debounceTime, distinctUntilChanged, interval, map, switchMap } from 'rx
 import { AuthServiceService } from 'src/app/services/authService/auth-service.service';
 import { CaseProcessService } from 'src/app/services/case-process.service';
 import { CommentCaseService } from 'src/app/services/comment-case.service';
-import { CommentCase } from 'src/app/services/model';
+import { Case, CommentCase, Notify } from 'src/app/services/model';
+import { NotifyService } from 'src/app/services/notify.service';
 import { DataService } from 'src/app/services/shared/data.service';
 import { TimeActualService } from 'src/app/services/time-actual/time-actual.service';
 
@@ -16,7 +17,7 @@ import { TimeActualService } from 'src/app/services/time-actual/time-actual.serv
 })
 export class ViewCaseComponent implements OnInit, OnDestroy {
   idCase: string = '';
-  dataCaseProcess: any = [];
+  dataCaseProcess: Case | undefined;
   dataCaseLawyer: any = [];
   dataCommentsCase: any = [];
   currentTheme: string = localStorage.getItem('theme') || ''; // Cargar el tema desde localStorage o usar "light" como predeterminado
@@ -34,9 +35,11 @@ export class ViewCaseComponent implements OnInit, OnDestroy {
   private interval_idComment: any;
   commentEdit: string = "";
 
+  idUser : string = this.auth.getIdUser();
+
   constructor(private activatedRoute: ActivatedRoute, private caseService: CaseProcessService,
     private dataService: DataService, private router: Router, private commentsService: CommentCaseService,
-    private time: TimeActualService, private auth: AuthServiceService) { }
+    private time: TimeActualService, private auth: AuthServiceService, private notifyService: NotifyService) { }
 
   ngOnInit(): void {
     this.activatedRoute.paramMap.subscribe((params) => {
@@ -103,7 +106,7 @@ export class ViewCaseComponent implements OnInit, OnDestroy {
       operationsElement.style.maxHeight = `${height - 140}px`;
   }
   // Redirigir a editar caso
-  editCase() { this.router.navigate(['edit-case', this.dataCaseProcess.idCase]); }
+  editCase() { this.router.navigate(['edit-case', this.dataCaseProcess?.idCase]); }
 
   // Cambiar tabs
   changeTab(tab: string) {
@@ -131,41 +134,55 @@ export class ViewCaseComponent implements OnInit, OnDestroy {
 
       this.commentsService.saveComment(comment, this.edit, idComment || "").subscribe(
         rs => {
-          if (rs.success) {
-            let message = this.edit ? "actualizo" : "registro";
-            this.dataService.changeMessage(true, `Se ${message} el comentario con exito.`)
-            if (this.edit) {
-              this.edit = false;
-              this.positionCommentEdit = -1;
-              this.activateInterval();
-            }
-            this.addCommentControl.setValue("");
-            this.editCommentControl.setValue("");
-            this.commentEdit = "";
-            // Se recarga la lista con los comentarios
-            this.commentsService.getCommentsCaseById(this.idCase).subscribe(
-              rs1 => this.dataCommentsCase = rs1,
-              err => console.log(err)
-            )
-          } else {
-            console.log(rs.message)
+          let message = this.edit ? "actualizo" : "registro";
+          this.dataService.changeMessage(true, `Se ${message} el comentario con exito.`)
+
+          // Crear Notificación
+          let messageNotify = !this.edit ? `Comentó el caso ${this.dataCaseProcess?.nameCase}` : `Modificó el comentario del caso ${this.dataCaseProcess?.nameCase}`
+
+          let notify: Notify = {
+            descriptionNotify: messageNotify,
+            urlNotify: `case/${this.idCase}`,
+            typeNotify: `${message} comentario`,
+            dateRegister: this.time.getTime(),
+            userRegister: this.auth.getUser(),
+            notify: false
           }
+
+          this.notifyService.createNotify(notify, parseInt(this.idCase)).subscribe(
+            rs => console.log("OK"),
+            err => console.log(err)
+          )
+
+          if (this.edit) {
+            this.edit = false;
+            this.positionCommentEdit = -1;
+            this.activateInterval();
+          }
+          this.addCommentControl.setValue("");
+          this.editCommentControl.setValue("");
+          this.commentEdit = "";
+          // Se recarga la lista con los comentarios
+          this.commentsService.getCommentsCaseById(this.idCase).subscribe(
+            rs1 => this.dataCommentsCase = rs1,
+            err => console.log(err)
+          )
         },
         err => console.log("Hubo un error" + err)
       )
-    }
-
-    if (this.edit) {
-      this.edit = false;
-      this.editCommentControl.setValue("");
-      this.commentEdit = "";
-      this.positionCommentEdit = -1;
-      this.activateInterval();
+    } else {
+      if (this.edit) {
+        this.edit = false;
+        this.editCommentControl.setValue("");
+        this.commentEdit = "";
+        this.positionCommentEdit = -1;
+        this.activateInterval();
+      }
     }
   }
 
   // Marcar / Desmarcar como importante comentario
-  importanceComment(id: string, important: boolean) {
+  importanceComment(id: string, important: boolean, commentNotify : string) {
     let comment: CommentCase = {
       lastUpdate: this.time.getTime()
     }
@@ -177,7 +194,25 @@ export class ViewCaseComponent implements OnInit, OnDestroy {
           this.dataService.changeMessage(true, `Se ${importance} como importante el comentario.`);
           // Recargar lista con los comentarios
           this.commentsService.getCommentsCaseById(this.idCase).subscribe(
-            rs1 => this.dataCommentsCase = rs1,
+            rs1 => { 
+              this.dataCommentsCase = rs1; 
+              
+              // Crear Notificación
+              let importanceNotify = important ? "Desmarcó" : "Marcó"
+              let notify : Notify = {
+                descriptionNotify: `${importanceNotify} como importante el comentario:  
+                ${commentNotify.length > 20 ? commentNotify.slice(0, 20) + "..." : commentNotify}`,
+                urlNotify: `case/${this.idCase}`,
+                dateRegister: this.time.getTime(),
+                userRegister: this.auth.getUser(),
+                notify: false
+              }
+
+              this.notifyService.createNotify(notify, parseInt(this.idCase)).subscribe(
+                rs => "",
+                err => console.log(err)
+              )
+            },
             err => console.log(err)
           )
         } else {

@@ -17,7 +17,8 @@ import javax.persistence.*;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id_user;
+    @Column (name = "id_user")
+    private Long idUser;
     @Column(name = "name_user") // Agregar Alias
     private String nameUser;
     @Column(name = "password_user")

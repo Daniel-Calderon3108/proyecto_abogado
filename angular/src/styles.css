@@ -101,7 +101,13 @@ h2 {
     position: relative;
 }
 
-.info::-webkit-scrollbar {
+.notify-options {
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.info::-webkit-scrollbar,
+.notify-options::-webkit-scrollbar {
     width: 10px;
 }
 
@@ -111,9 +117,14 @@ h2 {
 
 
 .info::-webkit-scrollbar-track,
-.container nav::-webkit-scrollbar-track {
+.container nav::-webkit-scrollbar-track,
+.notify-options::-webkit-scrollbar-track {
     background: var(--color-body);
     border-radius: 5px;
+}
+
+.notify-options::-webkit-scrollbar-track {
+    background: var(--color-six);
 }
 
 .container nav::-webkit-scrollbar-track {
@@ -121,7 +132,8 @@ h2 {
 }
 
 .info::-webkit-scrollbar-thumb,
-.container nav::-webkit-scrollbar-thumb {
+.container nav::-webkit-scrollbar-thumb,
+.notify-options::-webkit-scrollbar-thumb {
     background: var(--color-one);
     border-radius: 5px;
 }

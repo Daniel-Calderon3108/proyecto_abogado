@@ -10,49 +10,49 @@
         <div class="info-view-container">
             <div class="info-view">
                 <h2>Nombre: </h2>
-                <p>{{dataCaseProcess.nameCase}}</p>
+                <p>{{dataCaseProcess?.nameCase}}</p>
             </div>
             <div class="info-view">
                 <h2>Descripción: </h2>
-                <p>{{dataCaseProcess.descriptionCase}}</p>
+                <p>{{dataCaseProcess?.descriptionCase}}</p>
             </div>
             <div class="info-view">
                 <h2>Tipo: </h2>
-                <p>{{dataCaseProcess.typeCase}}</p>
+                <p>{{dataCaseProcess?.typeCase}}</p>
             </div>
             <div class="info-view">
                 <h2>Cliente:</h2>
                 <p><a
-                        [routerLink]="['/customer',dataCaseProcess.customer?.idClient]">{{dataCaseProcess.customer?.nameClient}}</a></p>
+                        [routerLink]="['/customer',dataCaseProcess?.customer?.idClient]">{{dataCaseProcess?.customer?.nameClient}}</a></p>
             </div>
             <div class="info-view">
                 <h2>Fecha Inicio:</h2>
-                <p>{{dataCaseProcess.dateInitCase}}</p>
+                <p>{{dataCaseProcess?.dateInitCase}}</p>
             </div>
             <div class="info-view">
                 <h2>Fecha Fin:</h2>
-                <p>{{dataCaseProcess.dateEndCase ? dataCaseProcess.dateEndCase :
+                <p>{{dataCaseProcess?.dateEndCase ? dataCaseProcess?.dateEndCase :
                     "Sin definir"}}</p>
             </div>
             <div class="info-view">
                 <h2>Estado:</h2>
-                <p #status>{{dataCaseProcess.statusCase}}</p>
+                <p #status>{{dataCaseProcess?.statusCase}}</p>
             </div>
             <div class="info-view">
                 <h2>Registrado Por:</h2>
-                <p>{{dataCaseProcess.userRegisterCase}}</p>
+                <p>{{dataCaseProcess?.userRegisterCase}}</p>
             </div>
             <div class="info-view">
                 <h2>Fecha Registro:</h2>
-                <p>{{dataCaseProcess.dateRegisterCase}}</p>
+                <p>{{dataCaseProcess?.dateRegisterCase}}</p>
             </div>
             <div class="info-view">
                 <h2>Última Vez Actualizado Por:</h2>
-                <p #userUpdate>{{dataCaseProcess.updateUserCase}}</p>
+                <p #userUpdate>{{dataCaseProcess?.updateUserCase}}</p>
             </div>
             <div class="info-view">
                 <h2>Fecha Última Actualización:</h2>
-                <p #lastUpdate>{{dataCaseProcess.updateDateCase}}</p>
+                <p #lastUpdate>{{dataCaseProcess?.updateDateCase}}</p>
             </div>
         </div>
     </section>
@@ -103,9 +103,9 @@
                                 <i class="fa-solid fa-ellipsis-vertical"></i>
                                 <ul>
                                     <!-- Desactivar el editar si un comentario ya se esta editando -->
-                                    <li (click)="showEditComment(i, comment.description)" [ngClass]="{'disabled' : edit}">Editar</li>
-                                    <li (click)="importanceComment(comment.idComment, comment.important)">Marcar Como Importante</li>
-                                    <li (click)="deleteComment(comment.idComment)">Eliminar</li>
+                                    <li *ngIf="comment.idUser == idUser" (click)="showEditComment(i, comment.description)" [ngClass]="{'disabled' : edit}">Editar</li>
+                                    <li (click)="importanceComment(comment.idComment, comment.important, comment.description)">Marcar Como Importante</li>
+                                    <li *ngIf="comment.idUser == idUser" (click)="deleteComment(comment.idComment)">Eliminar</li>
                                 </ul>
                             </div>
                             <div class="top-comment">

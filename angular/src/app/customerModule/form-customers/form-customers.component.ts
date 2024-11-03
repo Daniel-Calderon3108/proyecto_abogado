@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CustomersService } from 'src/app/services/customers.service';
 import { Customers, User } from 'src/app/services/model';
 import { TimeActualService } from 'src/app/services/time-actual/time-actual.service';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { UserService } from 'src/app/services/user.service';
 import { debounceTime, distinctUntilChanged, map, Observable, switchMap } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
