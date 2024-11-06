@@ -4,15 +4,14 @@ import com.example.proyecto_abogado.DTO.LawyerRequest;
 import com.example.proyecto_abogado.DTO.Response;
 import com.example.proyecto_abogado.entities.Lawyer;
 import com.example.proyecto_abogado.repository.LawyerRepository;
-import com.example.proyecto_abogado.services.EncriptPassword;
-import com.example.proyecto_abogado.services.ILawyerService;
+import com.example.proyecto_abogado.services.Encript.EncriptPassword;
+import com.example.proyecto_abogado.services.lawyer.ILawyerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RequestMapping("api/lawyer")
 @RestController

@@ -14,11 +14,12 @@ import javax.persistence.*;
 public class Document {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id_document;
-    @Column(name = "url_document")
-    private String urlDocument;
+    @Column(name = "id_document")
+    private Long idDocument;
     @Column(name = "name_document")
     private String nameDocument;
+    @Column(name = "url_document")
+    private String urlDocument;
     @Column(name = "type_document")
     private String typeDocument;
     @Column(name = "status_document")

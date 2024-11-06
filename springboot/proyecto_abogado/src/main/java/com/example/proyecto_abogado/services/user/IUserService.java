@@ -1,4 +1,4 @@
-package com.example.proyecto_abogado.services;
+package com.example.proyecto_abogado.services.user;
 
 import com.example.proyecto_abogado.entities.User;
 

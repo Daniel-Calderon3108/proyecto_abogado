@@ -1,4 +1,4 @@
-package com.example.proyecto_abogado.services;
+package com.example.proyecto_abogado.services.notify;
 
 import com.example.proyecto_abogado.DTO.NotifyRequest;
 import com.example.proyecto_abogado.entities.Notify;

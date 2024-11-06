@@ -1,78 +1,166 @@
 <h2>Nuevo Documento</h2>
 <div class="info" id="info">
-    <form [formGroup]="documentForm" (ngSubmit)="submitForm()">
-        <p>Datos Del Caso</p>
-        <div class="form-items">
-            <div class="form-item">
-                <label for="nameDocument">Nombre</label>
-                <input type="text" name="nameDocument" id="nameDocument"
-                    formControlName="nameDocument" required>
-            </div>
-            <div class="form-item">
-                <label for="typeDocument">Tipo</label>
-                <select name="typeDocument" id="typeDocument" formControlName="typeDocument">
-                    <option value="Penal">Penal</option>
-                    <option value="Civil">Civil</option>
-                    <option value="Familiar">Familiar</option>
-                    <option value="Laboral">Laboral</option>
-                    <option value="Corporativo o Mercantil">Corporativo o Mercantil</option>
-                    <option value="Fiscal o Tributario">Fiscal o Tributario</option>
-                    <option value="Inmobiliario">Inmobiliario</option>
-                    <option value="Internacional">Internacional</option>
-                    <option value="Ambiental">Ambiental</option>
-                    <option value="Intelectual">Intelectual</option>
-                    <option value="Seguros">Seguros</option>
-                    <option value="Administrativo">Administrativo</option>
-                </select>
-            </div>
+  <form [formGroup]="form">
+    <p>Datos Del Documento</p>
+    <div class="form-items">
+      <div class="form-item">
+        <label for="nameDocument">Nombre</label>
+        <div class="form-input">
+          <input
+            type="text"
+            name="nameDocument"
+            id="nameDocument"
+            formControlName="nameDocument"
+          />
+          <div
+            class="status-form"
+            [ngClass]="{
+              hide: !isNameValidation,
+              error: !isValidName,
+              success: isValidName
+            }"
+          >
+            <i
+              class="fa-solid"
+              [ngClass]="{ 'fa-xmark': !isValidName, 'fa-check': isValidName }"
+            ></i>
+            <p
+              class="status-info"
+              [ngClass]="{ error: !isValidName, success: isValidName }"
+            >
+              {{ nameMessage }}
+            </p>
+          </div>
         </div>
-        <div class="form-items">
-            <div class="form-item">
-                <label for="urlDocument">URL del documento</label>
-                <input type="text" name="urlDocument" id="urlDocument" formControlName="urlDocument" (input)="updatePreview()" required>
-            </div>
+      </div>
+      <div class="form-item">
+        <label for="typeDocument">Tipo</label>
+        <select
+          name="typeDocument"
+          id="typeDocument"
+          formControlName="typeDocument"
+        >
+          <option value="Penal">Penal</option>
+          <option value="Civil">Civil</option>
+          <option value="Familiar">Familiar</option>
+          <option value="Laboral">Laboral</option>
+          <option value="Corporativo o Mercantil">
+            Corporativo o Mercantil
+          </option>
+          <option value="Fiscal o Tributario">Fiscal o Tributario</option>
+          <option value="Inmobiliario">Inmobiliario</option>
+          <option value="Internacional">Internacional</option>
+          <option value="Ambiental">Ambiental</option>
+          <option value="Intelectual">Intelectual</option>
+          <option value="Seguros">Seguros</option>
+          <option value="Administrativo">Administrativo</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-items">
+      <div class="form-item">
+        <label for="urlDocument">Subir archivo</label>
+        <input
+          type="file"
+          id="urlDocument"
+          (change)="onFileChange($event)"
+          accept="application/pdf,image/*"
+        />
+      </div>
+    </div>
+
+    <!-- Vista previa de la imagen -->
+    <div
+      *ngIf="
+        filePreviewUrl && selectedFile && selectedFile.type.startsWith('image/')
+      "
+      class="file-preview"
+    >
+      <img
+        [src]="filePreviewUrl"
+        alt="Vista previa de la imagen"
+        style="max-width: 100%; height: auto"
+      />
+    </div>
+
+    <div>
+      <img
+        src="https://drive.google.com/file/d/1UtCmMv8MJtzBUqBjPMP-Y0nOyiF1Gxqe/view"
+        alt=""
+      />
+    </div>
+
+    <!-- Vista previa del PDF -->
+    <div
+      *ngIf="
+        filePreviewUrl &&
+        selectedFile &&
+        selectedFile.type === 'application/pdf'
+      "
+      class="file-preview"
+    >
+      <iframe
+        [src]="filePreviewUrl"
+        style="width: 100%; height: 500px"
+      ></iframe>
+    </div>
+    <div class="form-items">
+      <div class="form-item">
+        <label for="statusDocument">Estado</label>
+        <select
+          name="statusDocument"
+          id="statusDocument"
+          formControlName="statusDocument"
+        >
+          <option value="Abierto">Abierto</option>
+          <option value="Re Abierto">Re Abierto</option>
+          <option value="Cerrado">Cerrado</option>
+          <option value="Cancelado">Cancelado</option>
+        </select>
+      </div>
+    </div>
+    <p>Case</p>
+    <div class="form-items">
+      <div class="form-item">
+        <label for="nameCase">Nombre</label>
+        <div class="search-bar">
+          <input
+            type="text"
+            name="nameCase"
+            id="nameCase"
+            [formControl]="nameCaseControl"
+          />
+          <ul *ngIf="showSearchCase">
+            <li
+              *ngFor="let case of dataCase"
+              (click)="selectCase(case.idCase, case.typeCase, case.nameCase)"
+            >
+              {{ case.idCase }} -
+              {{ case.nameCase }}
+            </li>
+          </ul>
         </div>
-        <div *ngIf="pdfPreviewUrl" class="pdf-preview">
-            <label for="urlDocument">Vista previa del Documento (PDF)</label>
-            <iframe [src]="pdfPreviewUrl" width="100%" height="300px"></iframe>
-        </div>
-        <div class="form-items" style="justify-content: left;">
-            <div class="form-item" style="width: 10%;">
-                <button type="button" (click)="viewFullDocument()">Vista</button>
-            </div>
-        </div>
-        <div class="form-items">
-            <div class="form-item">
-                <label for="dateInitCase">Fecha Inicio</label>
-                <input type="date" name="dateInitCase" id="dateInitCase" formControlName="dateDocument" required>
-            </div>
-            <div class="form-item">
-                <label for="statusCase">Estado</label>
-                <select name="statusCase" id="statusCase" formControlName="statusDocument">
-                    <option value="Abierto">Abierto</option>
-                    <option value="Re Abierto">Re Abierto</option>
-                    <option value="Cerrado">Cerrado</option>
-                    <option value="Cancelado">Cancelado</option>
-                </select>
-            </div>
-            <!-- ID del Caso -->
-           <div class="form-item">
-                <label for="idCase">ID del Caso</label>
-                <!-- Aquí usamos la propiedad 'formGroupName' -->
-                <div [formGroupName]="'nameIdCase'">
-                    <input type="number" id="idCase" formControlName="idCase" required>
-                </div>
-            </div>
-        </div>
-        <!-- Campos ocultos -->
-        <input type="hidden" formControlName="userRegisterDocument" [value]="'tu_usuario'" />
-        <input type="hidden" formControlName="userUpdateDocument" [value]="'tu_usuario'" />
-        <input type="hidden" formControlName="dateUpdateDocument" [value]="currentDate()" />
-        
-        <div class="form-items" style="justify-content: center;">
-            <div class="form-item" style="width: 50%;">
-                <button type="submit">Guardar</button>
-            </div>
-        </div>
-    </form>
+      </div>
+      <div class="form-item">
+        <label>Caso Seleccionado</label>
+        <input
+          type="text"
+          formControlName="nameCaseSelect"
+          readonly
+          autocomplete="off"
+          title="casos"
+        />
+        <input type="hidden" formControlName="idCase" />
+      </div>
+    </div>
+    <p class="message-submit" *ngIf="messageSubmit">{{ messageSubmit }}</p>
+    <div class="form-items" style="justify-content: center">
+      <div class="form-item" style="width: 50%">
+        <button (click)="save()">Guardar</button>
+      </div>
+    </div>
+    <div *ngIf="isLoading" class="loading-overlay">
+      <div class="spinner"></div>
+    </div>
+  </form>
 </div>

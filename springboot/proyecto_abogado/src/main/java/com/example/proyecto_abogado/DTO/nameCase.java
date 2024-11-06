@@ -8,6 +8,7 @@ import lombok.*;
 public class nameCase {
     private Long idCase;
     private String nameCase;
+    private String typeCase;
 
     public nameCase() {
 
@@ -16,5 +17,6 @@ public class nameCase {
     public nameCase(CaseProcess caseProcess) {
         this.idCase = caseProcess.getIdCase();
         this.nameCase = caseProcess.getNameCase();
+        this.typeCase = caseProcess.getTypeCase();
     }
 }

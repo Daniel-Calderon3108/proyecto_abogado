@@ -1,4 +1,4 @@
-package com.example.proyecto_abogado.services;
+package com.example.proyecto_abogado.services.Encript;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;

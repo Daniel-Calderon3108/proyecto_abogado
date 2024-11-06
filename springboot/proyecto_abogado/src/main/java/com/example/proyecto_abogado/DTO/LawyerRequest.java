@@ -1,6 +1,5 @@
 package com.example.proyecto_abogado.DTO;
 
-import com.example.proyecto_abogado.entities.CaseLawyer;
 import com.example.proyecto_abogado.entities.Lawyer;
 import lombok.Getter;
 import lombok.Setter;

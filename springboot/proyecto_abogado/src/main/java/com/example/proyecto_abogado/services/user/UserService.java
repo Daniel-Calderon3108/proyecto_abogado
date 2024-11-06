@@ -1,7 +1,8 @@
-package com.example.proyecto_abogado.services;
+package com.example.proyecto_abogado.services.user;
 
 import com.example.proyecto_abogado.entities.User;
 import com.example.proyecto_abogado.repository.UserRepository;
+import com.example.proyecto_abogado.services.Encript.EncriptPassword;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -4,7 +4,7 @@ import com.example.proyecto_abogado.DTO.NotifyRequest;
 import com.example.proyecto_abogado.DTO.Response;
 import com.example.proyecto_abogado.entities.*;
 import com.example.proyecto_abogado.repository.*;
-import com.example.proyecto_abogado.services.INotifyService;
+import com.example.proyecto_abogado.services.notify.INotifyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

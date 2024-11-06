@@ -107,20 +107,21 @@ export interface ApiResponse<T> {
     singleData: string;
 }
 export interface Document {
-    id_document: string;
-    urlDocument: string;
-    nameDocument: string;
-    typeDocument: string;
-    statusDocument: string;
-    userRegisterDocument: string;
-    dateDocument: string;
-    userUpdateDocument?: string;
-    dateUpdateDocument?: string;
-    nameIdCase: {
-        idCase: number;
-    }
+  idDocument?: string;
+  urlDocument?: string;
+  nameDocument?: string;
+  typeDocument?: string;
+  statusDocument?: string;
+  userRegisterDocument?: string;
+  dateDocument?: string;
+  userUpdateDocument?: string;
+  dateUpdateDocument?: string;
+  nameIdCase: {
+    idCase?: String;
+    nameCase?: string;
+    typeCase?: string;
+  };
 }
-
 export interface SearchResults {
     cases?: any[];
     customers?: any[];

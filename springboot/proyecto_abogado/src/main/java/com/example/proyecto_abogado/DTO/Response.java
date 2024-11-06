@@ -2,8 +2,6 @@ package com.example.proyecto_abogado.DTO;
 
 import lombok.Getter;
 
-import java.util.List;
-
 @Getter
 public class Response {
     private final boolean success;

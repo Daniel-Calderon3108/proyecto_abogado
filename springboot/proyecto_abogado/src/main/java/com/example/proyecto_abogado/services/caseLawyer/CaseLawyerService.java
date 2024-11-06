@@ -1,4 +1,4 @@
-package com.example.proyecto_abogado.services;
+package com.example.proyecto_abogado.services.caseLawyer;
 
 import com.example.proyecto_abogado.DTO.CaseLawyerRequest;
 import com.example.proyecto_abogado.entities.CaseLawyer;

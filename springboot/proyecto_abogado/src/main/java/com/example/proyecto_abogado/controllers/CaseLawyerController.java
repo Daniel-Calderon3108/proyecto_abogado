@@ -4,7 +4,7 @@ import com.example.proyecto_abogado.DTO.CaseLawyerRequest;
 import com.example.proyecto_abogado.DTO.Response;
 import com.example.proyecto_abogado.entities.CaseLawyer;
 import com.example.proyecto_abogado.repository.CaseLawyerRepository;
-import com.example.proyecto_abogado.services.ICaseLawyerService;
+import com.example.proyecto_abogado.services.caseLawyer.ICaseLawyerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

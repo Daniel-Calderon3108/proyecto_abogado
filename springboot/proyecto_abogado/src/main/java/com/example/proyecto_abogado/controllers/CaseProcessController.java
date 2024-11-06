@@ -6,7 +6,7 @@ import com.example.proyecto_abogado.entities.CaseProcess;
 import com.example.proyecto_abogado.entities.Customer;
 import com.example.proyecto_abogado.repository.CaseProcessRepository;
 import com.example.proyecto_abogado.repository.CustomerRepository;
-import com.example.proyecto_abogado.services.ICaseProcessService;
+import com.example.proyecto_abogado.services.caseProcess.ICaseProcessService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

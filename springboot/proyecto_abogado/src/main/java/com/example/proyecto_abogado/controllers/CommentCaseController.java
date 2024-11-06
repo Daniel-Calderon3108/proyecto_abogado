@@ -4,7 +4,7 @@ import com.example.proyecto_abogado.DTO.CommentCaseRequest;
 import com.example.proyecto_abogado.DTO.Response;
 import com.example.proyecto_abogado.entities.CommentCase;
 import com.example.proyecto_abogado.repository.CommentCaseRepository;
-import com.example.proyecto_abogado.services.ICommentCaseService;
+import com.example.proyecto_abogado.services.comment.ICommentCaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

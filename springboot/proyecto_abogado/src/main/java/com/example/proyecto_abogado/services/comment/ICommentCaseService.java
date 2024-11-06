@@ -1,4 +1,4 @@
-package com.example.proyecto_abogado.services;
+package com.example.proyecto_abogado.services.comment;
 
 import com.example.proyecto_abogado.DTO.CommentCaseRequest;
 import com.example.proyecto_abogado.entities.CommentCase;

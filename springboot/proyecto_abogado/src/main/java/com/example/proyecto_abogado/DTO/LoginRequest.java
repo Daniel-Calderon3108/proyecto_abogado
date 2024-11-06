@@ -2,7 +2,6 @@ package com.example.proyecto_abogado.DTO;
 
 
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 @Getter

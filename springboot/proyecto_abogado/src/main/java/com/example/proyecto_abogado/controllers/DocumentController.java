@@ -4,7 +4,8 @@ import com.example.proyecto_abogado.DTO.DocumentRequest;
 import com.example.proyecto_abogado.DTO.Response;
 import com.example.proyecto_abogado.entities.Document;
 import com.example.proyecto_abogado.repository.CaseProcessRepository;
-import com.example.proyecto_abogado.services.DocumentService;
+import com.example.proyecto_abogado.services.document.DocumentService;
+import com.example.proyecto_abogado.services.document.IDocumentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.FileNotFoundException;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.web.multipart.MultipartFile;
 
@@ -24,17 +27,17 @@ public class DocumentController {
     private DocumentService documentService;
 
     @Autowired
+    private IDocumentService service;
+
+    @Autowired
     private CaseProcessRepository caseProcessRepository;
 
-    @PostMapping("/upload")
-    public ResponseEntity<Response> uploadFile(
-            @RequestParam("file") MultipartFile file,
-            @RequestParam("id_case") Long idCase,
-            @RequestParam("userRegister") String userRegister,
-            @RequestParam("status") String status,
-            @RequestParam("userUpdate") String userUpdate) {
+    @PostMapping("/register")
+    public ResponseEntity<Response> uploadFile(@RequestParam("file") MultipartFile file,
+                                               @RequestParam("idCase") Long idCase,
+                                               @ModelAttribute DocumentRequest documentRequest) {
         try {
-            documentService.store(file, idCase,userRegister, status, userUpdate);
+            documentService.store(file, documentRequest, idCase);
             return ResponseEntity.status(HttpStatus.OK).body(new Response(true, "Archivo subido exitosamente"));
         } catch (Exception e) {
             e.printStackTrace(); // Imprime el error en la consola para más detalles
@@ -56,5 +59,31 @@ public class DocumentController {
     public ResponseEntity<List<DocumentRequest>> getListFiles() {
         List<DocumentRequest> files = documentService.getAllFiles();
         return ResponseEntity.status(HttpStatus.OK).body(files);
+    }
+
+    @GetMapping("/view/{id}")
+    public ResponseEntity<String> viewFile(@PathVariable Long id) {
+        Optional<Document> document = documentService.getFile(id);
+        if (document.isPresent()) {
+            System.out.println("URL de visualización: " + document.get().getUrlDocument());
+            return ResponseEntity.ok(document.get().getUrlDocument());
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("File not found");
+    }
+
+    // EndPoint Buscar Por ID
+    @GetMapping("searchById/{id}")
+    public DocumentRequest findById(@PathVariable Long id) {
+        Document document = service.findById(id);
+        // Crear JSON personalizado
+        return new DocumentRequest(document);
+    }
+
+    // EndPoint Buscar Por Nombre
+    @GetMapping("search/{search}")
+    public List<DocumentRequest> getByName(@PathVariable String search) {
+        List<Document> document = service.findByName(search);
+        // Crear JSON personalizado
+        return document.stream().map(DocumentRequest::new).collect(Collectors.toList());
     }
 }

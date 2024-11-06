@@ -1,0 +1,135 @@
+<div class="info" id="info">
+    <div class="options">
+        <i class="fa-solid fa-bars"></i>
+        <ul>
+            <li (click)="editCase()">Editar</li>
+        </ul>
+    </div>
+    <h2>Caso #{{idCase}}</h2>
+    <section class="view">
+        <div class="info-view-container">
+            <div class="info-view">
+                <h2>Nombre: </h2>
+                <p>{{dataCaseProcess.nameCase}}</p>
+            </div>
+            <div class="info-view">
+                <h2>Descripción: </h2>
+                <p>{{dataCaseProcess.descriptionCase}}</p>
+            </div>
+            <div class="info-view">
+                <h2>Tipo: </h2>
+                <p>{{dataCaseProcess.typeCase}}</p>
+            </div>
+            <div class="info-view">
+                <h2>Cliente:</h2>
+                <p><a
+                        [routerLink]="['/customer',dataCaseProcess.customer?.idClient]">{{dataCaseProcess.customer?.nameClient}}</a></p>
+            </div>
+            <div class="info-view">
+                <h2>Fecha Inicio:</h2>
+                <p>{{dataCaseProcess.dateInitCase}}</p>
+            </div>
+            <div class="info-view">
+                <h2>Fecha Fin:</h2>
+                <p>{{dataCaseProcess.dateEndCase ? dataCaseProcess.dateEndCase :
+                    "Sin definir"}}</p>
+            </div>
+            <div class="info-view">
+                <h2>Estado:</h2>
+                <p #status>{{dataCaseProcess.statusCase}}</p>
+            </div>
+            <div class="info-view">
+                <h2>Registrado Por:</h2>
+                <p>{{dataCaseProcess.userRegisterCase}}</p>
+            </div>
+            <div class="info-view">
+                <h2>Fecha Registro:</h2>
+                <p>{{dataCaseProcess.dateRegisterCase}}</p>
+            </div>
+            <div class="info-view">
+                <h2>Última Vez Actualizado Por:</h2>
+                <p #userUpdate>{{dataCaseProcess.updateUserCase}}</p>
+            </div>
+            <div class="info-view">
+                <h2>Fecha Última Actualización:</h2>
+                <p #lastUpdate>{{dataCaseProcess.updateDateCase}}</p>
+            </div>
+        </div>
+    </section>
+    <section class="info-extra">
+        <article class="tab">
+            <h2 (click)="changeTab('caseLawyer')" [ngClass]="{'active' : tabs['caseLawyer']}">Abogados Asignados</h2>
+            <h2 (click)="changeTab('commentCase')" [ngClass]="{'active' : tabs['commentCase']}">Comentarios</h2>
+        </article>
+        <article #contentTabs>
+            <div #caseLawyer class="content-tab" [ngClass]="{'hide' : !tabs['caseLawyer']}">
+                <table class="table table-striped table-bordered"
+                    [ngClass]="{ 'table-dark': currentTheme === 'dark-mode' }">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Teléfono</th>
+                            <th>Correo</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody *ngIf="dataCaseLawyer.length > 0">
+                        <tr *ngFor="let caseLawyer of dataCaseLawyer">
+                            <td><a
+                                    [routerLink]="['/lawyer', caseLawyer.idLawyer]">{{caseLawyer.nameLawyer}}</a></td>
+                            <td>{{caseLawyer.phoneLawyer}}</td>
+                            <td>{{caseLawyer.emailLawyer}}</td>
+                            <td>{{caseLawyer.statusLawyerCase == 1 ? "Activo" :
+                                "Inactivo"}}</td>
+                        </tr>
+                    </tbody>
+                    <tbody *ngIf="dataCaseLawyer.length <= 0">
+                        <tr>
+                            <td colspan="4">No se han asignado abogados.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="content-tab" #commentCase [ngClass]="{'hide' : !tabs['commentCase'], 'no-active' : tabs['commentCase'] }">
+                <div class="add-comment">
+                    <input type="text" placeholder="Agregar Comentario" [formControl]="addCommentControl" autocomplete="off">
+                    <button [disabled]="!isCommentNew || edit" (click)="saveComment()">Comentar</button>
+                </div>
+                <div *ngIf="dataCommentsCase.length > 0">
+                    <div *ngFor="let comment of dataCommentsCase, let i = index" class="comment" [ngClass]="{'first' : i === 0}">
+                        <!-- Si el modo editar esta en falso y la posición no coincide -->
+                        <span *ngIf="!(edit && positionCommentEdit === i)">
+                            <div class="comment-options">
+                                <i class="fa-solid fa-ellipsis-vertical"></i>
+                                <ul>
+                                    <!-- Desactivar el editar si un comentario ya se esta editando -->
+                                    <li (click)="showEditComment(i, comment.description)" [ngClass]="{'disabled' : edit}">Editar</li>
+                                    <li (click)="importanceComment(comment.idComment, comment.important)">Marcar Como Importante</li>
+                                    <li (click)="deleteComment(comment.idComment)">Eliminar</li>
+                                </ul>
+                            </div>
+                            <div class="top-comment">
+                                <img src="assets/no-user.webp">
+                                <p>{{comment.nameUser}}</p>
+                                <p>{{comment.lastUpdate}}</p>
+                                <p *ngIf="comment.update">(Editado)</p>
+                                <i *ngIf="comment.important" class="fa-solid fa-exclamation is-important" data-toggle="tooltip" data-placement="left" title="Se ha marcado como importante"></i>
+                                <p class="comment-now" *ngIf="comment.lastUpdate.slice(0, -3) == timeActual">Justo Ahora</p>
+                            </div>
+                            <p class="description-comment">{{comment.description}}</p>
+                        </span>
+                        <!-- Mostrar input cuando esta activo el editar y es la posición de uno de los comentarios -->
+                        <p *ngIf="edit && positionCommentEdit === i">Editar Comentario</p>
+                        <span class="add-comment" *ngIf="edit && positionCommentEdit === i">
+                            <input type="text" [formControl]="editCommentControl" placeholder="Editando Comentario" autocomplete="off">
+                            <button (click)="saveComment(comment.idComment)">Guardar</button>
+                        </span>
+                    </div>
+                </div>
+                <div *ngIf="dataCommentsCase.length <= 0">
+                    <p class="no-comment">Este caso no tiene comentarios.</p>
+                </div>
+            </div>
+        </article>
+    </section>
+</div>
