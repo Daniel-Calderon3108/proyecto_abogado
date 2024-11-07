@@ -22,8 +22,6 @@ public class Document {
     private String urlDocument;
     @Column(name = "type_document")
     private String typeDocument;
-    @Column(name = "status_document")
-    private String statusDocument;
     @Column(name = "user_register_document")
     private String userRegisterDocument;
     @Column(name = "date_document")

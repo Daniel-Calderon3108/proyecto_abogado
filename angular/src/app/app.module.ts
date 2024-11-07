@@ -21,6 +21,7 @@ import { ViewCustomerComponent } from './customerModule/view-customer/view-custo
 import { ViewLawyerComponent } from './lawyerModule/view-lawyer/view-lawyer.component';
 import { ViewCaseComponent } from './caseProcessModule/view-case/view-case.component';
 import { ViewUserComponent } from './userModule/view-user/view-user.component';
+import { ViewDocumentComponent } from './documentModule/view-document/view-document.component';
 
 
 @NgModule({
@@ -42,15 +43,16 @@ import { ViewUserComponent } from './userModule/view-user/view-user.component';
     ViewLawyerComponent,
     ViewCaseComponent,
     ViewUserComponent,
+    ViewDocumentComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

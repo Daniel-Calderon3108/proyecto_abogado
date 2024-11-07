@@ -25,7 +25,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -55,7 +54,6 @@ public class DocumentService implements IDocumentService {
         newDocumento.setUserRegisterDocument(documentRequest.getUserRegisterDocument());
         newDocumento.setDateDocument(documentRequest.getDateDocument());
         newDocumento.setDateUpdateDocument(documentRequest.getDateUpdateDocument());
-        newDocumento.setStatusDocument(documentRequest.getStatusDocument());
         newDocumento.setUserUpdateDocument(documentRequest.getUserUpdateDocument());
 
         // Buscar caso relacionado
@@ -93,7 +91,6 @@ public class DocumentService implements IDocumentService {
                                 .urlDocument(fileUrl) // Usa la URL de Google Drive almacenada
                                 .typeDocument(dbFile.getTypeDocument())
                                 .dateDocument(dbFile.getDateDocument())
-                                .statusDocument(dbFile.getStatusDocument())
                                 .userRegisterDocument(dbFile.getUserRegisterDocument())
                                 .userUpdateDocument(dbFile.getUserUpdateDocument())
                                 .dateUpdateDocument(dbFile.getDateUpdateDocument())
@@ -127,11 +124,6 @@ public class DocumentService implements IDocumentService {
                     .setApplicationName("appLawFile")
                     .build();
         }
-
-    @Override
-    public Optional<Document> getFile(Long id) {
-        return documentRepository.findById(id);
-    }
 
     public String uploadFile(MultipartFile file) throws IOException {
         try {

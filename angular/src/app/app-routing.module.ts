@@ -20,121 +20,126 @@ import { AuthGuardService } from './services/authService/auth-guard.service';
 import { RolGuardService } from './services/rolService/rol-guard.service';
 import { Rol2GuardService } from './services/rolService/rol2-guard.service';
 import { Rol3GuardService } from './services/rolService/rol3-guard.service';
+import { ViewDocumentComponent } from './documentModule/view-document/view-document.component';
 
 const routes: Routes = [
   {
-    path : "",
-    redirectTo : "/login",
-    pathMatch : "full"
+    path: '',
+    redirectTo: '/login',
+    pathMatch: 'full',
   },
   {
-    path : "home",
-    component : HomeComponent,
-    canActivate : [AuthGuardService]
+    path: 'home',
+    component: HomeComponent,
+    canActivate: [AuthGuardService],
   },
   {
-    path : "login",
-    component : LoginComponent
+    path: 'login',
+    component: LoginComponent,
   },
   // Usuario
   {
-    path : "user/:name",
-    component : ViewUserComponent,
-    canActivate: [AuthGuardService, Rol3GuardService]
+    path: 'user/:name',
+    component: ViewUserComponent,
+    canActivate: [AuthGuardService, Rol3GuardService],
   },
   {
-    path : "list-users",
-    component : UserComponent,
-    canActivate: [AuthGuardService, Rol3GuardService]
+    path: 'list-users',
+    component: UserComponent,
+    canActivate: [AuthGuardService, Rol3GuardService],
   },
   {
-    path : "new-user",
-    component : FormUserComponent,
-    canActivate: [AuthGuardService, Rol3GuardService]
+    path: 'new-user',
+    component: FormUserComponent,
+    canActivate: [AuthGuardService, Rol3GuardService],
   },
   {
-    path : "edit-user/:id",
-    component : FormUserComponent,
-    canActivate: [AuthGuardService, Rol3GuardService]
+    path: 'edit-user/:id',
+    component: FormUserComponent,
+    canActivate: [AuthGuardService, Rol3GuardService],
   },
   // Cliente
   {
-    path : "list-customers",
-    component : CustomerComponent,
-    canActivate: [AuthGuardService, Rol3GuardService]
+    path: 'list-customers',
+    component: CustomerComponent,
+    canActivate: [AuthGuardService, Rol3GuardService],
   },
   {
-    path : "new-customer",
-    component : FormCustomersComponent,
-    canActivate: [AuthGuardService, Rol3GuardService]
+    path: 'new-customer',
+    component: FormCustomersComponent,
+    canActivate: [AuthGuardService, Rol3GuardService],
   },
   {
-    path: "customer/:id",
+    path: 'customer/:id',
     component: ViewCustomerComponent,
-    canActivate: [AuthGuardService, RolGuardService]
+    canActivate: [AuthGuardService, RolGuardService],
   },
   {
-    path: "edit-customer/:id",
-    component : FormCustomersComponent,
-    canActivate: [AuthGuardService, Rol3GuardService]
+    path: 'edit-customer/:id',
+    component: FormCustomersComponent,
+    canActivate: [AuthGuardService, Rol3GuardService],
   },
   // Abogado
   {
-    path : "list-lawyers",
-    component : LawyerComponent,
-    canActivate: [AuthGuardService, Rol3GuardService]
+    path: 'list-lawyers',
+    component: LawyerComponent,
+    canActivate: [AuthGuardService, Rol3GuardService],
   },
   {
-    path : "new-lawyer",
-    component : FormLawyerComponent,
-    canActivate: [AuthGuardService, Rol3GuardService]
+    path: 'new-lawyer',
+    component: FormLawyerComponent,
+    canActivate: [AuthGuardService, Rol3GuardService],
   },
   {
-    path : "lawyer/:id",
-    component : ViewLawyerComponent,
-    canActivate: [AuthGuardService, RolGuardService, Rol2GuardService]
+    path: 'lawyer/:id',
+    component: ViewLawyerComponent,
+    canActivate: [AuthGuardService, RolGuardService, Rol2GuardService],
   },
   {
-    path : "edit-lawyer/:id",
-    component : FormLawyerComponent,
-    canActivate: [AuthGuardService, Rol3GuardService]
+    path: 'edit-lawyer/:id',
+    component: FormLawyerComponent,
+    canActivate: [AuthGuardService, Rol3GuardService],
   },
   // Casos
   {
-    path : "list-cases",
-    component : CaseProcessComponent,
-    canActivate: [AuthGuardService]
+    path: 'list-cases',
+    component: CaseProcessComponent,
+    canActivate: [AuthGuardService],
   },
   {
-    path : "new-case",
-    component : FormCaseProcessComponent,
-    canActivate: [AuthGuardService, Rol3GuardService]
+    path: 'new-case',
+    component: FormCaseProcessComponent,
+    canActivate: [AuthGuardService, Rol3GuardService],
   },
   {
-    path : "case/:id",
-    component : ViewCaseComponent,
-    canActivate: [AuthGuardService]
+    path: 'case/:id',
+    component: ViewCaseComponent,
+    canActivate: [AuthGuardService],
   },
   {
-    path : "edit-case/:id",
-    component : FormCaseProcessComponent,
-    canActivate : [AuthGuardService, Rol2GuardService]
+    path: 'edit-case/:id',
+    component: FormCaseProcessComponent,
+    canActivate: [AuthGuardService, Rol2GuardService],
   },
   // Documentos
   {
-    path : "list-document",
-    component : ListDocumentComponent,
-    canActivate: [AuthGuardService, Rol2GuardService]
+    path: 'list-document',
+    component: ListDocumentComponent,
+    canActivate: [AuthGuardService, Rol2GuardService],
   },
   {
-    path : "new-document",
-    component : FormDocumentComponent,
-    canActivate: [AuthGuardService, Rol2GuardService]
+    path: 'new-document',
+    component: FormDocumentComponent,
+    canActivate: [AuthGuardService, Rol2GuardService],
   },
   {
-    path: "**",
-    redirectTo: "/home"
-  }
+    path: 'document/:id',
+    component: ViewDocumentComponent,
+  },
+  {
+    path: '**',
+    redirectTo: '/home',
+  },
 ];
 
 @NgModule({

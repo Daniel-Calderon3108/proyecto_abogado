@@ -13,9 +13,6 @@ public interface IDocumentService {
     // Permite almacenar o cargar archivos a la base de datos
     Document store(MultipartFile file, DocumentRequest documentRequest, Long idCase) throws IOException;
 
-    // Permite descargar archivos de nuestra base de datos
-    Optional<Document> getFile (Long id) throws FileNotFoundException;
-
     // Permite consultar la lista de archivos cargados a nuestra base de datos
     List<DocumentRequest> getAllFiles();
 

@@ -10,13 +10,12 @@
         <th>Url</th>
         <th>Tipo</th>
         <th>Fecha Inicio</th>
-        <th>Estado</th>
         <th>Nombre del caso</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let model of data">
-        <td>{{ model.nameDocument }}</td>
+        <td><a [routerLink]="['/document', model.idDocument]">{{ model.nameDocument }}</a></td>
         <td>
           <a
             href="{{ model.urlDocument }}"
@@ -26,7 +25,6 @@
         </td>
         <td>{{ model.typeDocument }}</td>
         <td>{{ model.dateDocument }}</td>
-        <td>{{ model.statusDocument ? "Activo" : "Inactivo" }}</td>
         <td>
           <a [routerLink]="['/case', model.nameIdCase.idCase]">{{
             model.nameIdCase.nameCase

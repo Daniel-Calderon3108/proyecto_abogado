@@ -7,14 +7,12 @@ import com.example.proyecto_abogado.repository.CaseProcessRepository;
 import com.example.proyecto_abogado.services.document.DocumentService;
 import com.example.proyecto_abogado.services.document.IDocumentService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.FileNotFoundException;
+
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.web.multipart.MultipartFile;
@@ -45,30 +43,10 @@ public class DocumentController {
         }
     }
 
-
-    @GetMapping("/files/{id}")
-    public ResponseEntity<byte[]> getFile(@PathVariable Long id) throws FileNotFoundException {
-        Document fileEntity = documentService.getFile(id).get();
-        return ResponseEntity.status(HttpStatus.OK)
-                .header(HttpHeaders.CONTENT_TYPE, fileEntity.getTypeDocument())
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileEntity.getNameDocument()+"\"")
-                .body(fileEntity.getData());
-    }
-
     @GetMapping("/files")
     public ResponseEntity<List<DocumentRequest>> getListFiles() {
         List<DocumentRequest> files = documentService.getAllFiles();
         return ResponseEntity.status(HttpStatus.OK).body(files);
-    }
-
-    @GetMapping("/view/{id}")
-    public ResponseEntity<String> viewFile(@PathVariable Long id) {
-        Optional<Document> document = documentService.getFile(id);
-        if (document.isPresent()) {
-            System.out.println("URL de visualización: " + document.get().getUrlDocument());
-            return ResponseEntity.ok(document.get().getUrlDocument());
-        }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("File not found");
     }
 
     // EndPoint Buscar Por ID

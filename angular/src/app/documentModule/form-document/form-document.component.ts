@@ -29,7 +29,6 @@ export class FormDocumentComponent implements OnInit {
   form = new FormGroup({
     nameDocument: new FormControl(''),
     urlDocument: new FormControl(''),
-    statusDocument: new FormControl('Abierto'),
     typeDocument: new FormControl('Penal'),
     userRegisterDocument: new FormControl(''),
     userUpdateDocument: new FormControl(''),
@@ -45,7 +44,6 @@ export class FormDocumentComponent implements OnInit {
   inputType: string = 'text';
   inputValue: string = 'Sin definir';
   readonly: Boolean = true;
-  idCase: number = 0;
   showSearchCase: boolean = false;
   dataCase: any[] = [];
   nameCaseControl = new FormControl('');
@@ -77,27 +75,6 @@ export class FormDocumentComponent implements OnInit {
       } else {
       }
     });
-
-    const selectElement = document.getElementById(
-      'statusDocument'
-    ) as HTMLSelectElement | null;
-
-    if (selectElement) {
-      selectElement.addEventListener('change', (event: Event) => {
-        const target = event.target as HTMLSelectElement;
-        const selectedValue = target.value;
-
-        if (selectedValue === 'Abierto' || selectedValue === 'Re Abierto') {
-          this.inputType = 'text';
-          this.inputValue = 'Sin definir';
-          this.readonly = true;
-        } else {
-          this.inputType = 'date';
-          this.inputValue = '';
-          this.readonly = false;
-        }
-      });
-    }
 
     // Nombre del caso con control de búsqueda
 
@@ -205,19 +182,6 @@ export class FormDocumentComponent implements OnInit {
           this.form.get('nameDocument')?.setValue(rs.nameDocument);
           this.form.get('urlDocument')?.setValue(rs.urlDocument);
           this.form.get('dateDocument')?.setValue(rs.dateDocument);
-          if (
-            rs.statusDocument == 'Abierto' ||
-            rs.statusDocument == 'Re Abierto'
-          ) {
-            this.inputType = 'text';
-            this.inputValue = 'Sin definir';
-            this.readonly = true;
-          } else {
-            this.inputType = 'date';
-            this.inputValue = rs.dateDocument || '';
-            this.readonly = false;
-          }
-          this.form.get('statusDocument')?.setValue(rs.statusDocument);
           this.form.get('typeDocument')?.setValue(rs.typeDocument);
           this.form
             .get('nameCaseSelect')
@@ -279,7 +243,6 @@ export class FormDocumentComponent implements OnInit {
     formData.append('nameDocument', this.form.value.nameDocument || '');
     formData.append('urlDocument', this.form.value.urlDocument || '');
     formData.append('typeDocument', this.form.value.typeDocument || '');
-    formData.append('statusDocument', this.form.value.statusDocument || '');
     formData.append(
       'userRegisterDocument',
       !this.edit ? this.auth.getUser() : ''
@@ -296,6 +259,7 @@ export class FormDocumentComponent implements OnInit {
         (response) => {
           console.log('Documento guardado con éxito:', response);
           this.isLoading = false; // Desactiva el estado de carga en éxito
+          this.router.navigate(['/list-document']); // Redirige a la lista de documentos
         },
         (error) => {
           console.error('Error al guardar el documento:', error);

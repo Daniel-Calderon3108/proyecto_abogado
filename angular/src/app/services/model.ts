@@ -116,6 +116,7 @@ export interface Document {
   dateDocument?: string;
   userUpdateDocument?: string;
   dateUpdateDocument?: string;
+  sizeDocument?: string;
   nameIdCase: {
     idCase?: String;
     nameCase?: string;
