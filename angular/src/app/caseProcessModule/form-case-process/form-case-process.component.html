@@ -36,7 +36,7 @@
                     <option value="Seguros">Seguros</option>
                     <option value="Administrativo">Administrativo</option>
                 </select>
-                <input type="text" formControlName="typeCase" readonly>
+                <input type="text" formControlName="typeCase" readonly *ngIf="rolUser === 'Abogado'">
             </div>
         </div>
         <div class="form-items">
