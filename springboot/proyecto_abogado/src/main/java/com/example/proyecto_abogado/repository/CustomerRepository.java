@@ -10,4 +10,5 @@ import java.util.List;
 public interface CustomerRepository extends CrudRepository<Customer, Long> {
     List<Customer> findByNameClientContainingIgnoreCaseOrDocumentClientContaining(String name, String document);
     Customer findByDocumentClient(String document);
+    Customer findByUser_IdUser(Long id);
 }

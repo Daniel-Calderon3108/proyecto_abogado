@@ -1,5 +1,5 @@
 <div class="info" id="info">
-    <div class="options">
+    <div class="options" *ngIf="rolUser === 'Administrador'">
         <i class="fa-solid fa-bars"></i>
         <ul>
             <li (click)="editCustomer()">Editar</li>
@@ -23,7 +23,8 @@
                 </div>
                 <div>
                     <h2>Usuario</h2>
-                    <p><a [routerLink]="['/user', data.user?.nameUser]">{{data.user?.nameUser}}</a></p>
+                    <p *ngIf="rolUser === 'Administrador'"><a [routerLink]="['/user', data.user?.nameUser]">{{data.user?.nameUser}}</a></p>
+                    <p *ngIf="rolUser !== 'Administrador'">{{data.user?.nameUser}}</p>
                 </div>
                 <div>
                     <h2>Fecha Registro</h2>

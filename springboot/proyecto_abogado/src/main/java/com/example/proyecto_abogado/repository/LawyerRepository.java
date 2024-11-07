@@ -10,4 +10,5 @@ import java.util.List;
 public interface LawyerRepository extends CrudRepository<Lawyer, Long> {
     List<Lawyer> findByNameLawyerContainingIgnoreCaseOrDocumentLawyerContaining(String name, String document);
     Lawyer findByDocumentLawyer(String document);
+    Lawyer findByUser_IdUser(Long id);
 }

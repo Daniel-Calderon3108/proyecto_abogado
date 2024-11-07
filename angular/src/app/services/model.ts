@@ -12,7 +12,7 @@ export interface User {
 }
 
 export interface Customers {
-    id_client?: any;
+    idClient?: any;
     nameClient?: string;
     addressClient?: string;
     phoneClient?: string;
@@ -29,7 +29,7 @@ export interface Customers {
 }
 
 export interface Lawyers {
-    id_lawyer?: string;
+    idLawyer?: string;
     nameLawyer?: string;
     phoneLawyer?: string;
     emailLawyer?: string;

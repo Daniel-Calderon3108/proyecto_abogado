@@ -18,7 +18,7 @@ public class CustomerRequest {
     }
 
     public CustomerRequest(Customer customer) {
-        this.idClient = customer.getId_client();
+        this.idClient = customer.getIdClient();
         this.nameClient = customer.getNameClient();
         this.documentClient = customer.getDocumentClient();
     }

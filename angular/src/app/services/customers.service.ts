@@ -23,7 +23,7 @@ export class CustomersService {
   }
 
   getCustomerByName(name : string) {
-    return this.http.get<any[]>(`${this.API_URI}/search/${name}`);
+    return this.http.get<Customers[]>(`${this.API_URI}/search/${name}`);
   }
 
   getCustomerByID(id : number) {
@@ -36,5 +36,9 @@ export class CustomersService {
 
   changeStatus(id : string, customer : Customers) {
     return this.http.put<ApiResponse<null>>(`${this.API_URI}/changeStatus/${id}`,customer);
+  }
+
+  getByUser(id : number) {
+    return this.http.get<ApiResponse<null>>(`${this.API_URI}/searchByUser/${id}`);
   }
 }

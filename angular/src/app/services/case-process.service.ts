@@ -11,7 +11,16 @@ export class CaseProcessService {
 
   constructor(private http : HttpClient) { }
 
-  getCases() {
+  getCases(type : string, id : number) {
+
+    if (type === "Usuario") {
+      return this.http.get(`${this.API_URI}/customer/${id}`);
+    }
+
+    if (type === "Abogado") {
+      return this.http.get(`${this.API_URI}/lawyer/${id}`);
+    }
+
     return this.http.get(`${this.API_URI}`);
   }
 
@@ -22,8 +31,17 @@ export class CaseProcessService {
     return this.http.post<ApiResponse<number[]>>(`${this.API_URI}/register`, caseProcess);
   }
 
-  getCaseByIdOrName(search : string) {
-    return this.http.get<any[]>(`${this.API_URI}/search/${search}`);
+  getCaseByIdOrName(search : string, type? : string, id? : number) {
+
+    if (type === "Usuario") {
+      return this.http.get<Case[]>(`${this.API_URI}/searchByCustomer/${id}/${search}`);
+    }
+
+    if(type === "Abogado") {
+      return this.http.get<Case[]>(`${this.API_URI}/searchByLawyer/${id}/${search}`);
+    }
+
+    return this.http.get<Case[]>(`${this.API_URI}/search/${search}`);
   }
 
   getCaseProcessById(id : number) {

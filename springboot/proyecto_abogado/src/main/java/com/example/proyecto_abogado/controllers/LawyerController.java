@@ -36,7 +36,7 @@ public class LawyerController {
         System.out.println("Abogado recibido: " + lawyer); // Imprime el objeto completo
         try {
             Lawyer lawyerRegister = service.save(lawyer);
-            return ResponseEntity.ok(new Response(true, "Abogado registrado exitosamente.", lawyerRegister.getId_lawyer().toString()));
+            return ResponseEntity.ok(new Response(true, "Abogado registrado exitosamente.", lawyerRegister.getIdLawyer().toString()));
         } catch (Exception e) {
             return ResponseEntity.status(500).body(new Response(false, "Error al registrar el abogado: "
                     + e.getMessage()));
@@ -84,7 +84,7 @@ public class LawyerController {
             updateLawyer.getUser().setPhotoUser(lawyer.getUser().getPhotoUser());
             updateLawyer.getUser().setStatusUser(lawyer.getUser().isStatusUser());
             lawyerRepository.save(updateLawyer);
-            return ResponseEntity.ok().body(new Response(true, "Se actualizo el abogado", updateLawyer.getId_lawyer().toString()));
+            return ResponseEntity.ok().body(new Response(true, "Se actualizo el abogado", updateLawyer.getIdLawyer().toString()));
         }
         return ResponseEntity.status(401).body(new Response(false, "Abogado no encontrado"));
     }
@@ -106,5 +106,21 @@ public class LawyerController {
             return ResponseEntity.ok().body(new Response(true, "Se cambio el status a " + updateLawyer.isStatusLawyer()));
         }
         return ResponseEntity.status(401).body(new Response(false, "Abogado no encontrado"));
+    }
+
+    @GetMapping("searchByUser/{id}")
+    public ResponseEntity<?> findByIdUser(@PathVariable Long id) {
+        try {
+            Optional<Lawyer> lawyer = Optional.ofNullable(lawyerRepository.findByUser_IdUser(id));
+
+            if (lawyer.isPresent()) {
+                Lawyer lawyer1 = lawyer.get();
+                return ResponseEntity.ok(new Response(true, "OK", lawyer1.getIdLawyer().toString()));
+            }
+            return ResponseEntity.status(404).body(new Response(false, "No se encontro el abogado"));
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(new Response(false, "Error al buscar el abogado: "
+                    + e.getMessage()));
+        }
     }
 }

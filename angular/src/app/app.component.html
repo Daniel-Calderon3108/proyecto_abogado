@@ -21,13 +21,13 @@
           </ul>
           <ul *ngIf="showCustomer">
             <p>Clientes</p>
-            <li *ngFor="let customer of dataCustomer" (click)="redirectResult('customer', customer.id_client)">
+            <li *ngFor="let customer of dataCustomer" (click)="redirectResult('customer', customer.idClient)">
               {{customer.documentClient}} - {{customer.nameClient}}
             </li>
           </ul>
           <ul *ngIf="showLawyer">
             <p>Abogados</p>
-            <li *ngFor="let lawyer of dataLawyer" (click)="redirectResult('lawyer', lawyer.id_lawyer)">
+            <li *ngFor="let lawyer of dataLawyer" (click)="redirectResult('lawyer', lawyer.idLawyer)">
               {{lawyer.documentLawyer}} - {{lawyer.nameLawyer}}
             </li>
           </ul>
@@ -114,12 +114,13 @@
       <nav class="open">
         <div class="btn-menu"><i class="fa-solid fa-chevron-left"
             id="collapse-menu" (click)="collapseMenu()"></i></div>
-        <p class="user">
+        <p class="user" [routerLink]="[idRedirect]">
           <img
             src="assets/no-user.webp" alt="">
           {{nameUser}}
         </p>
         <ul class="menu">
+          <!-- Inicio -->
           <li class="menu-item menu-item--show">
             <a class="menu-link menu-close"><span
                 class="fa-solid fa-house menu-icon"></span><span
@@ -137,7 +138,8 @@
               </li>
             </ul>
           </li>
-          <li class="menu-item menu-item--show">
+          <!-- Usuario -->
+          <li class="menu-item menu-item--show" *ngIf="rolUser === 'Administrador'">
             <a class="menu-link menu-close"><span
                 class="fa-solid fa-user menu-icon"></span><span
                 class="menu-name">Usuario</span><i
@@ -160,7 +162,8 @@
               </li>
             </ul>
           </li>
-          <li class="menu-item menu-item--show">
+          <!-- Abogado -->
+          <li class="menu-item menu-item--show" *ngIf="rolUser === 'Administrador'">
             <a class="menu-link menu-close"><span
                 class="fa-solid fa-briefcase menu-icon"></span><span
                 class="menu-name">Abogado</span><i
@@ -183,7 +186,8 @@
               </li>
             </ul>
           </li>
-          <li class="menu-item menu-item--show">
+          <!-- Cliente -->
+          <li class="menu-item menu-item--show" *ngIf="rolUser === 'Administrador'">
             <a class="menu-link menu-close"><span
                 class="fa-solid fa-user-shield menu-icon"></span><span
                 class="menu-name">Cliente</span><i
@@ -206,6 +210,7 @@
               </li>
             </ul>
           </li>
+          <!-- Casos -->
           <li class="menu-item menu-item--show">
             <a class="menu-link menu-close"><span
                 class="fa-solid fa-suitcase menu-icon"></span><span
@@ -221,7 +226,7 @@
                     class="fa-solid fa-suitcase"
                     style="margin-right: 8px;"></i>Administrar</a>
               </li>
-              <li class="menu-inside">
+              <li class="menu-inside" *ngIf="rolUser === 'Administrador'">
                 <a [routerLink]="['/new-case']"
                   class="menu-link menu-link--inside"><i
                     class="fa-solid fa-plus"
@@ -229,7 +234,8 @@
               </li>
             </ul>
           </li>
-          <li class="menu-item menu-item--show">
+          <!-- Documentos -->
+          <li class="menu-item menu-item--show" *ngIf="rolUser !== 'Usuario'">
             <a class="menu-link menu-close"><span
                 class="fa-solid fa-file-contract menu-icon"></span><span
                 class="menu-name">Documento</span><i

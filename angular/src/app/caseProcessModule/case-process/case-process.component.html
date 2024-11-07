@@ -11,7 +11,7 @@
         <th>Fecha Inicio</th>
         <th>Fecha Cierre</th>
         <th>Estado</th>
-        <th>Cliente Involucrado</th>
+        <th *ngIf="rolUser !== 'Usuario'">Cliente Involucrado</th>
       </tr>
     </thead>
     <tbody>
@@ -26,10 +26,11 @@
           {{ model.dateEndCase == null ? "Sin definir" : model.dateEndCase }}
         </td>
         <td>{{ model.statusCase }}</td>
-        <td>
-          <a [routerLink]="['/customer', model.customer.idClient]">{{
+        <td *ngIf="rolUser !== 'Usuario'">
+          <a [routerLink]="['/customer', model.customer.idClient]" *ngIf="rolUser === 'Administrador'">{{
             model.customer.nameClient
           }}</a>
+          <span *ngIf="rolUser === 'Abogado'">{{model.customer.nameClient}}</span>
         </td>
       </tr>
     </tbody>

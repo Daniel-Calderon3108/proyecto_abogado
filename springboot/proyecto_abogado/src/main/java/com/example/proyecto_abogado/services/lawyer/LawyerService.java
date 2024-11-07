@@ -40,4 +40,7 @@ public class LawyerService implements ILawyerService{
 
     @Override
     public Lawyer findByDocument(String document) { return repository.findByDocumentLawyer(document); }
+
+    @Override
+    public Lawyer findByIdUser(Long id) { return repository.findByUser_IdUser(id); }
 }

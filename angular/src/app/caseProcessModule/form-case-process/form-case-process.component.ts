@@ -55,6 +55,8 @@ export class FormCaseProcessComponent implements OnInit {
   nameCase : string = "";
   statusCase : string = "";
 
+  rolUser : string = this.auth.getRolUser();
+
   constructor(private casesService: CaseProcessService, private router: Router,
     private customerService: CustomersService, private lawyerService: LawyersService, 
     private time: TimeActualService, private auth : AuthServiceService, 

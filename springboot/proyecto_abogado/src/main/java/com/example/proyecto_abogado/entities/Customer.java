@@ -17,7 +17,8 @@ import java.util.List;
 public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id_client;
+    @Column(name = "id_client")
+    private Long idClient;
     @Column(name = "name_client")
     private String nameClient;
     @Column(name = "address_client")

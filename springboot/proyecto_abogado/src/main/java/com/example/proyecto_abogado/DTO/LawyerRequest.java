@@ -35,7 +35,7 @@ public class LawyerRequest {
     }
 
     public LawyerRequest(Lawyer lawyer) {
-        this.idLawyer = lawyer.getId_lawyer();
+        this.idLawyer = lawyer.getIdLawyer();
         this.nameLawyer = lawyer.getNameLawyer();
         this.phoneLawyer = lawyer.getPhoneLawyer();
         this.emailLawyer = lawyer.getEmailLawyer();

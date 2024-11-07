@@ -10,4 +10,5 @@ public interface ICustomerService {
     List<Customer> findByNameOrDocument(String search);
     Customer findById(Long id);
     Customer findByDocument(String document);
+    Customer findByIdUser(Long id);
 }

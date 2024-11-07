@@ -10,4 +10,5 @@ public interface ILawyerService {
     List<Lawyer> findByNameOrDocument(String search);
     Lawyer findById(Long id);
     Lawyer findByDocument(String document);
+    Lawyer findByIdUser(Long id);
 }

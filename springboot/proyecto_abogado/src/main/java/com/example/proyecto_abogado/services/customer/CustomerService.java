@@ -41,4 +41,7 @@ public class CustomerService implements  ICustomerService {
 
     @Override
     public Customer findByDocument(String document) { return repository.findByDocumentClient(document); }
+
+    @Override
+    public Customer findByIdUser(Long id) { return repository.findByUser_IdUser(id); }
 }

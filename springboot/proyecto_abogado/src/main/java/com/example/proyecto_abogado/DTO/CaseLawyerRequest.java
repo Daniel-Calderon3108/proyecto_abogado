@@ -35,7 +35,7 @@ public class CaseLawyerRequest {
         this.dateRegisterLawyer = caseLawyer.getDateRegisterLawyer();
         this.userRegisterLawyer = caseLawyer.getUserRegisterLawyer();
         this.statusLawyerCase = caseLawyer.getStatusLawyerCase();
-        this.idLawyer = caseLawyer.getLawyer().getId_lawyer();
+        this.idLawyer = caseLawyer.getLawyer().getIdLawyer();
         this.nameLawyer = caseLawyer.getLawyer().getNameLawyer();
         this.phoneLawyer = caseLawyer.getLawyer().getPhoneLawyer();
         this.emailLawyer = caseLawyer.getLawyer().getEmailLawyer();

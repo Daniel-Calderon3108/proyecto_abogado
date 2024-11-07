@@ -20,7 +20,8 @@ import java.util.List;
 public class Lawyer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id_lawyer;
+    @Column(name = "id_lawyer")
+    private Long idLawyer;
     @Column(name = "name_lawyer")
     private String nameLawyer;
     @Column(name = "phone_lawyer")

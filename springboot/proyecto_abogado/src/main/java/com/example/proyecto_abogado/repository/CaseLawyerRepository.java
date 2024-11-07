@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface CaseLawyerRepository extends CrudRepository<CaseLawyer, Long> {
     List<CaseLawyer> findByCaseProcess_IdCase(Long idCaseProcess);
+    List<CaseLawyer> findByLawyer_IdLawyer(Long id);
 }

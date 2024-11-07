@@ -35,7 +35,7 @@ public class CustomerController {
         System.out.println("Cliente recibido: " + customer); // Imprime el objeto completo
         try {
             Customer customerRegister = service.save(customer);
-            return ResponseEntity.ok(new Response(true, "Cliente registrado exitosamente.", customerRegister.getId_client().toString()));
+            return ResponseEntity.ok(new Response(true, "Cliente registrado exitosamente.", customerRegister.getIdClient().toString()));
         } catch (Exception e) {
             return ResponseEntity.status(500).body(new Response(false, "Error al registrar el cliente: "
                     + e.getMessage()));
@@ -79,7 +79,7 @@ public class CustomerController {
             updateCustomer.getUser().setPhotoUser(customer.getUser().getPhotoUser());
             updateCustomer.getUser().setStatusUser(customer.getUser().isStatusUser());
             customerRepository.save(updateCustomer);
-            return ResponseEntity.ok().body(new Response(true, "Se actualizo el cliente", updateCustomer.getId_client().toString()));
+            return ResponseEntity.ok().body(new Response(true, "Se actualizo el cliente", updateCustomer.getIdClient().toString()));
         }
         return ResponseEntity.status(401).body(new Response(false, "Cliente no encontrado"));
     }
@@ -101,5 +101,21 @@ public class CustomerController {
             return ResponseEntity.ok().body(new Response(true, "Se cambio el status a " + updateCustomer.isStatusClient()));
         }
         return ResponseEntity.status(401).body(new Response(false, "Cliente no encontrado"));
+    }
+
+    @GetMapping("searchByUser/{id}")
+    public ResponseEntity<?> findByIdUser(@PathVariable Long id) {
+        try {
+            Optional<Customer> customer = Optional.ofNullable(customerRepository.findByUser_IdUser(id));
+
+            if (customer.isPresent()) {
+                Customer customer1 = customer.get();
+                return ResponseEntity.ok(new Response(true, "OK", customer1.getIdClient().toString()));
+            }
+            return ResponseEntity.status(404).body(new Response(false, "No se encontro el cliente"));
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(new Response(false, "Error al buscar el cliente: "
+                    + e.getMessage()));
+        }
     }
 }

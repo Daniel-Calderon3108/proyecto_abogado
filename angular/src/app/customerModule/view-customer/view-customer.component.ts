@@ -21,6 +21,8 @@ export class ViewCustomerComponent implements OnInit {
   @ViewChild("lastUpdate") lastUpdate! : ElementRef;
   @ViewChild("userUpdate") userUpdate! : ElementRef;
 
+  rolUser : string = this.auth.getRolUser();
+
   constructor(private activatedRoute : ActivatedRoute, private customerService : CustomersService,
     private dataService : DataService, private time : TimeActualService, 
     private router : Router, private renderer : Renderer2, private auth : AuthServiceService) { }
@@ -58,7 +60,7 @@ export class ViewCustomerComponent implements OnInit {
   }
 
   editCustomer() {
-    this.router.navigate(['edit-customer', this.data.id_client]);
+    this.router.navigate(['edit-customer', this.data.idClient]);
   }
 
   changeStatus() {
@@ -71,7 +73,7 @@ export class ViewCustomerComponent implements OnInit {
       }
     }
 
-    this.customerService.changeStatus(this.data.id_client, customer).subscribe(
+    this.customerService.changeStatus(this.data.idClient, customer).subscribe(
       (rs) => {
         if (rs.success == true) {
           this.statusActual = !this.statusActual;

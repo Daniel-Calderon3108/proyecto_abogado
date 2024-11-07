@@ -19,7 +19,7 @@
     <tbody>
       <tr *ngFor="let model of data">
         <td>
-          <a [routerLink]="['/lawyer', model.id_lawyer]">{{
+          <a [routerLink]="['/lawyer', model.idLawyer]">{{
             model.nameLawyer
           }}</a>
         </td>
@@ -36,7 +36,7 @@
         </td>
         <td>
           <a
-            [routerLink]="['/edit-lawyer', model.id_lawyer]"
+            [routerLink]="['/edit-lawyer', model.idLawyer]"
             class="fa-solid fa-pen-square"
           ></a>
         </td>

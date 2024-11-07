@@ -56,7 +56,7 @@ public class NotifyController {
 
                 // Se recorren los abogados asignados para crear una notificación para cada uno
                 for (CaseLawyer caseLawyer : caseLawyerList) {
-                    Optional<Lawyer> lawyer = lawyerRepository.findById(caseLawyer.getLawyer().getId_lawyer());
+                    Optional<Lawyer> lawyer = lawyerRepository.findById(caseLawyer.getLawyer().getIdLawyer());
 
                     if (lawyer.isPresent()) {
                         notifyRequest.setIdUser(lawyer.get().getUser().getIdUser());
@@ -70,7 +70,7 @@ public class NotifyController {
                     Optional<CaseProcess> caseProcess = caseProcessRepository.findById(id);
 
                     if (caseProcess.isPresent()) {
-                        Optional<Customer> customer = customerRepository.findById(caseProcess.get().getCustomer().getId_client());
+                        Optional<Customer> customer = customerRepository.findById(caseProcess.get().getCustomer().getIdClient());
 
                         if (customer.isPresent()) {
                             notifyRequest.setIdUser(customer.get().getUser().getIdUser());

@@ -9,6 +9,7 @@ import { debounceTime, forkJoin, interval, map, Observable, startWith, switchMap
 import { AuthServiceService } from './services/authService/auth-service.service';
 import { NotifyService } from './services/notify.service';
 import { Notify } from './services/model';
+import { UserService } from './services/user.service';
 
 @Component({
   selector: 'app-root',
@@ -45,16 +46,20 @@ export class AppComponent implements OnInit, OnDestroy {
   dataCustomer: any = [];
   nameUser: string = this.auth.getUser();
   private idUser : string = this.auth.getIdUser();
+  rolUser : string = this.auth.getRolUser();
 
   isMessageSuccess : boolean = false;
   messageSuccess : string = "";
 
   countNotify : number = 0; // Contar los notificaciones no vistas por el usuario
 
+  idRedirect : string = ""; // Id Para redigirigir al perfil de usuario
+  idSearch : number = 0;
+
   constructor(private router: Router, private dataService: DataService,
     private caseService: CaseProcessService, private customerService: CustomersService,
     private lawyerService: LawyersService, private auth : AuthServiceService, 
-    private notifyService : NotifyService) { }
+    private notifyService : NotifyService, private userService : UserService) { }
 
   ngOnInit(): void {
 
@@ -74,6 +79,10 @@ export class AppComponent implements OnInit, OnDestroy {
       )
     }
     
+    if(this.rolUser === "Administrador") this.searchUser();
+    if(this.rolUser === "Usuario") this.searchCustomer();
+    if(this.rolUser === "Abogado") this.searchLawyer();
+
     if(this.auth.getIdUser() !== "Id Usuario Indefinido") this.activateInterval();
 
     this.dataService.changeTheme(localStorage.getItem("theme") || "");
@@ -135,13 +144,10 @@ export class AppComponent implements OnInit, OnDestroy {
           this.dataCustomer = customers;
           this.dataCase = cases;
           this.dataLawyer = lawyers;
-          this.showResults =
-            this.dataCustomer?.length > 0 ||
-            this.dataCase?.length > 0 ||
-            this.dataLawyer?.length > 0;
-          this.showCustomer = this.dataCustomer?.length > 0;
+          this.showCustomer = this.dataCustomer?.length > 0 && this.rolUser === "Administrador";
           this.showCase = this.dataCase?.length > 0;
-          this.showLawyer = this.dataLawyer?.length > 0;
+          this.showLawyer = this.dataLawyer?.length > 0 && this.rolUser === "Administrador";
+          this.showResults = this.showCustomer || this.showCase || this.showLawyer;
         },
         (error) => {
           console.log('Error al encontrar resultados', error);
@@ -302,7 +308,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
     return forkJoin([
       this.caseService
-        .getCaseByIdOrName(name)
+        .getCaseByIdOrName(name, this.rolUser, this.idSearch)
         .pipe(map((cases) => cases.slice(0, 4))),
       this.customerService
         .getCustomerByName(name)
@@ -336,5 +342,38 @@ export class AppComponent implements OnInit, OnDestroy {
       localStorage.removeItem('rolUser');
       this.router.navigate(['/login']);
     }
+  }
+
+  searchUser() {
+    this.userService.getUserById(this.idUser).subscribe(
+      rs => this.idRedirect = `user/${rs.nameUser}`,
+      err => console.log(err)
+    )
+  }
+
+  searchCustomer() {
+    this.customerService.getByUser(parseInt(this.idUser)).subscribe(
+      rs => {
+        if(rs.success) { 
+          this.idRedirect = `customer/${rs.singleData}`;
+          this.idSearch = parseInt(rs.singleData); 
+        }
+        if(rs.message === "No se encontro el cliente") this.searchUser();
+      },
+      err => console.log(err)
+    )
+  }
+
+  searchLawyer() {
+    this.lawyerService.getByUser(parseInt(this.idUser)).subscribe(
+      rs => {
+        if (rs.success) { 
+          this.idRedirect = `lawyer/${rs.singleData}`;
+          this.idSearch = parseInt(rs.singleData); 
+        }
+        if (rs.message === "No se encontro el abogado") this.searchUser();
+      },
+      err => console.log(err)
+    )
   }
 }

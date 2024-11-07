@@ -1,5 +1,5 @@
 <div class="info" id="info">
-    <div class="options">
+    <div class="options" *ngIf="rolUser !== 'Usuario'">
         <i class="fa-solid fa-bars"></i>
         <ul>
             <li (click)="editCase()">Editar</li>
@@ -59,7 +59,7 @@
     <section class="info-extra">
         <article class="tab">
             <h2 (click)="changeTab('caseLawyer')" [ngClass]="{'active' : tabs['caseLawyer']}">Abogados Asignados</h2>
-            <h2 (click)="changeTab('commentCase')" [ngClass]="{'active' : tabs['commentCase']}">Comentarios</h2>
+            <h2 (click)="changeTab('commentCase')" [ngClass]="{'active' : tabs['commentCase']}" *ngIf="rolUser !== 'Usuario'">Comentarios</h2>
         </article>
         <article #contentTabs>
             <div #caseLawyer class="content-tab" [ngClass]="{'hide' : !tabs['caseLawyer']}">

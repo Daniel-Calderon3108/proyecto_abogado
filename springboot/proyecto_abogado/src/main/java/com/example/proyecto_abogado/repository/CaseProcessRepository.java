@@ -10,4 +10,6 @@ import java.util.Optional;
 @Repository
 public interface CaseProcessRepository extends CrudRepository<CaseProcess, Long> {
     List<CaseProcess> findByidCaseOrNameCaseContainingIgnoreCase(Long id, String search);
+    List<CaseProcess> findByCustomer_IdClientAndNameCaseContainingIgnoreCase(Long id, String search);
+    List<CaseProcess> findByCustomer_IdClient(Long id);
 }

@@ -36,6 +36,7 @@ export class ViewCaseComponent implements OnInit, OnDestroy {
   commentEdit: string = "";
 
   idUser : string = this.auth.getIdUser();
+  rolUser : string = this.auth.getRolUser();
 
   constructor(private activatedRoute: ActivatedRoute, private caseService: CaseProcessService,
     private dataService: DataService, private router: Router, private commentsService: CommentCaseService,

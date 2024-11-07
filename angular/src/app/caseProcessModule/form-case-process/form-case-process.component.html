@@ -7,7 +7,7 @@
                 <label for="nameCase">Nombre</label>
                 <div class="form-input">
                     <input type="text" name="nameCase" id="nameCase"
-                        formControlName="nameCase">
+                        formControlName="nameCase" [readOnly]="rolUser === 'Abogado'">
                     <div class="status-form"
                         [ngClass]="{'hide' : !isNameValidation, 'error' : !isValidName, 'success' : isValidName }">
                         <i class="fa-solid"
@@ -20,7 +20,7 @@
             <div class="form-item">
                 <label for="typeCase">Tipo</label>
                 <select name="typeCase" id="typeCase"
-                    formControlName="typeCase">
+                    formControlName="typeCase" *ngIf="rolUser === 'Administrador'">
                     <option value="Penal">Penal</option>
                     <option value="Civil">Civil</option>
                     <option value="Familiar">Familiar</option>
@@ -36,20 +36,21 @@
                     <option value="Seguros">Seguros</option>
                     <option value="Administrativo">Administrativo</option>
                 </select>
+                <input type="text" formControlName="typeCase" readonly>
             </div>
         </div>
         <div class="form-items">
             <div class="form-item">
                 <label for="descriptionCase">Descripción</label>
                 <textarea name="descriptionCase" id="descriptionCase"
-                    rows="3" formControlName="descriptionCase"></textarea>
+                    rows="3" formControlName="descriptionCase" [readOnly]="rolUser === 'Abogado'"></textarea>
             </div>
         </div>
         <div class="form-items">
             <div class="form-item">
                 <label for="dateInitCase">Fecha Inicio</label>
                 <input type="date" name="dateInitCase" id="dateInitCase"
-                    formControlName="dateInitCase">
+                    formControlName="dateInitCase" [readOnly]="rolUser === 'Abogado'">
             </div>
             <div class="form-item">
                 <label for="dateEndCase">Fecha Cierre</label>
@@ -70,14 +71,14 @@
         </div>
         <p>Cliente</p>
         <div class="form-items">
-            <div class="form-item">
+            <div class="form-item" *ngIf="rolUser === 'Administrador'">
                 <label for="nameCli">Nombre</label>
                 <div class="search-bar">
                     <input type="text" name="nameCli" id="nameCli"
                         [formControl]="nameClientControl">
                     <ul *ngIf="showSearchClient">
                         <li *ngFor="let customer of dataClient"
-                            (click)="selectClient(customer.id_client, customer.documentClient, customer.nameClient)">
+                            (click)="selectClient(customer.idClient, customer.documentClient, customer.nameClient)">
                             {{customer.documentClient}} -
                             {{customer.nameClient}}
                         </li>
@@ -85,17 +86,19 @@
                 </div>
             </div>
             <div class="form-item">
-                <label>Cliente Seleccionado</label>
+                <label>{{rolUser === 'Abogado' ? 'Datos' : 'Cliente Seleccionado'}}</label>
                 <input type="text" formControlName="nameClientSelect"
                     readonly autocomplete="off">
                 <input type="hidden" formControlName="idClient">
             </div>
         </div>
-        <div class="add-lawyer-confirm" *ngIf="edit">
-            <input type="checkbox" name="" #confirm formControlName="confirmLawyer">
-            <p>¿Desea realizar modificaciones a los abogados asignados? Si no se marca la opción, no se guardaran cambios con respecto a los abogados.</p>
-        </div>
-        <div class="lawyer-add">
+        <span *ngIf="rolUser === 'Administrador'">
+            <div class="add-lawyer-confirm" *ngIf="edit">
+                <input type="checkbox" name="" #confirm formControlName="confirmLawyer">
+                <p>¿Desea realizar modificaciones a los abogados asignados? Si no se marca la opción, no se guardaran cambios con respecto a los abogados.</p>
+            </div>
+        </span>
+        <div class="lawyer-add" *ngIf="rolUser === 'Administrador'">
             <p>Asignar Abogados</p>
             <div>
                 <button (click)="addLawyer()" data-toggle="tooltip"
@@ -110,7 +113,7 @@
                 [formGroupName]="i">
                 <p>Abogado {{i + 1}}</p>
                 <div class="form-items">
-                    <div class="form-item">
+                    <div class="form-item" *ngIf="rolUser === 'Administrador'">
                         <label for>Nombre</label>
                         <div class="search-bar">
                             <input type="text" id="nameLawyer-{{i}}"
@@ -118,7 +121,7 @@
                                 (focus)="onNameChange(i)">
                             <ul *ngIf="showSearchLawyer && openLawyer == i">
                                 <li *ngFor="let lawyer of dataLawyerList"
-                                    (click)="selectLawyer(lawyer.id_lawyer, lawyer.documentLawyer, lawyer.nameLawyer, i)">
+                                    (click)="selectLawyer(lawyer.idLawyer, lawyer.documentLawyer, lawyer.nameLawyer, i)">
                                     {{lawyer.documentLawyer}} -
                                     {{lawyer.nameLawyer}}
                                 </li>
@@ -126,7 +129,7 @@
                         </div>
                     </div>
                     <div class="form-item">
-                        <label>Abogado Seleccionado</label>
+                        <label>{{rolUser === 'Abogado' ? 'Datos' : 'Abogado Seleccionado'}}</label>
                         <input type="text" id="selectLawyer-{{i}}"
                             formControlName="selectLawyer" readonly>
                         <input type="hidden" id="idLawyer-{{i}}"

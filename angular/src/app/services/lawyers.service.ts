@@ -23,7 +23,7 @@ export class LawyersService {
   }
 
   getLawyerByName(name : string) {
-    return this.http.get<any[]>(`${this.API_URI}/search/${name}`);
+    return this.http.get<Lawyers[]>(`${this.API_URI}/search/${name}`);
   }
 
   getLawyerByID(id : number) {
@@ -36,5 +36,9 @@ export class LawyersService {
 
   changeStatus(id : string, lawyer : Lawyers) {
     return this.http.put<ApiResponse<null>>(`${this.API_URI}/changeStatus/${id}`,lawyer);
+  }
+
+  getByUser(id : number) {
+    return this.http.get<ApiResponse<null>>(`${this.API_URI}/searchByUser/${id}`);
   }
 }
