@@ -109,7 +109,7 @@
                                 </ul>
                             </div>
                             <div class="top-comment">
-                                <img src="assets/no-user.webp">
+                                <img [src]="getPhoto(comment.photoUser)">
                                 <p>{{comment.nameUser}}</p>
                                 <p>{{comment.lastUpdate}}</p>
                                 <p *ngIf="comment.update">(Editado)</p>

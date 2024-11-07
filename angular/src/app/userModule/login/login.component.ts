@@ -71,6 +71,7 @@ export class LoginComponent {
           localStorage.setItem("idUser", res.data.idUser || "");
           localStorage.setItem("nameUser", res.data.nameUser || "");
           localStorage.setItem("rolUser", res.data.rolUser || "");
+          localStorage.setItem("photoUser", res.data.photoUser || "");
 
           this.router.navigate(['/home']); // Redireccionar a la pagina de inicio
         } else {

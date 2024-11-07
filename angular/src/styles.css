@@ -341,3 +341,49 @@ form p {
     color: var(--color-error);
     margin: 0 30px;
 }
+
+/* Foto Perfil Usuario */
+.image-preview {
+    width: 100%;
+ }
+ 
+ .image-preview img {
+     width: 100%;
+     aspect-ratio: 1;
+     object-fit: cover;
+ }
+ 
+ .form-user {
+     display: flex;
+     gap: 10px;
+     align-items: center;
+ }
+ 
+ .form-user article {
+     width: 25%;
+ }
+ 
+ .form-user label {
+     width: 100%;
+     position: relative;
+     overflow: hidden;
+     border-radius: var(--border);
+ }
+ 
+ .form-user label input {
+     display: none;
+ }
+ 
+ .form-user .camera {
+     position: absolute;
+     bottom: 0;
+     width: 100%;
+     background: var(--color-one);
+     color: var(--color-white);
+     text-align: center;
+     padding: 10px;
+ }
+ 
+ .form-user form {
+     width: 75%;
+ }

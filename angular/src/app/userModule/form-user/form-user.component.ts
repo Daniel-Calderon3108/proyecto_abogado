@@ -7,6 +7,7 @@ import { TimeActualService } from 'src/app/services/time-actual/time-actual.serv
 import { debounceTime, distinctUntilChanged, map, Observable, switchMap } from 'rxjs';
 import { AuthServiceService } from 'src/app/services/authService/auth-service.service';
 import { DataService } from 'src/app/services/shared/data.service';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-form-user',
@@ -37,9 +38,13 @@ export class FormUserComponent implements OnInit {
 
   messageSubmit: string = "";
 
+  selectedFile: File | null = null;
+  filePreviewUrl: SafeResourceUrl = 'assets/no-user.webp';
+
   constructor(private userService: UserService, private router: Router,
     private time: TimeActualService, private activatedRoute: ActivatedRoute,
-    private auth : AuthServiceService, private dataService : DataService) { }
+    private auth: AuthServiceService, private dataService: DataService,
+    private sanitizer: DomSanitizer) { }
 
   ngOnInit(): void {
     this.heightInfo();
@@ -165,25 +170,63 @@ export class FormUserComponent implements OnInit {
       dateRegister: this.edit ? undefined : this.time.getTime(),
       userUpdate: this.auth.getUser(),
       lastUpdate: this.time.getTime(),
-      photoUser: this.form.value.photoUser,
       statusUser: this.edit ? this.form.value.statusUser : true,
       rolUser: this.form.value.rolUser
     }
 
-    this.userService.saveUser(user, this.edit, this.idUser)
-      .subscribe(
-        rs => {
-          let message = this.edit ? "actualizo" : "registro";
-          this.dataService.changeMessage(true, `Se ${message} el usuario con exito.`);
-          this.router.navigate(['user',rs.singleData])
-        },
-        err => console.log(err)
-      )
+    const formData = new FormData();
+    if (this.selectedFile) formData.append('file', this.selectedFile);
+
+    this.userService.uploadPhoto(formData).subscribe(
+      rs => {
+        if (rs.success) {
+          user.photoUser = rs.singleData;
+
+          this.userService.saveUser(user, this.edit, this.idUser)
+            .subscribe(
+              rs => {
+                let message = this.edit ? "actualizo" : "registro";
+                this.dataService.changeMessage(true, `Se ${message} el usuario con exito.`);
+                this.router.navigate(['user', rs.singleData])
+              },
+              err => console.log(err)
+            )
+        } else {
+          console.log(rs.message)
+        }
+      },
+      err => console.log(err)
+    )
   }
   // Obtener alto maximo
   heightInfo() {
     let height: number = document.documentElement.clientHeight;
     const operationsElement = document.getElementById("info");
     if (operationsElement) operationsElement.style.maxHeight = `${height - 140}px`;
+  }
+
+  onFileSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+
+    if (input.files && input.files[0]) {
+      this.selectedFile = input.files[0];
+
+      const reader = new FileReader();
+      reader.onload = () => {
+        const fileResult = reader.result as string;
+        if (this.selectedFile?.type.startsWith('image/')) {
+          this.filePreviewUrl = this.sanitizer.bypassSecurityTrustResourceUrl(fileResult);
+        }
+      };
+
+      reader.readAsDataURL(this.selectedFile);
+    } else {
+      this.resetPreview();
+    }
+  }
+
+  resetPreview() {
+    this.selectedFile = null;
+    this.filePreviewUrl = 'assets/no-user.webp';
   }
 }

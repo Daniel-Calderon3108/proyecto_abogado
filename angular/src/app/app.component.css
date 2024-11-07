@@ -292,6 +292,7 @@ header h1 {
     text-align: center;
     transition: all .5s;
     cursor: pointer;
+    object-fit: cover;
 }
 
 .container nav.close .user,

@@ -4,6 +4,7 @@ import { DataService } from 'src/app/services/shared/data.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TimeActualService } from 'src/app/services/time-actual/time-actual.service';
 import { Lawyers } from 'src/app/services/model';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-view-lawyer',
@@ -19,13 +20,16 @@ export class ViewLawyerComponent implements OnInit {
   @ViewChild('status') status!: ElementRef;
   @ViewChild('lastUpdate') lastUpdate!: ElementRef;
 
+  imageUrl : SafeUrl | null = null;
+
   constructor(
     private lawyerService: LawyersService,
     private dataService: DataService,
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private time: TimeActualService,
-    private renderer: Renderer2
+    private renderer: Renderer2,
+    private sanitizer : DomSanitizer
   ) {}
 
   ngOnInit(): void {
@@ -46,6 +50,12 @@ export class ViewLawyerComponent implements OnInit {
       (rs) => {
         this.data = rs;
         this.isCase = this.data.caseLawyer?.length <= 0;
+        if (rs.photoUser != 'Ninguna') {
+          const url = `${origin.replace('4200', '8080')}/api/user/searchPhoto/${rs.photoUser}`;
+          this.imageUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url); 
+        } else {
+          this.imageUrl = 'assets/no-user.webp';
+        }
       },
       (err) => console.log(err)
     );

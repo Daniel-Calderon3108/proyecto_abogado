@@ -60,6 +60,7 @@ export interface LawyersDTO {
     idUser?: string;
     nameUser?: string;
     statusUser?: string;
+    photoUser? : string;
 }
 export interface session {
     name: string;

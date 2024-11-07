@@ -116,7 +116,7 @@
             id="collapse-menu" (click)="collapseMenu()"></i></div>
         <p class="user" [routerLink]="[idRedirect]">
           <img
-            src="assets/no-user.webp" alt="">
+            [src]="imageUrl" alt="">
           {{nameUser}}
         </p>
         <ul class="menu">

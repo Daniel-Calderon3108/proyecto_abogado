@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { debounceTime, distinctUntilChanged, interval, map, switchMap } from 'rxjs';
 import { AuthServiceService } from 'src/app/services/authService/auth-service.service';
@@ -40,7 +41,8 @@ export class ViewCaseComponent implements OnInit, OnDestroy {
 
   constructor(private activatedRoute: ActivatedRoute, private caseService: CaseProcessService,
     private dataService: DataService, private router: Router, private commentsService: CommentCaseService,
-    private time: TimeActualService, private auth: AuthServiceService, private notifyService: NotifyService) { }
+    private time: TimeActualService, private auth: AuthServiceService, private notifyService: NotifyService,
+    private sanitizer : DomSanitizer) { }
 
   ngOnInit(): void {
     this.activatedRoute.paramMap.subscribe((params) => {
@@ -268,6 +270,16 @@ export class ViewCaseComponent implements OnInit, OnDestroy {
       this.editCommentControl.setValue(comment);
       this.deactivateInterval();
       this.commentEdit = comment;
+    }
+  }
+
+  getPhoto(photo : string) : SafeUrl {
+
+    if(photo !== 'Ninguna') {
+      const url = `${origin.replace('4200', '8080')}/api/user/searchPhoto/${photo}`;
+      return this.sanitizer.bypassSecurityTrustResourceUrl(url);
+    } else {
+      return 'assets/no-user.webp';
     }
   }
 }

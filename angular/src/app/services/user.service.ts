@@ -38,4 +38,8 @@ export class UserService {
   getUserById(id : string) {
     return this.http.get<User>(`${this.API_URI}searchById/${id}`);
   }
+
+  uploadPhoto(formData : FormData) {
+    return this.http.post<ApiResponse<null>>(`${this.API_URI}uploadPhoto`, formData);
+  }
 }

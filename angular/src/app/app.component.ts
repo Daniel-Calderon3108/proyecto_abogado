@@ -10,6 +10,8 @@ import { AuthServiceService } from './services/authService/auth-service.service'
 import { NotifyService } from './services/notify.service';
 import { Notify } from './services/model';
 import { UserService } from './services/user.service';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-root',
@@ -56,12 +58,20 @@ export class AppComponent implements OnInit, OnDestroy {
   idRedirect : string = ""; // Id Para redigirigir al perfil de usuario
   idSearch : number = 0;
 
+  // Imagen Perfil Usuario
+  imageUrl : SafeUrl | null = null;
+  imageName : string = this.auth.getPhotoUser();
+
+
   constructor(private router: Router, private dataService: DataService,
     private caseService: CaseProcessService, private customerService: CustomersService,
     private lawyerService: LawyersService, private auth : AuthServiceService, 
-    private notifyService : NotifyService, private userService : UserService) { }
+    private notifyService : NotifyService, private userService : UserService,
+    private sanitizer : DomSanitizer) { }
 
   ngOnInit(): void {
+
+    this.loadImage();
 
     if(this.auth.getIdUser() !== "Id Usuario Indefinido") {
       this.notifyService.getNotifyByUser(this.idUser).subscribe(
@@ -375,5 +385,14 @@ export class AppComponent implements OnInit, OnDestroy {
       },
       err => console.log(err)
     )
+  }
+
+  loadImage() {
+    if(this.imageName !== 'Ninguna') {
+      const url = `${origin.replace('4200', '8080')}/api/user/searchPhoto/${this.imageName}`;
+      this.imageUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
+    } else {
+      this.imageUrl = 'assets/no-user.webp';
+    }
   }
 }

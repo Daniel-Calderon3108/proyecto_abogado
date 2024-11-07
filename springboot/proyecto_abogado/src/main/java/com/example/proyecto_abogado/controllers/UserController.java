@@ -5,12 +5,23 @@ import com.example.proyecto_abogado.DTO.Response;
 import com.example.proyecto_abogado.entities.User;
 import com.example.proyecto_abogado.repository.UserRepository;
 import com.example.proyecto_abogado.services.Encript.EncriptPassword;
+import com.example.proyecto_abogado.services.uploadFile.UploadFIleService;
 import com.example.proyecto_abogado.services.user.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,6 +37,9 @@ public class UserController {
 
     @Autowired
     private EncriptPassword encriptPassword;
+
+    @Autowired
+    private UploadFIleService uploadFIleService;
 
     // EndPoint Listar Usuarios
     @GetMapping("")
@@ -118,5 +132,41 @@ public class UserController {
     public User getById(@PathVariable Long id) {
         return userRepository.findById(id)
             .orElseThrow(() -> new RuntimeException("No se encontro el usuario"));
+    }
+
+    @PostMapping("uploadPhoto")
+    public ResponseEntity<?> uploadPhoto(@RequestParam("file")MultipartFile file) {
+        try {
+            String filename = uploadFIleService.saveFile(file);
+            return ResponseEntity.ok(new Response(true, "Se subio la imagen con exito.", filename));
+        } catch (IOException e) {
+            return ResponseEntity.status(500).body(new Response(false, "Error al guardar el archivo "
+                    + e.getMessage()));
+        }
+    }
+
+    @GetMapping("searchPhoto/{filename}")
+    public ResponseEntity<?> getPhoto(@PathVariable String filename) {
+        try {
+            String uploadPath = "photos_users";
+            Path path = Paths.get(uploadPath).resolve(filename).normalize();
+
+            if (!Files.exists(path) || !Files.isReadable(path)) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            }
+
+            Resource resource = new UrlResource(path.toUri());
+
+            if(resource.exists() && resource.isReadable()) {
+                return ResponseEntity.ok()
+                        .contentType(MediaType.parseMediaType(Files.probeContentType(path)))
+                        .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + resource.getFilename() + "\"")
+                        .body(resource);
+            } else {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+            }
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
 }

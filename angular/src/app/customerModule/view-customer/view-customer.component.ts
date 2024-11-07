@@ -1,4 +1,5 @@
 import { Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthServiceService } from 'src/app/services/authService/auth-service.service';
 import { CustomersService } from 'src/app/services/customers.service';
@@ -22,10 +23,12 @@ export class ViewCustomerComponent implements OnInit {
   @ViewChild("userUpdate") userUpdate! : ElementRef;
 
   rolUser : string = this.auth.getRolUser();
+  imageUrl : SafeUrl | null = null;
 
   constructor(private activatedRoute : ActivatedRoute, private customerService : CustomersService,
     private dataService : DataService, private time : TimeActualService, 
-    private router : Router, private renderer : Renderer2, private auth : AuthServiceService) { }
+    private router : Router, private renderer : Renderer2, private auth : AuthServiceService,
+    private sanitizer : DomSanitizer) { }
 
   ngOnInit(): void {
     this.activatedRoute.paramMap.subscribe((params) => {
@@ -45,6 +48,12 @@ export class ViewCustomerComponent implements OnInit {
       (rs) => {
         this.data = rs;
         this.isCase = this.data.caseProcess?.length <= 0;
+        if (rs.user.photoUser !== 'Ninguna') {
+          const url = `${origin.replace('4200', '8080')}/api/user/searchPhoto/${rs.user.photoUser}`;
+          this.imageUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
+        } else {
+          this.imageUrl = 'assets/no-user.webp';
+        }
       },
       (err) => console.log(err)
     );

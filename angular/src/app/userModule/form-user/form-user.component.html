@@ -1,57 +1,67 @@
 <h2>Nuevo Usuario</h2>
-
 <div class="info" id="info">
 
-    <form [formGroup]="form">
-        <p>Datos Usuario</p>
-        <div class="form-items">
-            <div class="form-item">
-                <label for="nameUser">Usuario</label>
-                <div class="form-input">
-                    <input type="text" name="nameUser" #nameUser formControlName="nameUser">
-                    <div class="status-form" [ngClass]="{'hide' : !isNameValidation, 'error' : !isValidName, 'success' : isValidName }">
-                        <i class="fa-solid" [ngClass]="{'fa-xmark' : !isValidName, 'fa-check' : isValidName }"></i>
-                        <p class="status-info" [ngClass]="{'error' : !isValidName, 'success' : isValidName }">{{nameMessage}}</p>
+    <div class="form-user">
+        <article>
+            <label for="photoUser">
+                <input type="file" name="photoUser" id="photoUser" (change)="onFileSelected($event)" accept="application/image/*">
+                <div class="image-preview">
+                    <img [src]="filePreviewUrl" alt="">
+                </div>
+                <i class="fa-solid fa-camera camera"></i>
+            </label>
+        </article>
+        <form [formGroup]="form">
+            <p>Datos Usuario</p>
+            <div class="form-items">
+                <div class="form-item">
+                    <label for="nameUser">Usuario</label>
+                    <div class="form-input">
+                        <input type="text" name="nameUser" #nameUser formControlName="nameUser">
+                        <div class="status-form" [ngClass]="{'hide' : !isNameValidation, 'error' : !isValidName, 'success' : isValidName }">
+                            <i class="fa-solid" [ngClass]="{'fa-xmark' : !isValidName, 'fa-check' : isValidName }"></i>
+                            <p class="status-info" [ngClass]="{'error' : !isValidName, 'success' : isValidName }">{{nameMessage}}</p>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="form-item">
-                <label for="passwordUser">{{labelPass}}</label>
-                <div class="form-input">
-                    <input type="password" name="passwordUser" #passwordUser formControlName="passwordUser">
-                    <div class="status-form" [ngClass]="{'hide' : !isPasswordValidation, 'error' : !isValidPassword, 'success' : isValidPassword }">
-                        <i class="fa-solid" [ngClass]="{'fa-xmark' : !isValidPassword, 'fa-check' : isValidPassword }"></i>
-                        <p class="status-info" [ngClass]="{'error' : !isValidPassword, 'success' : isValidPassword }">{{passwordMessage}}</p>
+            <div class="form-items">
+                <div class="form-item">
+                    <label for="passwordUser">{{labelPass}}</label>
+                    <div class="form-input">
+                        <input type="password" name="passwordUser" #passwordUser formControlName="passwordUser">
+                        <div class="status-form" [ngClass]="{'hide' : !isPasswordValidation, 'error' : !isValidPassword, 'success' : isValidPassword }">
+                            <i class="fa-solid" [ngClass]="{'fa-xmark' : !isValidPassword, 'fa-check' : isValidPassword }"></i>
+                            <p class="status-info" [ngClass]="{'error' : !isValidPassword, 'success' : isValidPassword }">{{passwordMessage}}</p>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="form-items">
-            <div class="form-item" *ngIf="edit">
-                <label for="status">Estado</label>
-                <select name="" id="" formControlName="statusUser">
-                    <option value="true">Activo</option>
-                    <option value="false">Inactivo</option>
-                </select>
+            <div class="form-items" *ngIf="edit">
+                <div class="form-item">
+                    <label for="status">Estado</label>
+                    <select name="" id="" formControlName="statusUser">
+                        <option value="true">Activo</option>
+                        <option value="false">Inactivo</option>
+                    </select>
+                </div>
             </div>
-            <div class="form-item">
-                <label for="rolUser">Rol</label>
-                <select name="rolUser" id="rolUser" formControlName="rolUser">
-                    <option value="Usuario">Usuario</option>
-                    <option value="Abogado">Abogado</option>
-                    <option value="Administrador">Administrador</option>
-                </select>
+            <div class="form-items">
+                <div class="form-item">
+                    <label for="rolUser">Rol</label>
+                    <select name="rolUser" id="rolUser" formControlName="rolUser">
+                        <option value="Usuario">Usuario</option>
+                        <option value="Abogado">Abogado</option>
+                        <option value="Administrador">Administrador</option>
+                    </select>
+                </div>
             </div>
-            <div class="form-item">
-                <label for="photoUser">Foto Usuario</label>
-                <input type="text" name="photoUser" id="photoUser" formControlName="photoUser" readonly>
+            <p class="message-submit" *ngIf="messageSubmit">{{ messageSubmit }}</p>
+            <div class="form-items" style="justify-content: center;">
+                <div class="form-item" style="width: 50%;">
+                    <button (click)="save()">Guardar</button>
+                </div>
             </div>
-        </div>
-        <p class="message-submit" *ngIf="messageSubmit">{{ messageSubmit }}</p>
-        <div class="form-items" style="justify-content: center;">
-            <div class="form-item" style="width: 50%;">
-                <button (click)="save()">Guardar</button>
-            </div>
-        </div>
-    </form>
+        </form>
+    </div>
 </div>
