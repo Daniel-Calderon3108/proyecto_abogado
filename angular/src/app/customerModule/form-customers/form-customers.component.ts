@@ -8,6 +8,7 @@ import { debounceTime, distinctUntilChanged, map, Observable, switchMap } from '
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthServiceService } from 'src/app/services/authService/auth-service.service';
 import { DataService } from 'src/app/services/shared/data.service';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-form-customers',
@@ -24,10 +25,10 @@ export class FormCustomersComponent implements OnInit {
     typeClient: new FormControl("Natural"),
     typeDocumentClient: new FormControl("Cedula Ciudadania"),
     documentClient: new FormControl(""),
-    statusClient : new FormControl(""),
+    statusClient: new FormControl(""),
     nameUser: new FormControl(""),
     passwordUser: new FormControl(""),
-    statusUser : new FormControl("")
+    statusUser: new FormControl("")
   });
 
   idCustomer: string = ""; // Id Cliente si es actualizar
@@ -35,6 +36,7 @@ export class FormCustomersComponent implements OnInit {
   document: string = ""; // Documento si es actualizar
   labelPass: string = "Clave"; // Se cambia el valor si es registrar o actualizar
   edit: boolean = false; // ¿Actualizar?
+  fileActual: string = "";
 
   isNameValidation: boolean = false;
   isValidName: boolean = false;
@@ -66,10 +68,13 @@ export class FormCustomersComponent implements OnInit {
 
   messageSubmit: string = "";
 
+  selectedFile: File | null = null;
+  filePreviewUrl: SafeResourceUrl = 'assets/no-user.webp';
+
   constructor(private customerService: CustomersService, private router: Router,
-    private time: TimeActualService, private userService: UserService, 
-    private activatedRoute: ActivatedRoute, private auth : AuthServiceService,
-    private dataService : DataService) { }
+    private time: TimeActualService, private userService: UserService,
+    private activatedRoute: ActivatedRoute, private auth: AuthServiceService,
+    private dataService: DataService, private sanitizer: DomSanitizer) { }
 
   ngOnInit(): void {
     this.heightInfo();
@@ -256,7 +261,7 @@ export class FormCustomersComponent implements OnInit {
     ).subscribe(user => {
       // Verificar disponibilidad del usuario
       if (user) {
-        if(this.nameUser === user?.nameUser) {
+        if (this.nameUser === user?.nameUser) {
           this.userMessage = 'Usuario Válido.';
           return;
         }
@@ -283,7 +288,7 @@ export class FormCustomersComponent implements OnInit {
           { test: (pwd: string) => /[!@#$%^&*(),.?":{}|<>]/.test(pwd), message: 'La clave debe contener al menos un carácter especial.' }
         ];
 
-        if(!(this.edit && password === "")) {
+        if (!(this.edit && password === "")) {
           for (const rule of rules) {
             if (!rule.test(password)) {
               this.passwordMessage = rule.message;
@@ -322,6 +327,10 @@ export class FormCustomersComponent implements OnInit {
           this.labelPass = "Nueva Clave (Opcional)";
           this.edit = true;
           this.isValidPassword = true;
+          const url = `${origin.replace('4200', '8080')}/api/user/searchPhoto/${rs.user.photoUser}`;
+          this.filePreviewUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
+          this.fileActual = rs.user.photoUser ? rs.user.photoUser : "";
+
         },
         err => console.log("Hubo un error al traer la información del abogado" + err)
       )
@@ -335,7 +344,7 @@ export class FormCustomersComponent implements OnInit {
     return this.customerService.getCustomerByDocument(document);
   }
   // Buscar Usuario
-  searchUser(user : string) : Observable<User> {
+  searchUser(user: string): Observable<User> {
     if (user === "") {
       return new Observable(observer => observer.next());
     }
@@ -371,21 +380,48 @@ export class FormCustomersComponent implements OnInit {
         dateRegister: this.edit ? undefined : this.time.getTime(),
         userUpdate: this.auth.getUser(),
         lastUpdate: this.time.getTime(),
-        photoUser: "Ninguna",
         statusUser: this.edit ? this.form.value.statusUser : true,
         rolUser: "Usuario"
       }
     };
 
-    this.customerService.saveCustomer(customer, this.edit, this.idCustomer)
-      .subscribe(
+    const formData = new FormData();
+    if (this.selectedFile) formData.append('file', this.selectedFile);
+
+    if (this.selectedFile) {
+      this.userService.uploadPhoto(formData).subscribe(
         rs => {
-          let message = this.edit ? "actualizo" : "registro";
-          this.dataService.changeMessage(true, `Se ${message} el cliente con exito.`);
-          this.router.navigate(['/customer', rs.singleData]);
+          if (rs.success) {
+            customer.user.photoUser = rs.singleData;
+
+            this.customerService.saveCustomer(customer, this.edit, this.idCustomer)
+              .subscribe(
+                rs => {
+                  let message = this.edit ? "actualizo" : "registro";
+                  this.dataService.changeMessage(true, `Se ${message} el cliente con exito.`);
+                  this.router.navigate(['/customer', rs.singleData]);
+                },
+                err => console.log(err)
+              )
+          } else {
+            console.log(rs.message)
+          }
         },
         err => console.log(err)
       )
+    } else {
+      customer.user.photoUser = this.edit ? this.fileActual : "Ninguna";
+
+      this.customerService.saveCustomer(customer, this.edit, this.idCustomer)
+        .subscribe(
+          rs => {
+            let message = this.edit ? "actualizo" : "registro";
+            this.dataService.changeMessage(true, `Se ${message} el cliente con exito.`);
+            this.router.navigate(['/customer', rs.singleData]);
+          },
+          err => console.log(err)
+        )
+    }
   }
 
   heightInfo() {
@@ -394,4 +430,28 @@ export class FormCustomersComponent implements OnInit {
     if (operationsElement) operationsElement.style.maxHeight = `${height - 140}px`;
   }
 
+  onFileSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+
+    if (input.files && input.files[0]) {
+      this.selectedFile = input.files[0];
+
+      const reader = new FileReader();
+      reader.onload = () => {
+        const fileResult = reader.result as string;
+        if (this.selectedFile?.type.startsWith('image/')) {
+          this.filePreviewUrl = this.sanitizer.bypassSecurityTrustResourceUrl(fileResult);
+        }
+      };
+
+      reader.readAsDataURL(this.selectedFile);
+    } else {
+      this.resetPreview();
+    }
+  }
+
+  resetPreview() {
+    this.selectedFile = null;
+    this.filePreviewUrl = 'assets/no-user.webp';
+  }
 }

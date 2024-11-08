@@ -88,33 +88,50 @@
             </div>
         </div>
         <p>Datos Usuario</p>
-        <div class="form-items">
-            <div class="form-item">
-                <label for="usuario">Usuario</label>
-                <div class="form-input">
-                    <input type="text" name="usuario" #usuario formControlName="nameUser">
-                    <div class="status-form" [ngClass]="{'hide' : !isUserValidation, 'error' : !isValidUser, 'success' : isValidUser }">
-                        <i class="fa-solid" [ngClass]="{'fa-xmark' : !isValidUser, 'fa-check' : isValidUser }"></i>
-                        <p class="status-info" [ngClass]="{'error' : !isValidUser, 'success' : isValidUser }">{{userMessage}}</p>
+        <div class="form-user">
+            <article style="margin-left: 30px;">
+                <label for="photoUser">
+                    <input type="file" name="photoUser" id="photoUser" (change)="onFileSelected($event)" accept="application/image/*">
+                    <div class="image-preview">
+                        <img [src]="filePreviewUrl" alt="">
+                    </div>
+                    <i class="fa-solid fa-camera camera"></i>
+                </label>
+            </article>
+            <div style="width: 100%;">
+                <div class="form-items">
+                    <div class="form-item">
+                        <label for="usuario">Usuario</label>
+                        <div class="form-input">
+                            <input type="text" name="usuario" #usuario formControlName="nameUser">
+                            <div class="status-form" [ngClass]="{'hide' : !isUserValidation, 'error' : !isValidUser, 'success' : isValidUser }">
+                                <i class="fa-solid" [ngClass]="{'fa-xmark' : !isValidUser, 'fa-check' : isValidUser }"></i>
+                                <p class="status-info" [ngClass]="{'error' : !isValidUser, 'success' : isValidUser }">{{userMessage}}</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="form-item">
-                <label for="clave">{{labelPass}}</label>
-                <div class="form-input">
-                    <input type="password" name="clave" #clave formControlName="passwordUser">
-                    <div class="status-form" [ngClass]="{'hide' : !isPasswordValidation, 'error' : !isValidPassword, 'success' : isValidPassword }">
-                        <i class="fa-solid" [ngClass]="{'fa-xmark' : !isValidPassword, 'fa-check' : isValidPassword }"></i>
-                        <p class="status-info" [ngClass]="{'error' : !isValidPassword, 'success' : isValidPassword }">{{passwordMessage}}</p>
+                <div class="form-items">
+                    <div class="form-item">
+                        <label for="clave">{{labelPass}}</label>
+                        <div class="form-input">
+                            <input type="password" name="clave" #clave formControlName="passwordUser">
+                            <div class="status-form" [ngClass]="{'hide' : !isPasswordValidation, 'error' : !isValidPassword, 'success' : isValidPassword }">
+                                <i class="fa-solid" [ngClass]="{'fa-xmark' : !isValidPassword, 'fa-check' : isValidPassword }"></i>
+                                <p class="status-info" [ngClass]="{'error' : !isValidPassword, 'success' : isValidPassword }">{{passwordMessage}}</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="form-item" *ngIf="edit">
-                <label for="statusUser">Estado</label>
-                <select name="" id="" formControlName="statusUser">
-                    <option value="true">Activo</option>
-                    <option value="false">Inactivo</option>
-                </select>
+                <div class="form-items" *ngIf="edit">
+                    <div class="form-item">
+                        <label for="statusUser">Estado</label>
+                        <select name="" id="" formControlName="statusUser">
+                            <option value="true">Activo</option>
+                            <option value="false">Inactivo</option>
+                        </select>
+                    </div>
+                </div>
             </div>
         </div>
         <p class="message-submit" *ngIf="messageSubmit">{{ messageSubmit }}</p>

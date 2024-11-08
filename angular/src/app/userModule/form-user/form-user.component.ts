@@ -27,6 +27,7 @@ export class FormUserComponent implements OnInit {
   nameUser: string = ""; // Nombre Usuario si es actualizar
   labelPass: string = "Clave"; // Se cambia valor si es registrar o actualizar
   edit: boolean = false; // ¿Actualizar?
+  fileActual: string = "";
 
   isNameValidation: boolean = false;
   isValidName: boolean = false;
@@ -143,6 +144,9 @@ export class FormUserComponent implements OnInit {
           this.labelPass = "Nueva Clave (Opcional)";
           this.edit = true;
           this.isValidPassword = true;
+          const url = `${origin.replace('4200', '8080')}/api/user/searchPhoto/${rs.photoUser}`;
+          this.filePreviewUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
+          this.fileActual = rs.photoUser ? rs.photoUser : "";
         },
         err => console.log("Hubo un error al traer información del usuario" + err)
       );
@@ -177,26 +181,40 @@ export class FormUserComponent implements OnInit {
     const formData = new FormData();
     if (this.selectedFile) formData.append('file', this.selectedFile);
 
-    this.userService.uploadPhoto(formData).subscribe(
-      rs => {
-        if (rs.success) {
-          user.photoUser = rs.singleData;
+    if (this.selectedFile) {
+      this.userService.uploadPhoto(formData).subscribe(
+        rs => {
+          if (rs.success) {
+            user.photoUser = rs.singleData;
 
-          this.userService.saveUser(user, this.edit, this.idUser)
-            .subscribe(
-              rs => {
-                let message = this.edit ? "actualizo" : "registro";
-                this.dataService.changeMessage(true, `Se ${message} el usuario con exito.`);
-                this.router.navigate(['user', rs.singleData])
-              },
-              err => console.log(err)
-            )
-        } else {
-          console.log(rs.message)
-        }
-      },
-      err => console.log(err)
-    )
+            this.userService.saveUser(user, this.edit, this.idUser)
+              .subscribe(
+                rs => {
+                  let message = this.edit ? "actualizo" : "registro";
+                  this.dataService.changeMessage(true, `Se ${message} el usuario con exito.`);
+                  this.router.navigate(['user', rs.singleData])
+                },
+                err => console.log(err)
+              )
+          } else {
+            console.log(rs.message)
+          }
+        },
+        err => console.log(err)
+      )
+    } else {
+      user.photoUser = this.edit ? this.fileActual : "Ninguna";
+
+      this.userService.saveUser(user, this.edit, this.idUser)
+        .subscribe(
+          rs => {
+            let message = this.edit ? "actualizo" : "registro";
+            this.dataService.changeMessage(true, `Se ${message} el usuario con exito.`);
+            this.router.navigate(['user', rs.singleData])
+          },
+          err => console.log(err)
+        )
+    }
   }
   // Obtener alto maximo
   heightInfo() {
