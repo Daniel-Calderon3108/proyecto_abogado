@@ -28,6 +28,7 @@ export class FormUserComponent implements OnInit {
   labelPass: string = "Clave"; // Se cambia valor si es registrar o actualizar
   edit: boolean = false; // ¿Actualizar?
   fileActual: string = "";
+  title : string = "Nuevo Usuario";
 
   isNameValidation: boolean = false;
   isValidName: boolean = false;
@@ -144,9 +145,14 @@ export class FormUserComponent implements OnInit {
           this.labelPass = "Nueva Clave (Opcional)";
           this.edit = true;
           this.isValidPassword = true;
-          const url = `${origin.replace('4200', '8080')}/api/user/searchPhoto/${rs.photoUser}`;
-          this.filePreviewUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
-          this.fileActual = rs.photoUser ? rs.photoUser : "";
+          this.title = "Editar Usuario";
+          if (rs.photoUser && rs.photoUser !== 'Ninguna') {
+            const url = `${origin.replace('4200', '8080')}/api/user/searchPhoto/${rs.photoUser}`;
+            this.filePreviewUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
+            this.fileActual = rs.photoUser;
+          } else {
+            this.fileActual = 'assets/no-user.webp';
+          }
         },
         err => console.log("Hubo un error al traer información del usuario" + err)
       );
@@ -220,7 +226,7 @@ export class FormUserComponent implements OnInit {
   heightInfo() {
     let height: number = document.documentElement.clientHeight;
     const operationsElement = document.getElementById("info");
-    if (operationsElement) operationsElement.style.maxHeight = `${height - 140}px`;
+    if (operationsElement) operationsElement.style.maxHeight = `${height - 150}px`;
   }
 
   onFileSelected(event: Event) {

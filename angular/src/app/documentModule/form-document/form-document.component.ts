@@ -29,7 +29,7 @@ export class FormDocumentComponent implements OnInit {
   form = new FormGroup({
     nameDocument: new FormControl(''),
     urlDocument: new FormControl(''),
-    typeDocument: new FormControl('Penal'),
+    typeDocument: new FormControl('Documento De Identificación'),
     userRegisterDocument: new FormControl(''),
     userUpdateDocument: new FormControl(''),
     dateUpdateDocument: new FormControl(''),
@@ -173,7 +173,7 @@ export class FormDocumentComponent implements OnInit {
     const operationsElement = document.getElementById('info');
 
     if (operationsElement)
-      operationsElement.style.maxHeight = `${height - 140}px`;
+      operationsElement.style.maxHeight = `${height - 150}px`;
   }
   searchEditDocument(id: string) {
     if (id) {

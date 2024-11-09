@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface DocumentRepository extends CrudRepository<Document, Long> {
     List<Document> findByIdDocumentOrNameDocumentContainingIgnoreCase(Long id, String search);
+    List<Document> findByCaseProcess_idCase(Long id);
 }

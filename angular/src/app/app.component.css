@@ -4,7 +4,7 @@ header {
     font-family: var(--letter);
     padding: 10px 20px;
     position: fixed;
-    height: 50px;
+    height: 60px;
     width: 100%;
     z-index: 30;
     color: var(--color-white);
@@ -85,7 +85,7 @@ header h1 {
     background-color: var(--color-six);
     width: 200px;
     z-index: 1000;
-    top: 43px;
+    top: 47px;
     right: 0;
 }
 
@@ -220,7 +220,7 @@ header h1 {
 .container {
     margin: 0;
     padding: 0;
-    padding-top: 54px;
+    padding-top: 64px;
     max-width: none;
     position: relative;
 }

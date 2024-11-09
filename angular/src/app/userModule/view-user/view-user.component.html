@@ -6,32 +6,39 @@
             <li (click)="changeStatus()">Cambiar Estado</li>
         </ul>
     </div>
-    <h2>{{data.nameUser}}</h2>
     <section class="view">
+        <article class="name">
+            <img [src]="imageUrl" alt="{{data.nameUser}}">
+            <p>{{data.nameUser}}</p>
+        </article>
         <div class="info-view-container">
             <div class="info-view">
-                <h2>Estado:</h2>
-                <p #status>{{data.statusUser ? "Activo" : "Inactivo"}}</p>
+                <div>
+                    <h2>Rol</h2>
+                    <p>{{data.rolUser}}</p>
+                </div>
+                <div>
+                    <h2>Fecha Registro</h2>
+                    <p>{{data.dateRegister}}</p>
+                </div>
+                <div>
+                    <h2>Última Vez Actualizado Por</h2>
+                    <p>{{data.userUpdate}}</p>
+                </div>
             </div>
             <div class="info-view">
-                <h2>Rol:</h2>
-                <p>{{data.rolUser}}</p>
-            </div>
-            <div class="info-view">
-                <h2>Registrado Por:</h2>
-                <p>{{data.userRegister}}</p>
-            </div>
-            <div class="info-view">
-                <h2>Fecha Registro</h2>
-                <p>{{data.dateRegister}}</p>
-            </div>
-            <div class="info-view">
-                <h2>Última Vez Actualizado Por:</h2>
-                <p>{{data.userUpdate}}</p>
-            </div>
-            <div class="info-view">
-                <h2>Fecha Última Actualización:</h2>
-                <p #lastUpdate>{{data.lastUpdate}}</p>
+                <div>
+                    <h2>Estado</h2>
+                    <p #status>{{data.statusUser ? "Activo" : "Inactivo"}}</p>
+                </div>
+                <div>
+                    <h2>Registrado Por</h2>
+                    <p>{{data.userRegister}}</p>
+                </div>
+                <div>
+                    <h2>Fecha Última Actualización</h2>
+                    <p #lastUpdate>{{data.lastUpdate}}</p>
+                </div>
             </div>
         </div>
     </section>

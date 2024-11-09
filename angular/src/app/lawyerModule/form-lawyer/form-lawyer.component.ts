@@ -36,6 +36,7 @@ export class FormLawyerComponent implements OnInit {
   labelPass: string = "Clave"; // Se cambia el valor si es registrar o actualizar
   edit: boolean = false; // ¿Actualizar?
   fileActual: string = "";
+  title : string = "Nuevo Abogado";
 
   isNameValidation: boolean = false;
   isValidName: boolean = false;
@@ -294,9 +295,14 @@ export class FormLawyerComponent implements OnInit {
           this.labelPass = "Nueva Clave (Opcional)";
           this.edit = true;
           this.isValidPassword = true;
-          const url = `${origin.replace('4200', '8080')}/api/user/searchPhoto/${rs.photoUser}`;
-          this.filePreviewUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
-          this.fileActual = rs.photoUser ? rs.photoUser : "";
+          this.title = "Editar Abogado";
+          if(rs.photoUser && rs.photoUser !== 'Ninguna') {
+            const url = `${origin.replace('4200', '8080')}/api/user/searchPhoto/${rs.photoUser}`;
+            this.filePreviewUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
+            this.fileActual = rs.photoUser;
+          } else {
+            this.fileActual = 'assets/no-user.webp';
+          }
         },
         err => console.log("Hubo un error al traer información del abogado" + err)
       )
@@ -340,7 +346,7 @@ export class FormLawyerComponent implements OnInit {
       statusLawyer: this.edit ? this.form.value.statusLawyer : true,
       user: {
         nameUser: this.form.value.nameUser,
-        passwordUser: this.form.value.passwordUser,
+        passwordUser: this.form.value.passwordUser === "" && this.edit ? undefined : this.form.value.passwordUser,
         userRegister: this.edit ? undefined : this.auth.getUser(),
         dateRegister: this.edit ? undefined : this.time.getTime(),
         userUpdate: this.auth.getUser(),
@@ -392,7 +398,7 @@ export class FormLawyerComponent implements OnInit {
   heightInfo() {
     let height: number = document.documentElement.clientHeight;
     const operationsElement = document.getElementById("info");
-    if (operationsElement) operationsElement.style.maxHeight = `${height - 140}px`;
+    if (operationsElement) operationsElement.style.maxHeight = `${height - 150}px`;
   }
 
   onFileSelected(event: Event) {

@@ -22,4 +22,6 @@ public interface IDocumentService {
     Document findById(Long id);
 
     List<Document> findByName(String search);
+
+    List<Document> findByCase(Long id);
 }

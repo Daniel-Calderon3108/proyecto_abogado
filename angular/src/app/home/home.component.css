@@ -2,7 +2,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: var(--color-four);
+    background: var(--color-one);
     padding: 30px;
     gap: 30px;
     border-radius: var(--border);
@@ -10,6 +10,10 @@
 
 .container-home img {
     width: 30%;
+}
+
+.container-home p {
+    color: var(--color-white);
 }
 
 .container-home h2 {

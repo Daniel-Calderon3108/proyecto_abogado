@@ -10,12 +10,17 @@
                 <th>Editar</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody *ngIf="data.length > 0">
             <tr *ngFor="let model of data">
                 <td><a [routerLink]="['/user', model.nameUser]">{{model.nameUser}}</a></td>
                 <td>{{model.rolUser}}</td>
                 <td>{{model.statusUser == 1 ? "Activo" : "Inactivo"}}</td>
-                <td><a [routerLink]="['/edit-user',model.id_user]" class="fa-solid fa-pen-to-square"></a></td>
+                <td><a [routerLink]="['/edit-user',model.idUser]" class="fa-solid fa-pen-to-square"></a></td>
+            </tr>
+        </tbody>
+        <tbody *ngIf="data.length <= 0">
+            <tr>
+                <td colspan="4">No se encontraron usuarios.</td>
             </tr>
         </tbody>
     </table>

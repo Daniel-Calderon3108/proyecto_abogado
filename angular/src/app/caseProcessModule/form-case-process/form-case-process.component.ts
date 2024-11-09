@@ -34,6 +34,7 @@ export class FormCaseProcessComponent implements OnInit {
 
   idCaseParam : string = ""; // Id Caso si es actualizar
   edit : boolean = false; // ¿Actualizar?
+  title : string = "Nuevo Caso";
 
   inputType: string = "text";
   inputValue: string = "Sin definir";
@@ -153,7 +154,7 @@ export class FormCaseProcessComponent implements OnInit {
 
     const operationsElement = document.getElementById("info");
 
-    if (operationsElement) operationsElement.style.maxHeight = `${height - 140}px`;
+    if (operationsElement) operationsElement.style.maxHeight = `${height - 150}px`;
   }
 
   get lawyers() {
@@ -181,6 +182,7 @@ export class FormCaseProcessComponent implements OnInit {
           this.form.get("nameClientSelect")?.setValue(`${rs.customer?.documentClient} - ${rs.customer?.nameClient}`);
           this.form.get("idClient")?.setValue(rs.customer?.idClient);
           this.edit = true;
+          this.title = "Editar Caso";
 
           // Variables para notificación
           this.nameCase = rs.nameCase || "";

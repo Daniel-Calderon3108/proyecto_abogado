@@ -30,4 +30,8 @@ export class DocumentService {
   getDocumentById(id: number) {
     return this.http.get<Document>(`${this.API_URI}/searchById/${id}`);
   }
+
+  getDocumentByCase(id : number) {
+    return this.http.get<Document[]>(`${this.API_URI}/searchByCase/${id}`);
+  }
 }

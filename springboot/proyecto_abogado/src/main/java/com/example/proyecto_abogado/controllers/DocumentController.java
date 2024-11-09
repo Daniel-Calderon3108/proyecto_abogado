@@ -64,4 +64,11 @@ public class DocumentController {
         // Crear JSON personalizado
         return document.stream().map(DocumentRequest::new).collect(Collectors.toList());
     }
+
+    @GetMapping("searchByCase/{id}")
+    public List<DocumentRequest> getByCase(@PathVariable Long id) {
+        List<Document> documents = service.findByCase(id);
+        // Crear JSON personalizado
+        return documents.stream().map(DocumentRequest::new).collect(Collectors.toList());
+    }
 }

@@ -71,8 +71,6 @@ export class AppComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
 
-    this.loadImage();
-
     if(this.auth.getIdUser() !== "Id Usuario Indefinido") {
       this.notifyService.getNotifyByUser(this.idUser).subscribe(
         rs => { 
@@ -121,6 +119,7 @@ export class AppComponent implements OnInit, OnDestroy {
       if (this.showMenu) {
         this.addClick();
         this.heightOperation();
+        this.loadImage();
       }
     });
 
@@ -242,7 +241,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
     const operationsElement = document.getElementById('operations');
 
-    if (operationsElement) operationsElement.style.height = `${height - 60}px`;
+    if (operationsElement) operationsElement.style.height = `${height - 70}px`;
   }
 
   // Abrir/Cerrar Notificaciones
@@ -350,6 +349,7 @@ export class AppComponent implements OnInit, OnDestroy {
       localStorage.removeItem('idUser');
       localStorage.removeItem('nameUser');
       localStorage.removeItem('rolUser');
+      localStorage.removeItem('photoUser');
       this.router.navigate(['/login']);
     }
   }

@@ -163,6 +163,11 @@ public class DocumentService implements IDocumentService {
         return documentRepository.findByIdDocumentOrNameDocumentContainingIgnoreCase(convertStringToLongOrDefault(search),search);
     }
 
+    @Override
+    public List<Document> findByCase(Long id) {
+        return documentRepository.findByCaseProcess_idCase(id);
+    }
+
     // Convertir String a Long
     public static Long convertStringToLongOrDefault(String str) {
         try {

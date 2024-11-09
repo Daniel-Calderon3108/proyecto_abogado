@@ -2,7 +2,7 @@ package com.example.proyecto_abogado.services.customer;
 
 import com.example.proyecto_abogado.entities.Customer;
 import com.example.proyecto_abogado.repository.CustomerRepository;
-import com.example.proyecto_abogado.services.Encript.EncriptPassword;
+import com.example.proyecto_abogado.services.Encrypt.EncryptPassword;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +15,7 @@ public class CustomerService implements  ICustomerService {
     private CustomerRepository repository;
 
     @Autowired
-    private EncriptPassword encriptPassword;
+    private EncryptPassword encriptPassword;
 
 
     @Override

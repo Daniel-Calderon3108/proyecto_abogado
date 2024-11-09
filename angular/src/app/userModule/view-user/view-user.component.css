@@ -1,30 +1,45 @@
 .view {
+    display: flex;
+    gap: 120px;
+}
+
+.view .name {
+    text-align: center;
+    width: 20%;
+    margin: 10px;
+}
+
+.view .name img {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    border-radius: var(--border);
+}
+
+.view .name p {
     margin-top: 30px;
+    font-size: var(--size-text1);
 }
 
 .info-view-container {
-    width: 100%;
+    display: flex;
+    width: 80%;
 }
 
 .info-view {
-    width: 100%;
-    display: flex;
-    align-items: baseline;
+    width: 33%;
+}
+
+.info-view div {
+    margin-bottom: 50px;
 }
 
 .info-view h2 {
     font-size: var(--size-text);
-    width: 20%;
 }
 
 .info-view p {
     font-size: var(--size-text1);
-    text-align: justify;
-    width: 80%;
-}
-
-.info-view p a {
-    color: var(--color-letter);
 }
 
 .info-extra {

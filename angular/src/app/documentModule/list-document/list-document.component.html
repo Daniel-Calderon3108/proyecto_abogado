@@ -9,11 +9,11 @@
         <th>Nombre</th>
         <th>Url</th>
         <th>Tipo</th>
-        <th>Fecha Inicio</th>
+        <th>Fecha De Subida</th>
         <th>Nombre del caso</th>
       </tr>
     </thead>
-    <tbody>
+    <tbody *ngIf="data.length > 0">
       <tr *ngFor="let model of data">
         <td><a [routerLink]="['/document', model.idDocument]">{{ model.nameDocument }}</a></td>
         <td>
@@ -31,6 +31,11 @@
           }}</a>
         </td>
       </tr>
+    </tbody>
+    <tbody *ngIf="data.length <= 0">
+        <tr>
+          <td colspan="5">No se encontraron documentos.</td>
+        </tr>
     </tbody>
   </table>
 </div>

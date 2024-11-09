@@ -382,6 +382,7 @@ form p {
      color: var(--color-white);
      text-align: center;
      padding: 10px;
+     cursor: pointer;
  }
  
  .form-user form {

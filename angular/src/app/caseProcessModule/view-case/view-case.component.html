@@ -59,10 +59,11 @@
     <section class="info-extra">
         <article class="tab">
             <h2 (click)="changeTab('caseLawyer')" [ngClass]="{'active' : tabs['caseLawyer']}">Abogados Asignados</h2>
+            <h2 (click)="changeTab('document')" [ngClass]="{'active' : tabs['document']}">Documentos</h2>
             <h2 (click)="changeTab('commentCase')" [ngClass]="{'active' : tabs['commentCase']}" *ngIf="rolUser !== 'Usuario'">Comentarios</h2>
         </article>
         <article #contentTabs>
-            <div #caseLawyer class="content-tab" [ngClass]="{'hide' : !tabs['caseLawyer']}">
+            <div class="content-tab" #caseLawyer [ngClass]="{'hide' : !tabs['caseLawyer']}">
                 <table class="table table-striped table-bordered"
                     [ngClass]="{ 'table-dark': currentTheme === 'dark-mode' }">
                     <thead>
@@ -86,6 +87,31 @@
                     <tbody *ngIf="dataCaseLawyer.length <= 0">
                         <tr>
                             <td colspan="4">No se han asignado abogados.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="content-tab" #document [ngClass]="{'hide' : !tabs['document'], 'no-active' : tabs['document']}">
+                <table class="table table-striped table-bordered" [ngClass]="{ 'table-dark': currentTheme === 'dark-mode' }">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Url</th>
+                            <th>Tipo</th>
+                            <th>Fecha De Subida</th>
+                        </tr>
+                    </thead>
+                    <tbody *ngIf="dataDocument.length > 0">
+                        <tr *ngFor="let document of dataDocument">
+                            <td><a [routerLink]="['/document', document.idDocument]">{{ document.nameDocument }}</a></td>
+                            <td><a href="{{ document.urlDocument }}" class="fa-solid fa-file-pdf" target="_blank"></a></td>
+                            <td>{{ document.typeDocument }}</td>
+                            <td>{{ document.dateDocument }}</td>
+                        </tr>
+                    </tbody>
+                    <tbody *ngIf="dataDocument.length <= 0">
+                        <tr>
+                            <td colspan="4">No se han subido documentos aún.</td>
                         </tr>
                     </tbody>
                 </table>

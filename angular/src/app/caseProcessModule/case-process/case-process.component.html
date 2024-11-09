@@ -14,7 +14,7 @@
         <th *ngIf="rolUser !== 'Usuario'">Cliente Involucrado</th>
       </tr>
     </thead>
-    <tbody>
+    <tbody *ngIf="data.length > 0">
       <tr *ngFor="let model of data">
         <td>
           <a [routerLink]="['/case', model.idCase]">{{ model.nameCase }}</a>
@@ -32,6 +32,11 @@
           }}</a>
           <span *ngIf="rolUser === 'Abogado'">{{model.customer.nameClient}}</span>
         </td>
+      </tr>
+    </tbody>
+    <tbody *ngIf="data.length <= 0">
+      <tr>
+        <td colspan="7">No se encontraron casos.</td>
       </tr>
     </tbody>
   </table>

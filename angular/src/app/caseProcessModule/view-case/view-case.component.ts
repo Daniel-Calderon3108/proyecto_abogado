@@ -6,6 +6,7 @@ import { debounceTime, distinctUntilChanged, interval, map, switchMap } from 'rx
 import { AuthServiceService } from 'src/app/services/authService/auth-service.service';
 import { CaseProcessService } from 'src/app/services/case-process.service';
 import { CommentCaseService } from 'src/app/services/comment-case.service';
+import { DocumentService } from 'src/app/services/document-service.service';
 import { Case, CommentCase, Notify } from 'src/app/services/model';
 import { NotifyService } from 'src/app/services/notify.service';
 import { DataService } from 'src/app/services/shared/data.service';
@@ -20,10 +21,12 @@ export class ViewCaseComponent implements OnInit, OnDestroy {
   idCase: string = '';
   dataCaseProcess: Case | undefined;
   dataCaseLawyer: any = [];
+  dataDocument : any = [];
   dataCommentsCase: any = [];
   currentTheme: string = localStorage.getItem('theme') || ''; // Cargar el tema desde localStorage o usar "light" como predeterminado
   tabs: { [key: string]: boolean } = {
     'caseLawyer': true,
+    'documnet' : false,
     'commentCase': false
   }
   addCommentControl = new FormControl('');
@@ -42,13 +45,14 @@ export class ViewCaseComponent implements OnInit, OnDestroy {
   constructor(private activatedRoute: ActivatedRoute, private caseService: CaseProcessService,
     private dataService: DataService, private router: Router, private commentsService: CommentCaseService,
     private time: TimeActualService, private auth: AuthServiceService, private notifyService: NotifyService,
-    private sanitizer : DomSanitizer) { }
+    private sanitizer : DomSanitizer, private documentService : DocumentService) { }
 
   ngOnInit(): void {
     this.activatedRoute.paramMap.subscribe((params) => {
       this.idCase = params.get('id') || '';
       this.caseProcess();
       this.caseLawyer();
+      this.document();
       this.commentsCase();
     });
     this.heightInfo();
@@ -92,6 +96,13 @@ export class ViewCaseComponent implements OnInit, OnDestroy {
       (err) => console.log(err)
     );
   }
+  // Obtener documentos subidos al caso
+  document() {
+    this.documentService.getDocumentByCase(parseInt(this.idCase)).subscribe(
+      rs => this.dataDocument = rs,
+      err => console.log(err)
+    )
+  }
   // Obtener comentarios del caso
   commentsCase() {
     this.commentsService.getCommentsCaseById(this.idCase).subscribe(
@@ -106,7 +117,7 @@ export class ViewCaseComponent implements OnInit, OnDestroy {
     const operationsElement = document.getElementById('info');
 
     if (operationsElement)
-      operationsElement.style.maxHeight = `${height - 140}px`;
+      operationsElement.style.maxHeight = `${height - 150}px`;
   }
   // Redirigir a editar caso
   editCase() { this.router.navigate(['edit-case', this.dataCaseProcess?.idCase]); }
@@ -273,6 +284,7 @@ export class ViewCaseComponent implements OnInit, OnDestroy {
     }
   }
 
+  // Obtener foto de perfil de los usuarios que han comentado el caso
   getPhoto(photo : string) : SafeUrl {
 
     if(photo !== 'Ninguna') {

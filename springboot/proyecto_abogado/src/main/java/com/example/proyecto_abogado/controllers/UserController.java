@@ -4,7 +4,7 @@ import com.example.proyecto_abogado.DTO.LoginRequest;
 import com.example.proyecto_abogado.DTO.Response;
 import com.example.proyecto_abogado.entities.User;
 import com.example.proyecto_abogado.repository.UserRepository;
-import com.example.proyecto_abogado.services.Encript.EncriptPassword;
+import com.example.proyecto_abogado.services.Encrypt.EncryptPassword;
 import com.example.proyecto_abogado.services.uploadFile.UploadFIleService;
 import com.example.proyecto_abogado.services.user.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +36,7 @@ public class UserController {
     private UserRepository userRepository;
 
     @Autowired
-    private EncriptPassword encriptPassword;
+    private EncryptPassword encriptPassword;
 
     @Autowired
     private UploadFIleService uploadFIleService;

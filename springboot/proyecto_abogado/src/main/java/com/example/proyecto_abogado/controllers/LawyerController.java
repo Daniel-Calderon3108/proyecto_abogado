@@ -4,7 +4,7 @@ import com.example.proyecto_abogado.DTO.LawyerRequest;
 import com.example.proyecto_abogado.DTO.Response;
 import com.example.proyecto_abogado.entities.Lawyer;
 import com.example.proyecto_abogado.repository.LawyerRepository;
-import com.example.proyecto_abogado.services.Encript.EncriptPassword;
+import com.example.proyecto_abogado.services.Encrypt.EncryptPassword;
 import com.example.proyecto_abogado.services.lawyer.ILawyerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +24,7 @@ public class LawyerController {
     private LawyerRepository lawyerRepository;
 
     @Autowired
-    private  EncriptPassword encriptPassword;
+    private EncryptPassword encriptPassword;
 
     // EndPoint Listar Abogados
     @GetMapping("")

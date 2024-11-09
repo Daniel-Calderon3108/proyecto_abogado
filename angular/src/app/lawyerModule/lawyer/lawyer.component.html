@@ -16,7 +16,7 @@
         <th>Editar</th>
       </tr>
     </thead>
-    <tbody>
+    <tbody *ngIf="data.length > 0">
       <tr *ngFor="let model of data">
         <td>
           <a [routerLink]="['/lawyer', model.idLawyer]">{{
@@ -41,6 +41,11 @@
           ></a>
         </td>
       </tr>
+    </tbody>
+    <tbody *ngIf="data.length <= 0">
+        <tr>
+          <td colspan="9">No se encontraron abogados.</td>
+        </tr>
     </tbody>
   </table>
 </div>

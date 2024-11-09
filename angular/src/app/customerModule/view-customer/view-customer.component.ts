@@ -65,7 +65,7 @@ export class ViewCustomerComponent implements OnInit {
     const operationsElement = document.getElementById('info');
 
     if (operationsElement)
-      operationsElement.style.maxHeight = `${height - 140}px`;
+      operationsElement.style.maxHeight = `${height - 150}px`;
   }
 
   editCustomer() {

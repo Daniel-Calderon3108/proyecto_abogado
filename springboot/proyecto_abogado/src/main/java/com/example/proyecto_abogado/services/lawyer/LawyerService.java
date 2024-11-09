@@ -2,7 +2,7 @@ package com.example.proyecto_abogado.services.lawyer;
 
 import com.example.proyecto_abogado.entities.Lawyer;
 import com.example.proyecto_abogado.repository.LawyerRepository;
-import com.example.proyecto_abogado.services.Encript.EncriptPassword;
+import com.example.proyecto_abogado.services.Encrypt.EncryptPassword;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +15,7 @@ public class LawyerService implements ILawyerService{
     private LawyerRepository repository;
 
     @Autowired
-    private EncriptPassword encriptPassword;
+    private EncryptPassword encriptPassword;
 
     @Override
     public List<Lawyer> getAll() { return (List<Lawyer>) repository.findAll(); }

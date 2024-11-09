@@ -1,10 +1,10 @@
-<h2>Nuevo Usuario</h2>
+<h2>{{title}}</h2>
 <div class="info" id="info">
 
     <div class="form-user">
         <article>
             <label for="photoUser">
-                <input type="file" name="photoUser" id="photoUser" (change)="onFileSelected($event)" accept="application/image/*">
+                <input type="file" name="photoUser" id="photoUser" (change)="onFileSelected($event)" accept="image/*">
                 <div class="image-preview">
                     <img [src]="filePreviewUrl" alt="">
                 </div>

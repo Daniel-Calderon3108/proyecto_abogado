@@ -1,4 +1,5 @@
 import { Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthServiceService } from 'src/app/services/authService/auth-service.service';
 import { User } from 'src/app/services/model';
@@ -13,33 +14,41 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class ViewUserComponent implements OnInit {
 
-  nameUser : string = "";
-  data : any = [];
-  statusActual : boolean = true;
-  @ViewChild("status") status! : ElementRef;
-  @ViewChild("lastUpdate") lastUpdate! : ElementRef;
+  nameUser: string = "";
+  data: any = [];
+  statusActual: boolean = true;
+  @ViewChild("status") status!: ElementRef;
+  @ViewChild("lastUpdate") lastUpdate!: ElementRef;
+  imageUrl: SafeUrl | null = null;
 
-  constructor(private activatedRoute : ActivatedRoute, private userService : UserService, 
-    private router : Router, private time : TimeActualService, private renderer : Renderer2,
-    private dataService : DataService, private auth : AuthServiceService) { }
+  constructor(private activatedRoute: ActivatedRoute, private userService: UserService,
+    private router: Router, private time: TimeActualService, private renderer: Renderer2,
+    private dataService: DataService, private auth: AuthServiceService, private sanitizer : DomSanitizer) { }
+
   ngOnInit(): void {
-   this.activatedRoute.paramMap.subscribe(params =>{
-    this.nameUser = params.get("name") || "";
-    this.user();
-   })
-   
+    this.activatedRoute.paramMap.subscribe(params => {
+      this.nameUser = params.get("name") || "";
+      this.user();
+    })
+
     this.heightInfo();
   }
 
   user() {
     this.userService.getUserByName(this.nameUser)
-    .subscribe(
-      rs => { 
-        this.data = rs
-        this.statusActual = rs.statusUser ? true : false
-      },
-      err => console.log(err)
-    )
+      .subscribe(
+        rs => {
+          this.data = rs
+          this.statusActual = rs.statusUser ? true : false;
+          if(rs.photoUser !== 'Ninguna') {
+            const url = `${origin.replace('4200', '8080')}/api/user/searchPhoto/${rs.photoUser}`;
+            this.imageUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
+          } else {
+            this.imageUrl = 'assets/no-user.webp';
+          }
+        },
+        err => console.log(err)
+      )
   }
 
   heightInfo() {
@@ -47,20 +56,20 @@ export class ViewUserComponent implements OnInit {
 
     const operationsElement = document.getElementById("info");
 
-    if (operationsElement) operationsElement.style.maxHeight = `${height - 140}px`;
+    if (operationsElement) operationsElement.style.maxHeight = `${height - 150}px`;
   }
 
-  editUser() { this.router.navigate(['edit-user',this.data.idUser]); }
+  editUser() { this.router.navigate(['edit-user', this.data.idUser]); }
 
   changeStatus() {
-    let user : User = {
+    let user: User = {
       userUpdate: this.auth.getUser(),
       lastUpdate: this.time.getTime()
     }
 
-    this.userService.changeStatus(this.data.idUser,user).subscribe(
+    this.userService.changeStatus(this.data.idUser, user).subscribe(
       rs => {
-        if(rs.success === true) {
+        if (rs.success === true) {
           this.statusActual = !this.statusActual;
           let status = this.statusActual ? "Activo" : "Inactivo"
           this.renderer.setProperty(this.status.nativeElement, 'innerHTML', status);

@@ -3,7 +3,7 @@ package com.example.proyecto_abogado.controllers;
 import com.example.proyecto_abogado.DTO.Response;
 import com.example.proyecto_abogado.entities.Customer;
 import com.example.proyecto_abogado.repository.CustomerRepository;
-import com.example.proyecto_abogado.services.Encript.EncriptPassword;
+import com.example.proyecto_abogado.services.Encrypt.EncryptPassword;
 import com.example.proyecto_abogado.services.customer.ICustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +23,7 @@ public class CustomerController {
     private CustomerRepository customerRepository;
 
     @Autowired
-    private EncriptPassword encriptPassword;
+    private EncryptPassword encriptPassword;
 
     // EndPoint Listar Clientes
     @GetMapping("")
