@@ -35,7 +35,7 @@ public class Document {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_case", referencedColumnName = "id_case")
-    @JsonBackReference ("case-document")
+    @JsonBackReference("case-document")
     private CaseProcess caseProcess;
 
 }

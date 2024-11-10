@@ -22,7 +22,7 @@ export class ViewDocumentComponent implements OnInit {
     private caseService: CaseProcessService,
     private router: Router,
     private documentoService: DocumentService,
-    private time: TimeActualService,
+    private time: TimeActualService
   ) {}
 
   ngOnInit(): void {
@@ -33,7 +33,6 @@ export class ViewDocumentComponent implements OnInit {
     });
     this.heightInfo();
   }
-
 
   // Obtener información documento
   documentId() {
@@ -57,5 +56,21 @@ export class ViewDocumentComponent implements OnInit {
 
     if (operationsElement)
       operationsElement.style.maxHeight = `${height - 150}px`;
+  }
+
+  // view-document.component.ts
+  deleteDocument() {
+    const id = parseInt(this.idDocument);
+    this.documentoService.deleteDocument(id).subscribe(
+      (deletedDocument) => {
+        console.log(
+          `Documento "${deletedDocument.nameDocument}" eliminado exitosamente`
+        );
+        this.router.navigate(['/list-document']); // Redirige a la lista de documentos
+      },
+      (error) => {
+        console.error('Error eliminando el documento:', error);
+      }
+    );
   }
 }

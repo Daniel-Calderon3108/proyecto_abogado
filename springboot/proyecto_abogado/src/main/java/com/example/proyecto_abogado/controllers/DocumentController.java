@@ -71,4 +71,15 @@ public class DocumentController {
         // Crear JSON personalizado
         return documents.stream().map(DocumentRequest::new).collect(Collectors.toList());
     }
+
+    @DeleteMapping("/delete/{documentId}")
+    public ResponseEntity<Response> deleteFile(@PathVariable Long documentId) {
+        try {
+            documentService.deleteDocument(documentId);
+            return ResponseEntity.status(HttpStatus.OK).body(new Response(true, "Archivo eliminado exitosamente"));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Response(false, "Error al eliminar el archivo"));
+        }
+    }
 }

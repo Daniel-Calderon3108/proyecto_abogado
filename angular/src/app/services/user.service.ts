@@ -15,7 +15,7 @@ export class UserService {
   getUsers() {
     return this.http.get(`${this.API_URI}`);
   }
-  
+
   saveUser(user : User, edit : boolean, id : string) {
     if(edit) {
       return this.http.put<ApiResponse<null>>(`${this.API_URI}update/${id}`,user);

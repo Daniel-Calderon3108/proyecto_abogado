@@ -31,7 +31,12 @@ export class DocumentService {
     return this.http.get<Document>(`${this.API_URI}/searchById/${id}`);
   }
 
-  getDocumentByCase(id : number) {
+  getDocumentByCase(id: number) {
     return this.http.get<Document[]>(`${this.API_URI}/searchByCase/${id}`);
+  }
+
+  // Método para eliminar un documento por ID
+  deleteDocument(id: number) {
+    return this.http.delete<Document>(`${this.API_URI}/delete/${id}`);
   }
 }

@@ -135,6 +135,7 @@ const routes: Routes = [
   {
     path: 'document/:id',
     component: ViewDocumentComponent,
+    canActivate: [AuthGuardService, Rol2GuardService]
   },
   {
     path: '**',

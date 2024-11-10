@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DataService } from 'src/app/services/shared/data.service';
 import {  DocumentService } from 'src/app/services/document-service.service';
+import { AuthServiceService } from 'src/app/services/authService/auth-service.service';
 
 @Component({
   selector: 'app-list-document',
@@ -10,10 +11,12 @@ import {  DocumentService } from 'src/app/services/document-service.service';
 export class ListDocumentComponent implements OnInit {
   data: any = [];
   currentTheme: string = localStorage.getItem('theme') || ''; // Cargar el tema desde localStorage o usar "light" como predeterminado
+  rolUser: string = this.auth.getRolUser();
 
   constructor(
     private documentService: DocumentService,
-    private dataService: DataService
+    private dataService: DataService,
+    private auth: AuthServiceService
   ) {}
 
   ngOnInit(): void {

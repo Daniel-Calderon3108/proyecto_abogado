@@ -7,6 +7,7 @@ import com.example.proyecto_abogado.repository.UserRepository;
 import com.example.proyecto_abogado.services.Encrypt.EncryptPassword;
 import com.example.proyecto_abogado.services.uploadFile.UploadFIleService;
 import com.example.proyecto_abogado.services.user.IUserService;
+import com.example.proyecto_abogado.utils.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -41,6 +42,9 @@ public class UserController {
     @Autowired
     private UploadFIleService uploadFIleService;
 
+    @Autowired
+    private JwtUtil jwtUtil;
+
     // EndPoint Listar Usuarios
     @GetMapping("")
     public List<User> getAll() { return service.getAll(); }
@@ -68,13 +72,15 @@ public class UserController {
         // Buscar Por Usuario
         Optional<User> userLogin = userRepository.findByNameUser(name);
 
-        // Verificar si el usuario existe
         if (userLogin.isPresent()) {
-
             User user = userLogin.get();
             BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-            if (passwordEncoder.matches(password, user.getPasswordUser())) { // Comparar la contraseña con la cifrada
-                return ResponseEntity.ok().body(new Response(true, "Inicio de sesión exitoso.", user));
+
+            // Verificar contraseña cifrada
+            if (passwordEncoder.matches(password, user.getPasswordUser())) {
+                // Generar token JWT
+                String token = jwtUtil.create(user.getIdUser().toString(), user.getNameUser());  // Usar 'create' en lugar de 'generateToken'
+                return ResponseEntity.ok().body(new Response(true, "Inicio de sesión exitoso.", token, user));
             } else {
                 return ResponseEntity.status(401).body(new Response(false, "Usuario o Contraseña Incorrectos."));
             }

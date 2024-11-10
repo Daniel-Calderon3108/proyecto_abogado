@@ -54,6 +54,8 @@ export class FormDocumentComponent implements OnInit {
 
   messageSubmit: string = '';
 
+  rolUser: string = this.auth.getRolUser();
+
   constructor(
     private casesService: CaseProcessService,
     private documentService: DocumentService,

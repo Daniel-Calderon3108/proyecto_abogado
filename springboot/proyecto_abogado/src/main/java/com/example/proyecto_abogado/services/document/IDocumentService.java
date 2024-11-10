@@ -24,4 +24,7 @@ public interface IDocumentService {
     List<Document> findByName(String search);
 
     List<Document> findByCase(Long id);
+
+    // Metodo para eliminar un documento por su ID
+    void deleteDocument(Long documentId) throws IOException;
 }

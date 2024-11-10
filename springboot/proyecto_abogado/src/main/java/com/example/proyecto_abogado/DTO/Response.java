@@ -29,4 +29,12 @@ public class Response {
         this.data = null;
         this.singleData = singleData;
     }
+
+    public Response(boolean success, String message, String singleData, Object data) {
+        this.success = success;
+        this.message = message;
+        this.data = data;
+        this.singleData = singleData;
+    }
+
 }

@@ -22,6 +22,8 @@ import { ViewLawyerComponent } from './lawyerModule/view-lawyer/view-lawyer.comp
 import { ViewCaseComponent } from './caseProcessModule/view-case/view-case.component';
 import { ViewUserComponent } from './userModule/view-user/view-user.component';
 import { ViewDocumentComponent } from './documentModule/view-document/view-document.component';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthInterceptor } from './services/authService/authInterceptor.service';
 
 
 @NgModule({
@@ -52,7 +54,13 @@ import { ViewDocumentComponent } from './documentModule/view-document/view-docum
     FormsModule,
     ReactiveFormsModule,
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true,
+    }
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

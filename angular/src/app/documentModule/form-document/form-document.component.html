@@ -63,6 +63,7 @@
           id="urlDocument"
           (change)="onFileChange($event)"
           accept="application/pdf,image/*"
+          [readOnly]="rolUser === 'Abogado'"
         />
       </div>
     </div>

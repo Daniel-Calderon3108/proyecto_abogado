@@ -176,4 +176,40 @@ public class DocumentService implements IDocumentService {
             return 0L;
         }
     }
+
+    @Override
+    public void deleteDocument(Long documentId) throws IOException {
+        try {
+            // 1. Buscar el documento en la base de datos usando el ID
+            Document document = documentRepository.findById(documentId)
+                    .orElseThrow(() -> new RuntimeException("Documento no encontrado"));
+
+            // 2. Desvincular el documento del caso si es necesario
+            if (document.getCaseProcess() != null) {
+                document.setCaseProcess(null);  // Desvincular el caso antes de eliminar el documento
+                documentRepository.save(document);  // Guardar el cambio
+            }
+
+            // 3. Eliminar el archivo en Google Drive
+            deleteFileFromDrive(document.getUrlDocument());
+
+            // 4. Eliminar el registro en la base de datos
+            documentRepository.delete(document);
+
+            System.out.println("Documento eliminado de la base de datos y de Google Drive");
+        } catch (Exception e) {
+            System.out.println("Error al eliminar el documento: " + e.getMessage());
+            throw e;  // Vuelve a lanzar la excepción para que se maneje adecuadamente
+        }
+    }
+
+    private void deleteFileFromDrive(String fileUrl) throws IOException {
+        // Extraer el ID del archivo desde la URL
+        String fileId = fileUrl.split("/d/")[1].split("/")[0];
+
+        // Llamar al servicio de Drive para eliminar el archivo usando su ID
+        driveService.files().delete(fileId).execute();
+
+        System.out.println("Archivo eliminado de Google Drive con ID: " + fileId);
+    }
 }
