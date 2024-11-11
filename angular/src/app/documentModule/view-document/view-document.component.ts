@@ -29,7 +29,6 @@ export class ViewDocumentComponent implements OnInit {
     this.activatedRoute.paramMap.subscribe((params) => {
       this.idDocument = params.get('id') || '';
       this.documentId();
-      this.caseProcess();
     });
     this.heightInfo();
   }
@@ -38,13 +37,6 @@ export class ViewDocumentComponent implements OnInit {
   documentId() {
     this.documentoService.getDocumentById(parseInt(this.idDocument)).subscribe(
       (rs) => (this.dataDocumentProcess = rs),
-      (err) => console.log(err)
-    );
-  }
-  // Obtener los casos asignados al documento
-  caseProcess() {
-    this.caseService.getCaseProcessById(parseInt(this.idDocument)).subscribe(
-      (rs) => (this.dataCaseProcess = rs),
       (err) => console.log(err)
     );
   }

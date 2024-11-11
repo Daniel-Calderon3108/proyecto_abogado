@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -57,15 +58,14 @@ public class DocumentService implements IDocumentService {
         newDocumento.setUserUpdateDocument(documentRequest.getUserUpdateDocument());
 
         // Buscar caso relacionado
-        CaseProcess caseProcess = caseProcessRepository.findById(idCase)
-                .orElseThrow(() -> new RuntimeException("Caso no encontrado"));
+        Optional<CaseProcess> caseProcess = caseProcessRepository.findById(idCase);
+        caseProcess.ifPresent(newDocumento::setCaseProcess);
 
         System.out.println("Subiendo archivo a Google Drive...");
         String fileUrl = uploadFile(file); // Aquí estamos subiendo el archivo y obteniendo la URL
         System.out.println("Archivo subido, URL recibida: " + fileUrl);
 
         newDocumento.setUrlDocument(fileUrl); // Establece la URL en el documento
-        newDocumento.setCaseProcess(caseProcess);
 
         Document savedDocument = documentRepository.save(newDocumento);
         System.out.println("Documento guardado en la base de datos con ID: " + savedDocument.getIdDocument());
@@ -179,27 +179,19 @@ public class DocumentService implements IDocumentService {
 
     @Override
     public void deleteDocument(Long documentId) throws IOException {
-        try {
-            // 1. Buscar el documento en la base de datos usando el ID
-            Document document = documentRepository.findById(documentId)
-                    .orElseThrow(() -> new RuntimeException("Documento no encontrado"));
+        // 1. Buscar el documento en la base de datos usando el ID
+        Optional<Document> document = documentRepository.findById(documentId);
 
-            // 2. Desvincular el documento del caso si es necesario
-            if (document.getCaseProcess() != null) {
-                document.setCaseProcess(null);  // Desvincular el caso antes de eliminar el documento
-                documentRepository.save(document);  // Guardar el cambio
-            }
+        if (document.isPresent()) {
+            // 2. Eliminar el archivo en Google Drive
+            deleteFileFromDrive(document.get().getUrlDocument());
 
-            // 3. Eliminar el archivo en Google Drive
-            deleteFileFromDrive(document.getUrlDocument());
-
-            // 4. Eliminar el registro en la base de datos
-            documentRepository.delete(document);
+            // 3. Eliminar el registro en la base de datos
+            documentRepository.deleteById(documentId);
 
             System.out.println("Documento eliminado de la base de datos y de Google Drive");
-        } catch (Exception e) {
-            System.out.println("Error al eliminar el documento: " + e.getMessage());
-            throw e;  // Vuelve a lanzar la excepción para que se maneje adecuadamente
+        }else{
+            System.out.println("Documento no encontrado");
         }
     }
 
