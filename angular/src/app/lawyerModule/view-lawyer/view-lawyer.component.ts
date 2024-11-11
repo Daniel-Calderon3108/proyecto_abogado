@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { TimeActualService } from 'src/app/services/time-actual/time-actual.service';
 import { Lawyers } from 'src/app/services/model';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-view-lawyer',
@@ -29,7 +30,8 @@ export class ViewLawyerComponent implements OnInit {
     private router: Router,
     private time: TimeActualService,
     private renderer: Renderer2,
-    private sanitizer : DomSanitizer
+    private sanitizer : DomSanitizer,
+    private http : HttpClient
   ) {}
 
   ngOnInit(): void {
@@ -52,7 +54,13 @@ export class ViewLawyerComponent implements OnInit {
         this.isCase = this.data.caseLawyer?.length <= 0;
         if (rs.photoUser != 'Ninguna') {
           const url = `${origin.replace('4200', '8080')}/api/user/searchPhoto/${rs.photoUser}`;
-          this.imageUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url); 
+          this.http.get(url, { responseType: 'blob' }).subscribe(
+            rs => { 
+              const imageUrl = URL.createObjectURL(rs);
+              this.imageUrl = this.sanitizer.bypassSecurityTrustResourceUrl(imageUrl);
+            },
+            err => console.log(err)
+          );
         } else {
           this.imageUrl = 'assets/no-user.webp';
         }

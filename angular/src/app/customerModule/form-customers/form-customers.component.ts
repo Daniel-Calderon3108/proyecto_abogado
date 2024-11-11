@@ -9,6 +9,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AuthServiceService } from 'src/app/services/authService/auth-service.service';
 import { DataService } from 'src/app/services/shared/data.service';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-form-customers',
@@ -75,7 +76,8 @@ export class FormCustomersComponent implements OnInit {
   constructor(private customerService: CustomersService, private router: Router,
     private time: TimeActualService, private userService: UserService,
     private activatedRoute: ActivatedRoute, private auth: AuthServiceService,
-    private dataService: DataService, private sanitizer: DomSanitizer) { }
+    private dataService: DataService, private sanitizer: DomSanitizer,
+    private http : HttpClient) { }
 
   ngOnInit(): void {
     this.heightInfo();
@@ -331,7 +333,13 @@ export class FormCustomersComponent implements OnInit {
           this.title = "Editar Cliente";
           if(rs.user.photoUser && rs.user.photoUser !== 'Ninguna') {
             const url = `${origin.replace('4200', '8080')}/api/user/searchPhoto/${rs.user.photoUser}`;
-            this.filePreviewUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
+            this.http.get(url, { responseType: 'blob' }).subscribe(
+              rs => { 
+                const imageUrl = URL.createObjectURL(rs);
+                this.filePreviewUrl = this.sanitizer.bypassSecurityTrustResourceUrl(imageUrl);
+              },
+              err => console.log(err)
+            );
             this.fileActual = rs.user.photoUser;
           } else {
             this.fileActual = 'assets/no-user.webp';

@@ -135,7 +135,8 @@
                                 </ul>
                             </div>
                             <div class="top-comment">
-                                <img [src]="getPhoto(comment.photoUser)">
+                                <img *ngIf="comment.photoUser !== 'Ninguna'" src="data:image/jpeg;base64,{{comment.resource}}">
+                                <img *ngIf="comment.photoUser === 'Ninguna'" src="assets/no-user.webp">
                                 <p>{{comment.nameUser}}</p>
                                 <p>{{comment.lastUpdate}}</p>
                                 <p *ngIf="comment.update">(Editado)</p>

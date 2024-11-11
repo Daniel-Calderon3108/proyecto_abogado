@@ -20,6 +20,7 @@ public class CommentCaseRequest {
     private Long idUser;
     private String nameUser;
     private String photoUser;
+    private byte[] resource;
 
     public CommentCaseRequest() {
     }

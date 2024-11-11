@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
@@ -21,12 +22,12 @@ export class ViewCaseComponent implements OnInit, OnDestroy {
   idCase: string = '';
   dataCaseProcess: Case | undefined;
   dataCaseLawyer: any = [];
-  dataDocument : any = [];
+  dataDocument: any = [];
   dataCommentsCase: any = [];
   currentTheme: string = localStorage.getItem('theme') || ''; // Cargar el tema desde localStorage o usar "light" como predeterminado
   tabs: { [key: string]: boolean } = {
     'caseLawyer': true,
-    'documnet' : false,
+    'documnet': false,
     'commentCase': false
   }
   addCommentControl = new FormControl('');
@@ -39,13 +40,13 @@ export class ViewCaseComponent implements OnInit, OnDestroy {
   private interval_idComment: any;
   commentEdit: string = "";
 
-  idUser : string = this.auth.getIdUser();
-  rolUser : string = this.auth.getRolUser();
+  idUser: string = this.auth.getIdUser();
+  rolUser: string = this.auth.getRolUser();
 
   constructor(private activatedRoute: ActivatedRoute, private caseService: CaseProcessService,
     private dataService: DataService, private router: Router, private commentsService: CommentCaseService,
     private time: TimeActualService, private auth: AuthServiceService, private notifyService: NotifyService,
-    private sanitizer : DomSanitizer, private documentService : DocumentService) { }
+    private sanitizer: DomSanitizer, private documentService: DocumentService, private http: HttpClient) { }
 
   ngOnInit(): void {
     this.activatedRoute.paramMap.subscribe((params) => {
@@ -196,7 +197,7 @@ export class ViewCaseComponent implements OnInit, OnDestroy {
   }
 
   // Marcar / Desmarcar como importante comentario
-  importanceComment(id: string, important: boolean, commentNotify : string) {
+  importanceComment(id: string, important: boolean, commentNotify: string) {
     let comment: CommentCase = {
       lastUpdate: this.time.getTime()
     }
@@ -208,12 +209,12 @@ export class ViewCaseComponent implements OnInit, OnDestroy {
           this.dataService.changeMessage(true, `Se ${importance} como importante el comentario.`);
           // Recargar lista con los comentarios
           this.commentsService.getCommentsCaseById(this.idCase).subscribe(
-            rs1 => { 
-              this.dataCommentsCase = rs1; 
-              
+            rs1 => {
+              this.dataCommentsCase = rs1;
+
               // Crear Notificación
               let importanceNotify = important ? "Desmarcó" : "Marcó"
-              let notify : Notify = {
+              let notify: Notify = {
                 descriptionNotify: `${importanceNotify} como importante el comentario:  
                 ${commentNotify.length > 20 ? commentNotify.slice(0, 20) + "..." : commentNotify}`,
                 urlNotify: `case/${this.idCase}`,
@@ -281,17 +282,6 @@ export class ViewCaseComponent implements OnInit, OnDestroy {
       this.editCommentControl.setValue(comment);
       this.deactivateInterval();
       this.commentEdit = comment;
-    }
-  }
-
-  // Obtener foto de perfil de los usuarios que han comentado el caso
-  getPhoto(photo : string) : SafeUrl {
-
-    if(photo !== 'Ninguna') {
-      const url = `${origin.replace('4200', '8080')}/api/user/searchPhoto/${photo}`;
-      return this.sanitizer.bypassSecurityTrustResourceUrl(url);
-    } else {
-      return 'assets/no-user.webp';
     }
   }
 }

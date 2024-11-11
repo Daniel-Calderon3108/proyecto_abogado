@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -23,7 +24,8 @@ export class ViewUserComponent implements OnInit {
 
   constructor(private activatedRoute: ActivatedRoute, private userService: UserService,
     private router: Router, private time: TimeActualService, private renderer: Renderer2,
-    private dataService: DataService, private auth: AuthServiceService, private sanitizer : DomSanitizer) { }
+    private dataService: DataService, private auth: AuthServiceService, 
+    private sanitizer : DomSanitizer, private http : HttpClient) { }
 
   ngOnInit(): void {
     this.activatedRoute.paramMap.subscribe(params => {
@@ -42,7 +44,13 @@ export class ViewUserComponent implements OnInit {
           this.statusActual = rs.statusUser ? true : false;
           if(rs.photoUser !== 'Ninguna') {
             const url = `${origin.replace('4200', '8080')}/api/user/searchPhoto/${rs.photoUser}`;
-            this.imageUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
+            this.http.get(url, { responseType: 'blob' }).subscribe(
+              rs => { 
+                const imageUrl = URL.createObjectURL(rs);
+                this.imageUrl = this.sanitizer.bypassSecurityTrustResourceUrl(imageUrl);
+              },
+              err => console.log(err)
+            );
           } else {
             this.imageUrl = 'assets/no-user.webp';
           }

@@ -38,7 +38,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             chain.doFilter(request, response);  // Permitimos que la solicitud al login pase sin validación de token
             return;
         }
-        if (request.getRequestURI().equals("/api/user/register")) {
+        if (request.getRequestURI().equals("/api/user/searchPhoto/**")) {
             chain.doFilter(request, response);  // Permitimos que la solicitud al login pase sin validación de token
             return;
         }

@@ -9,6 +9,7 @@ import { UserService } from 'src/app/services/user.service';
 import { AuthServiceService } from 'src/app/services/authService/auth-service.service';
 import { DataService } from 'src/app/services/shared/data.service';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-form-lawyer',
@@ -70,7 +71,8 @@ export class FormLawyerComponent implements OnInit {
   constructor(private lawyerService: LawyersService, private router: Router,
     private time: TimeActualService, private userService: UserService,
     private activatedRoute: ActivatedRoute, private auth: AuthServiceService,
-    private dataService: DataService, private sanitizer: DomSanitizer) { }
+    private dataService: DataService, private sanitizer: DomSanitizer,
+    private http : HttpClient) { }
 
   ngOnInit(): void {
 
@@ -298,7 +300,13 @@ export class FormLawyerComponent implements OnInit {
           this.title = "Editar Abogado";
           if(rs.photoUser && rs.photoUser !== 'Ninguna') {
             const url = `${origin.replace('4200', '8080')}/api/user/searchPhoto/${rs.photoUser}`;
-            this.filePreviewUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
+            this.http.get(url, { responseType: 'blob' }).subscribe(
+              rs => { 
+                const imageUrl = URL.createObjectURL(rs);
+                this.filePreviewUrl = this.sanitizer.bypassSecurityTrustResourceUrl(imageUrl);
+              },
+              err => console.log(err)
+            );
             this.fileActual = rs.photoUser;
           } else {
             this.fileActual = 'assets/no-user.webp';

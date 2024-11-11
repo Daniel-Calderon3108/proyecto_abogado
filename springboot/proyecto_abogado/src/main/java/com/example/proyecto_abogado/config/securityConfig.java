@@ -34,7 +34,8 @@ public class securityConfig extends WebSecurityConfigurerAdapter {
                 .cors().and()
                 .csrf().disable() // si usas CSRF, asegúrate de configurar correctamente
                 .authorizeRequests()
-                .antMatchers("/api/user/login", "/api/user/register").permitAll()
+                .antMatchers("/api/user/login").permitAll()
+                .antMatchers("/api/user/searchPhoto/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class); // Añade el filtro aquí

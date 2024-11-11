@@ -7,7 +7,7 @@
   </head>
   <body>
     <header *ngIf="showMenu">
-      <img src="assets/FirmaAbogadosIcono.png" alt="Abogados Valbuena" style="width: 110px; margin-left: 15px; border-radius: var(--border);">
+      <a [routerLink]="['/home']"><img src="assets/FirmaAbogadosIcono.png" alt="Abogados Valbuena" style="width: 110px; margin-left: 15px; border-radius: var(--border);"></a>
       <section class="search">
         <input type="text" name="search" id="search"
           [formControl]="searchControl" placeholder="Buscar..." autocomplete="off" (blur)="closeSearch()">

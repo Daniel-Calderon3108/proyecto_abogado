@@ -67,7 +67,7 @@ export class AppComponent implements OnInit, OnDestroy {
     private caseService: CaseProcessService, private customerService: CustomersService,
     private lawyerService: LawyersService, private auth : AuthServiceService, 
     private notifyService : NotifyService, private userService : UserService,
-    private sanitizer : DomSanitizer) { }
+    private sanitizer : DomSanitizer, private http : HttpClient) { }
 
   ngOnInit(): void {
 
@@ -390,7 +390,13 @@ export class AppComponent implements OnInit, OnDestroy {
   loadImage() {
     if(this.imageName !== 'Ninguna') {
       const url = `${origin.replace('4200', '8080')}/api/user/searchPhoto/${this.imageName}`;
-      this.imageUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
+      this.http.get(url, { responseType: 'blob' }).subscribe(
+        rs => { 
+          const imageUrl = URL.createObjectURL(rs);
+          this.imageUrl = this.sanitizer.bypassSecurityTrustResourceUrl(imageUrl);
+        },
+        err => console.log(err)
+      );
     } else {
       this.imageUrl = 'assets/no-user.webp';
     }

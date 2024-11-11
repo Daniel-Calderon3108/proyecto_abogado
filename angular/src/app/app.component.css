@@ -229,7 +229,7 @@ header h1 {
     position: absolute;
     z-index: 9999;
     color: var(--color-success);
-    top: 55px;
+    top: 65px;
     right: 6px;
     background: var(--background-success);
     padding: 10px 20px;
