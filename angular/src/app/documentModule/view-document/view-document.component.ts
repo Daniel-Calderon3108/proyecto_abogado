@@ -1,16 +1,15 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthServiceService } from 'src/app/services/authService/auth-service.service';
-import { CaseProcessService } from 'src/app/services/case-process.service';
 import { DocumentService } from 'src/app/services/document-service.service';
 import { DataService } from 'src/app/services/shared/data.service';
-import { TimeActualService } from 'src/app/services/time-actual/time-actual.service';
+import Swal  from 'sweetalert2';
 
 @Component({
   selector: 'app-view-document',
   templateUrl: './view-document.component.html',
   styleUrls: ['./view-document.component.css'],
+  encapsulation: ViewEncapsulation.None, // Esto desactiva el encapsulamiento
 })
 export class ViewDocumentComponent implements OnInit {
   idDocument: string = '';
@@ -19,10 +18,10 @@ export class ViewDocumentComponent implements OnInit {
 
   constructor(
     private activatedRoute: ActivatedRoute,
-    private caseService: CaseProcessService,
+    private dataService: DataService,
     private router: Router,
     private documentoService: DocumentService,
-    private time: TimeActualService
+    private authService: AuthServiceService,
   ) {}
 
   ngOnInit(): void {
@@ -55,14 +54,47 @@ export class ViewDocumentComponent implements OnInit {
     const id = parseInt(this.idDocument);
     this.documentoService.deleteDocument(id).subscribe(
       (deletedDocument) => {
-        console.log(
-          `Documento "${deletedDocument.nameDocument}" eliminado exitosamente`
-        );
+        this.dataService.changeMessage(true, 'El documento fue eliminado correctamente');
         this.router.navigate(['/list-document']); // Redirige a la lista de documentos
       },
       (error) => {
         console.error('Error eliminando el documento:', error);
       }
     );
+  }
+
+  SwitAllen() {
+    const swalWithBootstrapButtons = Swal.mixin({
+      customClass: {
+        confirmButton: 'btn btn-success',
+        cancelButton: 'btn btn-danger',
+        popup: 'message-style',
+      },
+      buttonsStyling: false,
+    });
+    swalWithBootstrapButtons
+      .fire({
+        title: '¿Estas seguro?',
+        text: '¡No podrás revertir esto!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Si, borrarlo!',
+        cancelButtonText: 'No, cancelar!',
+        reverseButtons: false,
+      })
+      .then((result) => {
+        if (result.isConfirmed) {
+          this.deleteDocument();
+        } else if (
+          /* Read more about handling dismissals below */
+          result.dismiss === Swal.DismissReason.cancel
+        ) {
+          swalWithBootstrapButtons.fire({
+            title: 'Cancelado',
+            text: 'Tu archivo está seguro',
+            icon: 'error',
+          });
+        }
+      });
   }
 }

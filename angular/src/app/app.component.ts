@@ -21,21 +21,21 @@ import { HttpClient } from '@angular/common/http';
 export class AppComponent implements OnInit, OnDestroy {
   date_actual: Date = new Date();
   private interval_id: any;
-  private interval_id_notify : any;
+  private interval_id_notify: any;
   dataNotify: Notify[] = [];
-  idNotify : any[] = [];
+  idNotify: any[] = [];
 
   currentRoute: string = '';
   showMenu: boolean = true;
   showThemeOptions: boolean = false; // Controla la visibilidad de las opciones de tema
-  showNotify : boolean = false; // Mostrar notificaciones
+  showNotify: boolean = false; // Mostrar notificaciones
   currentTheme: string = '';
   themes: { [key: string]: boolean } = {
     'dark-mode': false,
     'blue-mode': false,
     'law-mode': false,
     'green-mode': false,
-    'default' : false
+    default: false,
     // Agrega más temas aquí si es necesario
   };
   searchControl = new FormControl('');
@@ -47,64 +47,81 @@ export class AppComponent implements OnInit, OnDestroy {
   dataLawyer: any = [];
   dataCustomer: any = [];
   nameUser: string = this.auth.getUser();
-  private idUser : string = this.auth.getIdUser();
-  rolUser : string = this.auth.getRolUser();
+  private idUser: string = this.auth.getIdUser();
+  rolUser: string = this.auth.getRolUser();
 
-  isMessageSuccess : boolean = false;
-  messageSuccess : string = "";
+  isMessageSuccess: boolean = false;
+  messageSuccess: string = '';
 
-  countNotify : number = 0; // Contar los notificaciones no vistas por el usuario
+  countNotify: number = 0; // Contar los notificaciones no vistas por el usuario
 
-  idRedirect : string = ""; // Id Para redigirigir al perfil de usuario
-  idSearch : number = 0;
+  idRedirect: string = ''; // Id Para redigirigir al perfil de usuario
+  idSearch: number = 0;
 
   // Imagen Perfil Usuario
-  imageUrl : SafeUrl | null = null;
-  imageName : string = this.auth.getPhotoUser();
+  imageUrl: SafeUrl | null = null;
+  imageName: string = this.auth.getPhotoUser();
 
+  // Tiempo para la session de acceso
+  private intervalSession: any;
 
-  constructor(private router: Router, private dataService: DataService,
-    private caseService: CaseProcessService, private customerService: CustomersService,
-    private lawyerService: LawyersService, private auth : AuthServiceService, 
-    private notifyService : NotifyService, private userService : UserService,
-    private sanitizer : DomSanitizer, private http : HttpClient) { }
+  constructor(
+    private router: Router,
+    private dataService: DataService,
+    private caseService: CaseProcessService,
+    private customerService: CustomersService,
+    private lawyerService: LawyersService,
+    private auth: AuthServiceService,
+    private notifyService: NotifyService,
+    private userService: UserService,
+    private sanitizer: DomSanitizer,
+    private http: HttpClient
+  ) {}
 
   ngOnInit(): void {
-
-    if(this.auth.getIdUser() !== "Id Usuario Indefinido") {
+    if (this.auth.getIdUser() !== 'Id Usuario Indefinido') {
       this.notifyService.getNotifyByUser(this.idUser).subscribe(
-        rs => { 
+        (rs) => {
           this.dataNotify = rs;
           // Contar cuales notificaciones no han sido vistas por el usuario
-          for(let notifySingle of this.dataNotify) {
-            if(!notifySingle.notify) { 
-              this.countNotify++; 
+          for (let notifySingle of this.dataNotify) {
+            if (!notifySingle.notify) {
+              this.countNotify++;
               this.idNotify.push(notifySingle.idNotify);
             }
           }
         },
-        err => console.log(err)
-      )
+        (err) => console.log(err)
+      );
     }
-    
-    if(this.rolUser === "Administrador") this.searchUser();
-    if(this.rolUser === "Usuario") this.searchCustomer();
-    if(this.rolUser === "Abogado") this.searchLawyer();
+    // Iniciar temporizador de la sesión
 
-    if(this.auth.getIdUser() !== "Id Usuario Indefinido") this.activateInterval();
+    if (this.auth.getIdUser() !== 'Id Usuario Indefinido')
+      this.startSessionTimer();
 
-    this.dataService.changeTheme(localStorage.getItem("theme") || "");
+    // finalizar temporizador de la sesión
+
+    if (this.rolUser === 'Administrador') this.searchUser();
+    if (this.rolUser === 'Usuario') this.searchCustomer();
+    if (this.rolUser === 'Abogado') this.searchLawyer();
+
+    if (this.auth.getIdUser() !== 'Id Usuario Indefinido')
+      this.activateInterval();
+
+    this.dataService.changeTheme(localStorage.getItem('theme') || '');
     // Duración de la notificaciones enviadas desde otros componentes
-    this.dataService.currentIsMessageSuccess.subscribe(value => { 
+    this.dataService.currentIsMessageSuccess.subscribe((value) => {
       this.isMessageSuccess = value;
       setTimeout(() => {
         if (this.isMessageSuccess) {
           this.dataService.changeMessage(false, this.messageSuccess);
         }
-      }, 4000)
-    })
+      }, 4000);
+    });
 
-    this.dataService.currrentMessageSuccess.subscribe(value => { this.messageSuccess = value; })
+    this.dataService.currrentMessageSuccess.subscribe((value) => {
+      this.messageSuccess = value;
+    });
 
     // Obtener la URL completa de la ruta actual
     this.router.events.subscribe(() => {
@@ -153,10 +170,13 @@ export class AppComponent implements OnInit, OnDestroy {
           this.dataCustomer = customers;
           this.dataCase = cases;
           this.dataLawyer = lawyers;
-          this.showCustomer = this.dataCustomer?.length > 0 && this.rolUser === "Administrador";
+          this.showCustomer =
+            this.dataCustomer?.length > 0 && this.rolUser === 'Administrador';
           this.showCase = this.dataCase?.length > 0;
-          this.showLawyer = this.dataLawyer?.length > 0 && this.rolUser === "Administrador";
-          this.showResults = this.showCustomer || this.showCase || this.showLawyer;
+          this.showLawyer =
+            this.dataLawyer?.length > 0 && this.rolUser === 'Administrador';
+          this.showResults =
+            this.showCustomer || this.showCase || this.showLawyer;
         },
         (error) => {
           console.log('Error al encontrar resultados', error);
@@ -168,26 +188,27 @@ export class AppComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     if (this.interval_id) clearInterval(this.interval_id);
     if (this.interval_id_notify) this.deactivateInterval();
+    if (this.intervalSession) this.finishInterval();
   }
 
   // Activar Intervalo Notificaciones
   activateInterval() {
-    if(this.auth.getIdUser() !== "Id Usuario Indefinido") {
+    if (this.auth.getIdUser() !== 'Id Usuario Indefinido') {
       this.interval_id_notify = interval(5000) // Cada 5 segundos se obtienen todos las notificaciones
-      .pipe(switchMap(() => this.notifyService.getNotifyByUser(this.idUser)))
-      .subscribe((rs) => {
-        this.dataNotify= rs;
-        this.countNotify = 0;
-        this.idNotify.length = 0;
-        // Contar cuales notificaciones no han sido vistas por el usuario
-        for(let notifySingle of this.dataNotify) {
-          if(!notifySingle.notify) {
-            this.countNotify++;
-            this.idNotify.push(notifySingle.idNotify); 
+        .pipe(switchMap(() => this.notifyService.getNotifyByUser(this.idUser)))
+        .subscribe((rs) => {
+          this.dataNotify = rs;
+          this.countNotify = 0;
+          this.idNotify.length = 0;
+          // Contar cuales notificaciones no han sido vistas por el usuario
+          for (let notifySingle of this.dataNotify) {
+            if (!notifySingle.notify) {
+              this.countNotify++;
+              this.idNotify.push(notifySingle.idNotify);
+            }
           }
-        }
-        if(this.showNotify) this.checkNotify();
-      });
+          if (this.showNotify) this.checkNotify();
+        });
     }
   }
 
@@ -246,7 +267,8 @@ export class AppComponent implements OnInit, OnDestroy {
 
   // Abrir/Cerrar Notificaciones
   toggleNotifyOptions(): void {
-    if(this.showThemeOptions && !this.showNotify) this.showThemeOptions = false;
+    if (this.showThemeOptions && !this.showNotify)
+      this.showThemeOptions = false;
     this.showNotify = !this.showNotify;
     this.checkNotify();
   }
@@ -255,26 +277,25 @@ export class AppComponent implements OnInit, OnDestroy {
   checkNotify() {
     let notify_id = this.idNotify;
 
-    for(let notifySingle of notify_id) {
-      let notifyView : Notify  = { notify : true }
+    for (let notifySingle of notify_id) {
+      let notifyView: Notify = { notify: true };
       this.notifyService.checkNotify(notifySingle, notifyView).subscribe(
-        rs => this.countNotify = 0,
-        err => console.log(err)
+        (rs) => (this.countNotify = 0),
+        (err) => console.log(err)
       );
     }
-
   }
 
   // Alternar visibilidad de las opciones de tema
   toggleThemeOptions(): void {
-    if(this.showNotify && !this.showThemeOptions) this.showNotify = false;
+    if (this.showNotify && !this.showThemeOptions) this.showNotify = false;
     this.showThemeOptions = !this.showThemeOptions;
   }
 
   // Cambiar el tema basado en el diccionario de booleanos
   changeTheme(theme: string): void {
     if (this.themes.hasOwnProperty(theme)) {
-      if (theme === "default") {
+      if (theme === 'default') {
         this.themes[theme] = false;
         this.currentTheme = '';
         localStorage.removeItem('theme');
@@ -345,61 +366,81 @@ export class AppComponent implements OnInit, OnDestroy {
 
   // Cerrar sesión
   closeSesion() {
-    if (localStorage.getItem('nameUser')) {
-      localStorage.removeItem('idUser');
-      localStorage.removeItem('nameUser');
-      localStorage.removeItem('rolUser');
-      localStorage.removeItem('photoUser');
-      localStorage.removeItem('jwtToken');
-      this.router.navigate(['/login']);
-    }
+    this.dataService.closeSesion();
   }
 
   searchUser() {
     this.userService.getUserById(this.idUser).subscribe(
-      rs => this.idRedirect = `user/${rs.nameUser}`,
-      err => console.log(err)
-    )
+      (rs) => (this.idRedirect = `user/${rs.nameUser}`),
+      (err) => console.log(err)
+    );
   }
 
   searchCustomer() {
     this.customerService.getByUser(parseInt(this.idUser)).subscribe(
-      rs => {
-        if(rs.success) { 
+      (rs) => {
+        if (rs.success) {
           this.idRedirect = `customer/${rs.singleData}`;
-          this.idSearch = parseInt(rs.singleData); 
+          this.idSearch = parseInt(rs.singleData);
         }
-        if(rs.message === "No se encontro el cliente") this.searchUser();
+        if (rs.message === 'No se encontro el cliente') this.searchUser();
       },
-      err => console.log(err)
-    )
+      (err) => console.log(err)
+    );
   }
 
   searchLawyer() {
     this.lawyerService.getByUser(parseInt(this.idUser)).subscribe(
-      rs => {
-        if (rs.success) { 
+      (rs) => {
+        if (rs.success) {
           this.idRedirect = `lawyer/${rs.singleData}`;
-          this.idSearch = parseInt(rs.singleData); 
+          this.idSearch = parseInt(rs.singleData);
         }
-        if (rs.message === "No se encontro el abogado") this.searchUser();
+        if (rs.message === 'No se encontro el abogado') this.searchUser();
       },
-      err => console.log(err)
-    )
+      (err) => console.log(err)
+    );
   }
 
   loadImage() {
-    if(this.imageName !== 'Ninguna' && this.imageName !== 'Imagen Indefinida') {
-      const url = `${origin.replace('4200', '8080')}/api/user/searchPhoto/${this.imageName}`;
+    if (
+      this.imageName !== 'Ninguna' &&
+      this.imageName !== 'Imagen Indefinida'
+    ) {
+      const url = `${origin.replace('4200', '8080')}/api/user/searchPhoto/${
+        this.imageName
+      }`;
       this.http.get(url, { responseType: 'blob' }).subscribe(
-        rs => { 
+        (rs) => {
           const imageUrl = URL.createObjectURL(rs);
-          this.imageUrl = this.sanitizer.bypassSecurityTrustResourceUrl(imageUrl);
+          this.imageUrl =
+            this.sanitizer.bypassSecurityTrustResourceUrl(imageUrl);
         },
-        err => console.log(err)
+        (err) => console.log(err)
       );
     } else {
       this.imageUrl = 'assets/no-user.webp';
+    }
+  }
+
+  // Iniciar el temporizador de la sesión
+
+  startSessionTimer() {
+    this.intervalSession = interval(10000).subscribe(() => {
+      this.userService.getUserByName(this.nameUser).subscribe((rs) => {
+        if (!(rs.success && rs.message === 'Token JWT invalido o expirado')) {
+          this.dataService.closeSesion();
+        }
+      },error => {
+      if(error.status === 403){
+        this.dataService.closeSesion();}});
+    });
+  }
+
+  finishInterval(){
+    if (this.intervalSession) {
+      this.intervalSession.unsubscribe();
+      this.intervalSession = null;
     }
   }
 }

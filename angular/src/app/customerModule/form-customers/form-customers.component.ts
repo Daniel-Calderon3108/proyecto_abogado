@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CustomersService } from 'src/app/services/customers.service';
-import { Customers, User } from 'src/app/services/model';
+import { ApiResponse, Customers, User } from 'src/app/services/model';
 import { TimeActualService } from 'src/app/services/time-actual/time-actual.service';
 import { FormControl, FormGroup } from '@angular/forms';
 import { UserService } from 'src/app/services/user.service';
@@ -264,7 +264,7 @@ export class FormCustomersComponent implements OnInit {
     ).subscribe(user => {
       // Verificar disponibilidad del usuario
       if (user) {
-        if (this.nameUser === user?.nameUser) {
+        if (this.nameUser === user.data?.nameUser) {
           this.userMessage = 'Usuario Válido.';
           return;
         }
@@ -334,7 +334,7 @@ export class FormCustomersComponent implements OnInit {
           if(rs.user.photoUser && rs.user.photoUser !== 'Ninguna') {
             const url = `${origin.replace('4200', '8080')}/api/user/searchPhoto/${rs.user.photoUser}`;
             this.http.get(url, { responseType: 'blob' }).subscribe(
-              rs => { 
+              rs => {
                 const imageUrl = URL.createObjectURL(rs);
                 this.filePreviewUrl = this.sanitizer.bypassSecurityTrustResourceUrl(imageUrl);
               },
@@ -358,7 +358,7 @@ export class FormCustomersComponent implements OnInit {
     return this.customerService.getCustomerByDocument(document);
   }
   // Buscar Usuario
-  searchUser(user: string): Observable<User> {
+  searchUser(user: string): Observable<ApiResponse<User>> {
     if (user === "") {
       return new Observable(observer => observer.next());
     }

@@ -36,33 +36,13 @@
     font-size: var(--size-paragraph);
 }
 
-/* Estilo general del botón */
-.delete-button {
-  background-color: #e74c3c;  /* Color de fondo rojo */
-  color: white;               /* Texto blanco */
-  border: none;               /* Sin bordes */
-  padding: 10px 20px;         /* Relleno alrededor del texto */
-  font-size: 16px;            /* Tamaño de la fuente */
-  font-weight: bold;          /* Fuente en negrita */
-  border-radius: 5px;         /* Bordes redondeados */
-  cursor: pointer;           /* Cambiar cursor a puntero */
-  transition: background-color 0.3s, transform 0.2s; /* Efectos de transición */
+
+.message-style{
+    background: var(--color-one);
+    color: aliceblue;
 }
 
-/* Estilo cuando el botón está en hover (cuando el mouse pasa sobre él) */
-.delete-button:hover {
-  background-color: #c0392b;  /* Cambio de color de fondo a un rojo más oscuro */
-  transform: scale(1.05);      /* Le da un pequeño efecto de aumento */
-}
 
-/* Estilo cuando el botón es presionado */
-.delete-button:active {
-  background-color: #d35400;  /* Color naranja al presionar */
-  transform: scale(0.98);      /* Efecto de presión (reduce el tamaño del botón) */
-}
-
-/* Agregar un poco de sombra alrededor del botón para darle un toque más elegante */
-.delete-button:focus {
-  outline: none;              /* Eliminar borde predeterminado */
-  box-shadow: 0 0 10px rgba(231, 76, 60, 0.6); /* Sombra con tono rojo */
+.btn-danger{
+    margin: 0 10px;
 }

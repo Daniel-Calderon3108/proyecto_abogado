@@ -40,7 +40,6 @@ public class DocumentService implements IDocumentService {
 
     @Override
     public Document store(MultipartFile file, DocumentRequest documentRequest, Long idCase) throws IOException {
-        System.out.println("Iniciando almacenamiento del documento");
 
         /*String fileName = StringUtils.cleanPath(file.getOriginalFilename());
         if (file.isEmpty()) {
@@ -61,9 +60,8 @@ public class DocumentService implements IDocumentService {
         Optional<CaseProcess> caseProcess = caseProcessRepository.findById(idCase);
         caseProcess.ifPresent(newDocumento::setCaseProcess);
 
-        System.out.println("Subiendo archivo a Google Drive...");
+
         String fileUrl = uploadFile(file); // Aquí estamos subiendo el archivo y obteniendo la URL
-        System.out.println("Archivo subido, URL recibida: " + fileUrl);
 
         newDocumento.setUrlDocument(fileUrl); // Establece la URL en el documento
 
@@ -201,7 +199,5 @@ public class DocumentService implements IDocumentService {
 
         // Llamar al servicio de Drive para eliminar el archivo usando su ID
         driveService.files().delete(fileId).execute();
-
-        System.out.println("Archivo eliminado de Google Drive con ID: " + fileId);
     }
 }

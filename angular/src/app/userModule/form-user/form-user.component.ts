@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { User } from 'src/app/services/model';
+import { ApiResponse, User } from 'src/app/services/model';
 import { UserService } from 'src/app/services/user.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl, FormGroup } from '@angular/forms';
@@ -88,7 +88,7 @@ export class FormUserComponent implements OnInit {
     ).subscribe(user => {
       // Verificar disponibilidad del usuario
       if (user) {
-        if (this.nameUser == user?.nameUser) {
+        if (this.nameUser == user.data?.nameUser) {
           this.nameMessage = 'Usuario Válido.';
           return;
         }
@@ -150,7 +150,7 @@ export class FormUserComponent implements OnInit {
           if (rs.photoUser && rs.photoUser !== 'Ninguna') {
             const url = `${origin.replace('4200', '8080')}/api/user/searchPhoto/${rs.photoUser}`;
             this.http.get(url, { responseType: 'blob' }).subscribe(
-              rs => { 
+              rs => {
                 const imageUrl = URL.createObjectURL(rs);
                 this.filePreviewUrl = this.sanitizer.bypassSecurityTrustResourceUrl(imageUrl);
               },
@@ -166,7 +166,7 @@ export class FormUserComponent implements OnInit {
     }
   }
   // Buscar Nombre Usuario
-  searchUser(name: string): Observable<User> {
+  searchUser(name: string): Observable<ApiResponse<User>> {
     if (name === "") {
       return new Observable(observer => observer.next());
     }

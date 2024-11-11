@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { LawyersService } from 'src/app/services/lawyers.service';
-import { Lawyers, User } from 'src/app/services/model';
+import { ApiResponse, Lawyers, User } from 'src/app/services/model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl, FormGroup } from '@angular/forms';
 import { TimeActualService } from 'src/app/services/time-actual/time-actual.service';
@@ -232,7 +232,7 @@ export class FormLawyerComponent implements OnInit {
     ).subscribe(user => {
       // Verificar disponibilidad del usuario
       if (user) {
-        if (this.nameUser == user?.nameUser) {
+        if (this.nameUser == user.data?.nameUser) {
           this.userMessage = 'Usuario Válido.';
           return;
         }
@@ -301,7 +301,7 @@ export class FormLawyerComponent implements OnInit {
           if(rs.photoUser && rs.photoUser !== 'Ninguna') {
             const url = `${origin.replace('4200', '8080')}/api/user/searchPhoto/${rs.photoUser}`;
             this.http.get(url, { responseType: 'blob' }).subscribe(
-              rs => { 
+              rs => {
                 const imageUrl = URL.createObjectURL(rs);
                 this.filePreviewUrl = this.sanitizer.bypassSecurityTrustResourceUrl(imageUrl);
               },
@@ -324,7 +324,7 @@ export class FormLawyerComponent implements OnInit {
     return this.lawyerService.getLawyerByDocument(document);
   }
   // Buscar Usuario
-  searchUser(user: string): Observable<User> {
+  searchUser(user: string): Observable<ApiResponse<User>> {
     if (user === "") {
       return new Observable(observer => observer.next());
     }

@@ -24,7 +24,7 @@ export class ViewUserComponent implements OnInit {
 
   constructor(private activatedRoute: ActivatedRoute, private userService: UserService,
     private router: Router, private time: TimeActualService, private renderer: Renderer2,
-    private dataService: DataService, private auth: AuthServiceService, 
+    private dataService: DataService, private auth: AuthServiceService,
     private sanitizer : DomSanitizer, private http : HttpClient) { }
 
   ngOnInit(): void {
@@ -41,11 +41,11 @@ export class ViewUserComponent implements OnInit {
       .subscribe(
         rs => {
           this.data = rs
-          this.statusActual = rs.statusUser ? true : false;
-          if(rs.photoUser !== 'Ninguna') {
-            const url = `${origin.replace('4200', '8080')}/api/user/searchPhoto/${rs.photoUser}`;
+          this.statusActual = rs.data?.statusUser ? true : false;
+          if(rs.data?.photoUser !== 'Ninguna') {
+            const url = `${origin.replace('4200', '8080')}/api/user/searchPhoto/${rs.data?.photoUser}`;
             this.http.get(url, { responseType: 'blob' }).subscribe(
-              rs => { 
+              rs => {
                 const imageUrl = URL.createObjectURL(rs);
                 this.imageUrl = this.sanitizer.bypassSecurityTrustResourceUrl(imageUrl);
               },

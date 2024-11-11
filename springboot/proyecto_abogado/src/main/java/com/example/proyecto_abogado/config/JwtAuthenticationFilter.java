@@ -1,7 +1,9 @@
 package com.example.proyecto_abogado.config;
 
+import com.example.proyecto_abogado.DTO.Response;
 import com.example.proyecto_abogado.services.user.UserService;
 import com.example.proyecto_abogado.utils.JwtUtil;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.JwtException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -16,6 +18,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
@@ -38,10 +41,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             chain.doFilter(request, response);  // Permitimos que la solicitud al login pase sin validación de token
             return;
         }
-        if (request.getRequestURI().equals("/api/user/searchPhoto/**")) {
-            chain.doFilter(request, response);  // Permitimos que la solicitud al login pase sin validación de token
-            return;
-        }
 
         // Verificamos si la cabecera Authorization contiene un token JWT
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
@@ -53,13 +52,27 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             } catch (JwtException e) {
                 // Si el token no es válido o ha expirado, respondemos con un código 403 Forbidden
                 response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-                response.getWriter().write("Token JWT invalido o expirado.");
+                response.setContentType("application/json");
+                response.setCharacterEncoding("UTF-8");
+                Response response1 = new Response(false, "Token JWT invalido o expirado");
+                ObjectMapper mapper = new ObjectMapper();
+                String json = mapper.writeValueAsString(response1);
+                PrintWriter auth = response.getWriter();
+                auth.write(json);
+                auth.flush();
                 return;  // No continuar con el procesamiento
             }
         } else {
             // Si no se envía un token, respondemos con un código 401 Unauthorized
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            response.getWriter().write("Token JWT requerido.");
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            Response response1 = new Response(false, "Token JWT requerido");
+            ObjectMapper mapper = new ObjectMapper();
+            String json = mapper.writeValueAsString(response1);
+            PrintWriter auth = response.getWriter();
+            auth.print(json);
+            auth.flush();
             return;  // No continuar con el procesamiento
         }
 

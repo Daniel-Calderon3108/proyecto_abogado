@@ -1,4 +1,10 @@
 <div class="info" id="info">
+  <div class="options">
+        <i class="fa-solid fa-bars"></i>
+        <ul>
+            <li (click)="SwitAllen()">Eliminar</li>
+        </ul>
+  </div>
   <h2>Documento #{{ idDocument }}</h2>
   <section class="view">
     <div class="info-view-container">
@@ -42,8 +48,4 @@
       </div>
     </div>
   </section>
-
-  <button (click)="deleteDocument()" class="delete-button">
-    delete
-  </button>
 </div>

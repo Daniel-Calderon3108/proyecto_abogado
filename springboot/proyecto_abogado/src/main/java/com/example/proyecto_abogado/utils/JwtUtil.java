@@ -24,14 +24,6 @@ public class JwtUtil {
     @Value("${security.jwt.ttlMillis}")
     private long ttlMillis;
 
-
-    @PostConstruct
-    public void init() {
-        System.out.println("JWT Secret Key: " + key);
-        System.out.println("JWT Issuer: " + issuer);
-        System.out.println("JWT TTL Millis: " + ttlMillis);
-    }
-
     private final Logger log = LoggerFactory.getLogger(JwtUtil.class);
 
     public String create(String id, String subject) {
