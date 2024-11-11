@@ -350,6 +350,7 @@ export class AppComponent implements OnInit, OnDestroy {
       localStorage.removeItem('nameUser');
       localStorage.removeItem('rolUser');
       localStorage.removeItem('photoUser');
+      localStorage.removeItem('jwtToken');
       this.router.navigate(['/login']);
     }
   }
@@ -388,7 +389,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   loadImage() {
-    if(this.imageName !== 'Ninguna') {
+    if(this.imageName !== 'Ninguna' && this.imageName !== 'Imagen Indefinida') {
       const url = `${origin.replace('4200', '8080')}/api/user/searchPhoto/${this.imageName}`;
       this.http.get(url, { responseType: 'blob' }).subscribe(
         rs => { 
