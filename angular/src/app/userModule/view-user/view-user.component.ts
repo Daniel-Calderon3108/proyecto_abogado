@@ -41,9 +41,10 @@ export class ViewUserComponent implements OnInit {
       .subscribe(
         rs => {
           this.data = rs
-          this.statusActual = rs.data?.statusUser ? true : false;
-          if(rs.data?.photoUser !== 'Ninguna') {
-            const url = `${origin.replace('4200', '8080')}/api/user/searchPhoto/${rs.data?.photoUser}`;
+          this.statusActual = rs?.statusUser ? true : false;
+          if(rs?.photoUser !== 'Ninguna') {
+            console.log(rs)
+            const url = `${origin.replace('4200', '8080')}/api/user/searchPhoto/${rs?.photoUser}`;
             this.http.get(url, { responseType: 'blob' }).subscribe(
               rs => {
                 const imageUrl = URL.createObjectURL(rs);

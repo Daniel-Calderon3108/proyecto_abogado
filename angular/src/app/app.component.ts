@@ -62,9 +62,6 @@ export class AppComponent implements OnInit, OnDestroy {
   imageUrl: SafeUrl | null = null;
   imageName: string = this.auth.getPhotoUser();
 
-  // Tiempo para la session de acceso
-  private intervalSession: any;
-
   constructor(
     private router: Router,
     private dataService: DataService,
@@ -94,12 +91,6 @@ export class AppComponent implements OnInit, OnDestroy {
         (err) => console.log(err)
       );
     }
-    // Iniciar temporizador de la sesión
-
-    if (this.auth.getIdUser() !== 'Id Usuario Indefinido')
-      this.startSessionTimer();
-
-    // finalizar temporizador de la sesión
 
     if (this.rolUser === 'Administrador') this.searchUser();
     if (this.rolUser === 'Usuario') this.searchCustomer();
@@ -188,7 +179,6 @@ export class AppComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     if (this.interval_id) clearInterval(this.interval_id);
     if (this.interval_id_notify) this.deactivateInterval();
-    if (this.intervalSession) this.finishInterval();
   }
 
   // Activar Intervalo Notificaciones
@@ -208,7 +198,9 @@ export class AppComponent implements OnInit, OnDestroy {
             }
           }
           if (this.showNotify) this.checkNotify();
-        });
+        },
+        err => { if (err.status === 403) this.closeSesion(); }
+      );
     }
   }
 
@@ -420,27 +412,6 @@ export class AppComponent implements OnInit, OnDestroy {
       );
     } else {
       this.imageUrl = 'assets/no-user.webp';
-    }
-  }
-
-  // Iniciar el temporizador de la sesión
-
-  startSessionTimer() {
-    this.intervalSession = interval(10000).subscribe(() => {
-      this.userService.getUserByName(this.nameUser).subscribe((rs) => {
-        if (!(rs.success && rs.message === 'Token JWT invalido o expirado')) {
-          this.dataService.closeSesion();
-        }
-      },error => {
-      if(error.status === 403){
-        this.dataService.closeSesion();}});
-    });
-  }
-
-  finishInterval(){
-    if (this.intervalSession) {
-      this.intervalSession.unsubscribe();
-      this.intervalSession = null;
     }
   }
 }

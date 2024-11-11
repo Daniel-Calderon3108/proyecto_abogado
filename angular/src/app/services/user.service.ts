@@ -28,7 +28,7 @@ export class UserService {
   }
 
   getUserByName(name : string) {
-    return this.http.get<ApiResponse<User>>(`${this.API_URI}search/${name}`);
+    return this.http.get<User>(`${this.API_URI}search/${name}`);
   }
 
   changeStatus(id : string, user : User) {

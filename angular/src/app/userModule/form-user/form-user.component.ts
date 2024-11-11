@@ -88,7 +88,7 @@ export class FormUserComponent implements OnInit {
     ).subscribe(user => {
       // Verificar disponibilidad del usuario
       if (user) {
-        if (this.nameUser == user.data?.nameUser) {
+        if (this.nameUser == user?.nameUser) {
           this.nameMessage = 'Usuario Válido.';
           return;
         }
@@ -166,7 +166,7 @@ export class FormUserComponent implements OnInit {
     }
   }
   // Buscar Nombre Usuario
-  searchUser(name: string): Observable<ApiResponse<User>> {
+  searchUser(name: string): Observable<User> {
     if (name === "") {
       return new Observable(observer => observer.next());
     }

@@ -232,7 +232,7 @@ export class FormLawyerComponent implements OnInit {
     ).subscribe(user => {
       // Verificar disponibilidad del usuario
       if (user) {
-        if (this.nameUser == user.data?.nameUser) {
+        if (this.nameUser == user?.nameUser) {
           this.userMessage = 'Usuario Válido.';
           return;
         }
@@ -324,7 +324,7 @@ export class FormLawyerComponent implements OnInit {
     return this.lawyerService.getLawyerByDocument(document);
   }
   // Buscar Usuario
-  searchUser(user: string): Observable<ApiResponse<User>> {
+  searchUser(user: string): Observable<User> {
     if (user === "") {
       return new Observable(observer => observer.next());
     }
