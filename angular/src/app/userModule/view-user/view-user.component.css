@@ -28,6 +28,7 @@
 
 .info-view {
     width: 33%;
+    display: block;
 }
 
 .info-view div {
@@ -36,6 +37,7 @@
 
 .info-view h2 {
     font-size: var(--size-text);
+    width: 100%;
 }
 
 .info-view p {
