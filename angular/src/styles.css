@@ -64,8 +64,8 @@
 }
 /* Tema verde */
 [theme="green-mode"] {
-    --color-one: #28B463;
-    --color-six: #092716;
+    --color-one: #2a9381;
+    --color-six: #0c2925;
     --color-four: var(--color-six);
     --color-switch: #FFFFFF;
     --color-body: #E9F7EF;

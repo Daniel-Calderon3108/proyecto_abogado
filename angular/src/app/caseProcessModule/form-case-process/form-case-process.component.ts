@@ -19,7 +19,8 @@ import { NotifyService } from 'src/app/services/notify.service';
 })
 export class FormCaseProcessComponent implements OnInit {
 
-  form = new FormGroup({
+  // Form Group -> FormControl, FormArray
+  form = new FormGroup({ // ([ngmodel])
     nameCase: new FormControl(""),
     descriptionCase: new FormControl("",[Validators.required]),
     dateInitCase: new FormControl("",[Validators.required]),
